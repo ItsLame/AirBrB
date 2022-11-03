@@ -2,7 +2,7 @@ import axios from 'axios';
 import appConfig from '../config.json';
 
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:5005',
+  baseURL: 'http://127.0.0.1:' + appConfig.BACKEND_PORT,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
