@@ -3,15 +3,10 @@ import React from 'react';
 import './App.css';
 
 // Bootstrap Import
-// import Button from 'react-bootstrap/Button';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // React Router DOM Import
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // Import Pages
 import { Landing } from './pages/Landing';
