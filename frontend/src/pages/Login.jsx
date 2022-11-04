@@ -1,5 +1,11 @@
 import React from 'react';
+import CustomForm from '../components/Form';
 
 export const Login = () => {
-  return <div>Login</div>;
+  return (
+    <div>
+      asdf
+      <CustomForm />
+    </div>
+  );
 };

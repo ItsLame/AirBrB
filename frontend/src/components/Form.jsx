@@ -2,43 +2,71 @@ import React from 'react';
 
 // Bootstrap Import
 // import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
+// import Form from 'react-bootstrap/Form';
+// import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Card from 'react-bootstrap/Card';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-export const CustomForm = ([[key, label, type, placeholder]]) => {
-  const [fieldList] = React.useState([
-    <FloatingLabel key="login-emailz" controlId="floatingInput" label="Email Address">
-      <Form.Control type="email" placeholder="name@example.com" />
-    </FloatingLabel>
-  ]);
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
-  // const addField = () => {
-  //   const tempFieldList = fieldList;
+// export const CustomForm = ([[key, label, type, placeholder]]) => {
+export default class CustomForm extends React.Component {
+  constructor(props) {
+    super(props);
 
-  //   const newField = (
-  //     <FloatingLabel key={key} controlId="floatingInput" label={label}>
-  //       <Form.Control type={type} placeholder={placeholder} />
-  //     </FloatingLabel>
-  //   )
+    this.state = {
+      // key: props.key,
+      // label: props.label,
+    };
+  }
 
-  //   tempFieldList.push(newField);
-  //   setFieldList(tempFieldList);
-  //   console.log(tempFieldList)
-  // }
-
-  return (
-    <>
+  render() {
+    return (
       <Card>
         <Card.Header as="h5">Login</Card.Header>
         <Card.Body>
           {/* {addField()} */}
-          {fieldList}
+          {/* {fieldList} */}
+          asdf
         </Card.Body>
       </Card>
-    </>
-  );
+    );
+  }
 }
+// export const CustomForm = () => {
+//   // const [fieldList] = React.useState([
+//   //   <FloatingLabel
+//   //     key="login-emailz"
+//   //     controlId="floatingInput"
+//   //     label="Email Address"
+//   //   >
+//   //     <Form.Control type="email" placeholder="name@example.com" />
+//   //   </FloatingLabel>,
+//   // ]);
 
-// export default App;
+//   // const addField = () => {
+//   //   const tempFieldList = fieldList;
+
+//   //   const newField = (
+//   //     <FloatingLabel key={key} controlId="floatingInput" label={label}>
+//   //       <Form.Control type={type} placeholder={placeholder} />
+//   //     </FloatingLabel>
+//   //   )
+
+//   //   tempFieldList.push(newField);
+//   //   setFieldList(tempFieldList);
+//   //   console.log(tempFieldList)
+//   // }
+
+//   return (
+//     <>
+//       <Card>
+//         <Card.Header as="h5">Login</Card.Header>
+//         <Card.Body>
+//           {/* {addField()} */}
+//           {/* {fieldList} */}
+//           asdf
+//         </Card.Body>
+//       </Card>
+//     </>
+//   );
+// };
