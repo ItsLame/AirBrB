@@ -1,6 +1,10 @@
 import React from 'react';
 import { CustomForm } from '../components/Form';
 
+const handleOnRegister = () => {
+  console.log('register!');
+};
+
 export const Register = () => {
   return (
     <CustomForm
@@ -18,8 +22,8 @@ export const Register = () => {
         ],
       ]}
       buttons={[
-        // input: key, label
-        ['register-button', 'Register'],
+        // input: key, label, onClick
+        ['register-button', 'Register', handleOnRegister],
       ]}
     />
   );

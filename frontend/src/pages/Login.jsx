@@ -1,6 +1,10 @@
 import React from 'react';
 import { CustomForm } from '../components/Form';
 
+const handleOnLogin = () => {
+  console.log('login!');
+};
+
 export const Login = () => {
   return (
     <CustomForm
@@ -11,8 +15,8 @@ export const Login = () => {
         ['login-password', 'Password', 'password', 'examplePassword'],
       ]}
       buttons={[
-        // input: key, label
-        ['login-button', 'Login'],
+        // input: key, label, onClick
+        ['login-button', 'Login', handleOnLogin],
       ]}
     />
   );

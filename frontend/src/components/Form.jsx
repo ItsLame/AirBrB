@@ -62,7 +62,11 @@ export const CustomForm = ({ title, fields, buttons }) => {
 
     // add buttons
     for (let i = buttonList.length; i < buttons.length; i++) {
-      const newButton = <Button key={buttons[i][0]}>{buttons[i][1]}</Button>;
+      const newButton = (
+        <Button key={buttons[i][0]} onClick={buttons[i][2]}>
+          {buttons[i][1]}
+        </Button>
+      );
 
       // FIXME: not important but useState (not refreshing) when add new element
       tempButtonList.push(newButton);
