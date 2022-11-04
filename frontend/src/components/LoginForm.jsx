@@ -1,16 +1,19 @@
+// --- Imports ---
+// React
 import React from 'react';
-
-// Bootstrap Import
+import { login } from '../services/auth';
+import { Outlet } from 'react-router-dom';
+// Bootstrap
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Card from 'react-bootstrap/Card';
-
-// Toastify Import
+import Modal from 'react-bootstrap/Modal';
+// Toastify
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import { login } from '../services/auth';
+// Custom
+import PropTypes from 'prop-types';
+// --- End Imports ---
 
 const emailField = (email, setEmail) => {
   return (
@@ -62,19 +65,32 @@ const onLoginHandler = (email, password) => {
     .catch((error) => toast.error(error.message));
 };
 
-export const LoginForm = () => {
-  const [email, setEmail] = React.useState([]);
-  const [password, setPassword] = React.useState([]);
+export const LoginForm = ({ show, handleClose }) => {
+  LoginForm.propTypes = {
+    show: PropTypes.bool,
+    handleClose: PropTypes.func,
+  };
+
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
   return (
-    <Card>
-      <Card.Header as="h5">Login</Card.Header>
-      <Card.Body>
-        {emailField(email, setEmail)}
-        {passwordField(password, setPassword)}
-        {loginButton(email, password)}
-      </Card.Body>
+    <>
+      <Modal show={show} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Login</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {emailField(email, setEmail)}
+          {passwordField(password, setPassword)}
+          <p>
+            {"Don't"} have an account? <Button>Register now</Button>
+          </p>
+        </Modal.Body>
+        <Modal.Footer>{loginButton(email, password)}</Modal.Footer>
+      </Modal>
       <ToastContainer position="top-center" theme="colored" />
-    </Card>
+      <Outlet />
+    </>
   );
 };

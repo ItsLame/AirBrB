@@ -1,16 +1,19 @@
+// --- Imports ---
+// React
 import React from 'react';
-
-// Bootstrap Import
+import { register } from '../services/auth';
+import { Outlet } from 'react-router-dom';
+// Bootstrap
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Card from 'react-bootstrap/Card';
-
-// Toastify Import
+import Modal from 'react-bootstrap/Modal';
+// Toastify
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import { register } from '../services/auth';
+// Custom
+import PropTypes from 'prop-types';
+// --- End Imports ---
 
 const emailField = (email, setEmail) => {
   return (
@@ -100,23 +103,38 @@ const onRegisterHandler = (email, name, password, passwordConfirm) => {
   }
 };
 
-export const RegisterForm = () => {
-  const [email, setEmail] = React.useState([]);
-  const [name, setName] = React.useState([]);
-  const [password, setPassword] = React.useState([]);
-  const [passwordConfirm, setPasswordConfirm] = React.useState([]);
+export const RegisterForm = ({ show, handleClose }) => {
+  RegisterForm.propTypes = {
+    show: PropTypes.bool,
+    handleClose: PropTypes.func,
+  };
+
+  const [email, setEmail] = React.useState('');
+  const [name, setName] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [passwordConfirm, setPasswordConfirm] = React.useState('');
 
   return (
-    <Card>
-      <Card.Header as="h5">Register</Card.Header>
-      <Card.Body>
-        {emailField(email, setEmail)}
-        {nameField(name, setName)}
-        {passwordField(password, setPassword)}
-        {passwordConfirmField(passwordConfirm, setPasswordConfirm)}
-        {registerButton(email, name, password, passwordConfirm)}
-      </Card.Body>
+    <>
+      <Modal show={show} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Register</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {emailField(email, setEmail)}
+          {nameField(name, setName)}
+          {passwordField(password, setPassword)}
+          {passwordConfirmField(passwordConfirm, setPasswordConfirm)}
+          <p>
+            Already registered? <Button>Login Now</Button>
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          {registerButton(email, name, password, passwordConfirm)}
+        </Modal.Footer>
+      </Modal>
       <ToastContainer position="top-center" theme="colored" />
-    </Card>
+      <Outlet />
+    </>
   );
 };
