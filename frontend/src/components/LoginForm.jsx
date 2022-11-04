@@ -6,6 +6,12 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Card from 'react-bootstrap/Card';
 
+// Toastify Import
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { login } from '../services/auth';
+
 const emailField = (email, setEmail) => {
   return (
     <FloatingLabel className="mb-3" controlId="email" label="Email">
@@ -49,7 +55,9 @@ const loginButton = (email, password) => {
 };
 
 const onLoginHandler = (email, password) => {
-  console.log('LOGIN');
+  login(email, password).then((response) => {
+    toast.success('Login Success!');
+  });
 };
 
 export const LoginForm = () => {
@@ -64,6 +72,7 @@ export const LoginForm = () => {
         {passwordField(password, setPassword)}
         {loginButton(email, password)}
       </Card.Body>
+      <ToastContainer position="top-center" theme="colored" />
     </Card>
   );
 };

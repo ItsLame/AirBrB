@@ -10,6 +10,8 @@ import Card from 'react-bootstrap/Card';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { register } from '../services/auth';
+
 const emailField = (email, setEmail) => {
   return (
     <FloatingLabel className="mb-3" controlId="email" label="Email">
@@ -74,11 +76,11 @@ const passwordConfirmField = (passwordConfirm, setPasswordConfirm) => {
   );
 };
 
-const registerButton = (password, passwordConfirm) => {
+const registerButton = (email, name, password, passwordConfirm) => {
   return (
     <Button
       onClick={() => {
-        onRegisterHandler(password, passwordConfirm);
+        onRegisterHandler(email, name, password, passwordConfirm);
       }}
     >
       Register
@@ -86,9 +88,17 @@ const registerButton = (password, passwordConfirm) => {
   );
 };
 
-const onRegisterHandler = (password, passwordConfirm) => {
+const onRegisterHandler = (email, name, password, passwordConfirm) => {
   if (password !== passwordConfirm) {
     toast.error("Password doesn't match!");
+  } else {
+    register(email, name, password).then((response) => {
+      if (response.status === 200) {
+        toast.success('Register Success!');
+      } else {
+        toast.error(response.message);
+      }
+    });
   }
 };
 
@@ -106,9 +116,9 @@ export const RegisterForm = () => {
         {nameField(name, setName)}
         {passwordField(password, setPassword)}
         {passwordConfirmField(passwordConfirm, setPasswordConfirm)}
-        {registerButton(password, passwordConfirm)}
-        <ToastContainer position="top-center" theme="colored" />
+        {registerButton(email, name, password, passwordConfirm)}
       </Card.Body>
+      <ToastContainer position="top-center" theme="colored" />
     </Card>
   );
 };
