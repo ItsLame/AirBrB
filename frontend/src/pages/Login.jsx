@@ -1,9 +1,10 @@
 import React from 'react';
 import { CustomForm } from '../components/Form';
 
-const handleOnLogin = (event) => {
-  console.log('login!');
-  console.log(event);
+const handleOnLogin = (fieldList) => {
+  // console.log('login!');
+  // console.log(event);
+  console.log(fieldList);
 };
 
 export const Login = () => {

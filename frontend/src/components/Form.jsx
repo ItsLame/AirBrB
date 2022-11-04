@@ -9,11 +9,12 @@ import Card from 'react-bootstrap/Card';
 // Props (as per eslint)
 import PropTypes from 'prop-types';
 
-export const CustomForm = ({ title, fields, buttons }) => {
+export const CustomForm = ({ title, fields, buttons, fieldValue }) => {
   CustomForm.propTypes = {
     title: PropTypes.string,
     fields: PropTypes.array,
     buttons: PropTypes.array,
+    fieldValue: PropTypes.string,
   };
 
   const [fieldList, setFieldList] = React.useState([]);
@@ -35,7 +36,13 @@ export const CustomForm = ({ title, fields, buttons }) => {
           controlId={fields[i][0]}
           label={fields[i][1]}
         >
-          <Form.Control type={fields[i][2]} placeholder={fields[i][3]} />
+          <Form.Control
+            type={fields[i][2]}
+            value={fieldValue}
+            onChange={(e) => (fieldValue = e.target.value)}
+            // onChange={(e) => this.setState({ value: e.target.value })}
+            placeholder={fields[i][3]}
+          />
         </FloatingLabel>
       );
 
@@ -63,7 +70,13 @@ export const CustomForm = ({ title, fields, buttons }) => {
     // add buttons
     for (let i = buttonList.length; i < buttons.length; i++) {
       const newButton = (
-        <Button key={buttons[i][0]} onClick={(event) => buttons[i][2](event)}>
+        <Button
+          key={buttons[i][0]}
+          onClick={() => {
+            buttons[i][2](fieldValue);
+          }}
+        >
+          {/* // <Button key={buttons[i][0]} onClick={buttons[i][2]}> */}
           {buttons[i][1]}
         </Button>
       );

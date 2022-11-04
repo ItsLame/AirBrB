@@ -1,9 +1,12 @@
 import React from 'react';
 import { CustomForm } from '../components/Form';
 
-const handleOnRegister = (event) => {
-  console.log('register!');
-  console.log(event);
+const handleOnRegister = (fieldList) => {
+  // console.log('register!');
+  // console.log(event);
+  console.log(fieldList);
+
+  // if(fieldList)
 };
 
 export const Register = () => {
