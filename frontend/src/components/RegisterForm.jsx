@@ -88,7 +88,7 @@ const registerButton = (password, passwordConfirm) => {
 
 const onRegisterHandler = (password, passwordConfirm) => {
   if (password !== passwordConfirm) {
-    toast("Password doesn't match!");
+    toast.error("Password doesn't match!");
   }
 };
 
@@ -107,7 +107,7 @@ export const RegisterForm = () => {
         {passwordField(password, setPassword)}
         {passwordConfirmField(passwordConfirm, setPasswordConfirm)}
         {registerButton(password, passwordConfirm)}
-        <ToastContainer />
+        <ToastContainer position="top-center" theme="colored" />
       </Card.Body>
     </Card>
   );
