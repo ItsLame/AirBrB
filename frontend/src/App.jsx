@@ -1,9 +1,9 @@
-// React and CSS Import
+// React Import
 import React from 'react';
-import './App.css';
 
 // Bootstrap Import
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './scss/custom.scss';
 
 // React Router DOM Import
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
