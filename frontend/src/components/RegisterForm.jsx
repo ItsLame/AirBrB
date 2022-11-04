@@ -6,6 +6,10 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Card from 'react-bootstrap/Card';
 
+// Toastify Import
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const emailField = (email, setEmail) => {
   return (
     <FloatingLabel className="mb-3" controlId="email" label="Email">
@@ -84,7 +88,7 @@ const registerButton = (password, passwordConfirm) => {
 
 const onRegisterHandler = (password, passwordConfirm) => {
   if (password !== passwordConfirm) {
-    console.log('NO');
+    toast("Password doesn't match!");
   }
 };
 
@@ -103,6 +107,7 @@ export const RegisterForm = () => {
         {passwordField(password, setPassword)}
         {passwordConfirmField(passwordConfirm, setPasswordConfirm)}
         {registerButton(password, passwordConfirm)}
+        <ToastContainer />
       </Card.Body>
     </Card>
   );
