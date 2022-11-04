@@ -9,12 +9,11 @@ import Card from 'react-bootstrap/Card';
 // Props (as per eslint)
 import PropTypes from 'prop-types';
 
-export const CustomForm = ({ title, fields, buttons, fieldValue }) => {
+export const CustomForm = ({ title, fields, buttons }) => {
   CustomForm.propTypes = {
     title: PropTypes.string,
     fields: PropTypes.array,
     buttons: PropTypes.array,
-    fieldValue: PropTypes.string,
   };
 
   const [fieldList, setFieldList] = React.useState([]);
@@ -38,8 +37,15 @@ export const CustomForm = ({ title, fields, buttons, fieldValue }) => {
         >
           <Form.Control
             type={fields[i][2]}
-            value={fieldValue}
-            onChange={(e) => (fieldValue = e.target.value)}
+            // value={fields[i][4]}
+            // onChange={(e) => {
+            // fields[i][4] = e.target.value;
+            // onValueChange(e, fields[i][4][1]);
+            // fields[i][4][1](e.target.value);
+            // fields[i][4] = e.target.value;
+            // fields[i][5](fields[i][4] + e.target.value + );
+            // console.log(e.target.value);
+            // }}
             // onChange={(e) => this.setState({ value: e.target.value })}
             placeholder={fields[i][3]}
           />
@@ -73,7 +79,9 @@ export const CustomForm = ({ title, fields, buttons, fieldValue }) => {
         <Button
           key={buttons[i][0]}
           onClick={() => {
-            buttons[i][2](fieldValue);
+            // buttons[i][2](fieldValue);
+            buttons[i][2](fieldList);
+            // buttons[i][2](fieldValue);
           }}
         >
           {/* // <Button key={buttons[i][0]} onClick={buttons[i][2]}> */}
