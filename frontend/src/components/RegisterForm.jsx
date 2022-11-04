@@ -92,13 +92,11 @@ const onRegisterHandler = (email, name, password, passwordConfirm) => {
   if (password !== passwordConfirm) {
     toast.error("Password doesn't match!");
   } else {
-    register(email, name, password).then((response) => {
-      if (response.status === 200) {
+    register(email, name, password)
+      .then((response) => {
         toast.success('Register Success!');
-      } else {
-        toast.error(response.message);
-      }
-    });
+      })
+      .catch((error) => toast.error(error.message));
   }
 };
 

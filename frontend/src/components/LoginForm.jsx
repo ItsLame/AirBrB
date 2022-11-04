@@ -55,9 +55,11 @@ const loginButton = (email, password) => {
 };
 
 const onLoginHandler = (email, password) => {
-  login(email, password).then((response) => {
-    toast.success('Login Success!');
-  });
+  login(email, password)
+    .then((response) => {
+      toast.success('Login Success!');
+    })
+    .catch((error) => toast.error(error.message));
 };
 
 export const LoginForm = () => {
