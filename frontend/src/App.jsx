@@ -1,3 +1,4 @@
+// React and CSS Import
 import React from 'react';
 import './App.css';
 
@@ -5,26 +6,24 @@ import './App.css';
 // import Button from 'react-bootstrap/Button';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
+// React Router DOM Import
 import {
   BrowserRouter,
   Routes,
   Route,
 } from 'react-router-dom'
 
-const Home = () => {
-  return <div>Home</div>
-};
-
-const About = () => {
-  return <div>About</div>
-};
+// Import Pages
+import { Landing } from './pages/Landing';
+import { Listings } from './pages/Listings';
 
 function App () {
   return (
+    // Page Routes
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />}/>
-        <Route path="/about" element={<About />}/>
+        <Route path="/" element={<Landing />} />
+        <Route path="/listings" element={<Listings />} />
       </Routes>
     </BrowserRouter>
   );
