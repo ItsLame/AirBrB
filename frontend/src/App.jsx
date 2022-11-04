@@ -15,7 +15,9 @@ import {
 
 // Import Pages
 import { Landing } from './pages/Landing';
-import { Listings } from './pages/Listings';
+import { MyListings } from './pages/MyListings';
+import { Login } from './pages/Login';
+import { Register } from './pages/Register';
 
 function App () {
   return (
@@ -23,7 +25,9 @@ function App () {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/listings" element={<Listings />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/my_listings" element={<MyListings />} />
       </Routes>
     </BrowserRouter>
   );
