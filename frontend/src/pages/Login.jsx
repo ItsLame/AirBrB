@@ -1,8 +1,9 @@
 import React from 'react';
 import { CustomForm } from '../components/Form';
 
-const handleOnLogin = () => {
+const handleOnLogin = (event) => {
   console.log('login!');
+  console.log(event);
 };
 
 export const Login = () => {

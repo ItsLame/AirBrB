@@ -63,7 +63,7 @@ export const CustomForm = ({ title, fields, buttons }) => {
     // add buttons
     for (let i = buttonList.length; i < buttons.length; i++) {
       const newButton = (
-        <Button key={buttons[i][0]} onClick={buttons[i][2]}>
+        <Button key={buttons[i][0]} onClick={(event) => buttons[i][2](event)}>
           {buttons[i][1]}
         </Button>
       );
