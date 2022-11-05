@@ -23,7 +23,8 @@ const Navbar = ({ token, setToken }) => {
   return (
     <BSNavbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <BSNavbar.Brand href="/">
+        {/* Logo on left, redirects to landing page */}
+        <BSNavbar.Brand onClick={() => navigate('/')}>
           <svg
             height="30"
             viewBox="0 0 56.7 56.7"
@@ -40,7 +41,9 @@ const Navbar = ({ token, setToken }) => {
         <BSNavbar.Collapse id="basic-navbar-nav">
           <Nav className="d-flex justify-content-between align-items-center w-100">
             <div></div>
-            <Form className="position-relative ms-auto me-auto">
+
+            {/* Search bar */}
+            <Form className="position-relative">
               <Form.Control
                 type="text"
                 placeholder="Search listings"
@@ -55,8 +58,23 @@ const Navbar = ({ token, setToken }) => {
               </Button>
             </Form>
 
+            {/* Right side navbar */}
             <div className="d-flex align-items-center">
-              <Nav.Link>{token ? 'My listings' : 'Become a host'}</Nav.Link>
+              {/* My listings (logged in) or Become a host (logged out) button */}
+              {token
+                ? (
+                <Nav.Link onClick={() => navigate('/my_listings')}>
+                  My listings
+                </Nav.Link>
+                  )
+                : (
+                <Nav.Link onClick={() => navigate('register')}>
+                  Become a host
+                </Nav.Link>
+                  )}
+
+              {/* User icon dropdown */}
+              {/* If logged in, show log out button, otherwise show log in + register buttons */}
               <NavDropdown title={<HiUserCircle size={30} />} align="end">
                 {token
                   ? (
