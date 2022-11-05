@@ -5,10 +5,15 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 
 import { register } from '../services/auth';
 
-const RegisterForm = () => {
+const RegisterForm = ({ setToken }) => {
+  RegisterForm.propTypes = {
+    setToken: PropTypes.func,
+  };
+
   const [validated, setValidated] = React.useState(false);
   const [email, setEmail] = React.useState('');
   const [name, setName] = React.useState('');
@@ -21,12 +26,13 @@ const RegisterForm = () => {
 
     if (event.currentTarget.checkValidity()) {
       if (password !== confirmPassword) {
-        toast.error("Password's don't match!");
+        toast.error("Passwords don't match!");
       } else {
         register(email, password, name)
           .then((response) => {
+            setToken(response.data.token);
+            handleClose();
             toast.success(`Registered account: ${name}!`);
-            console.log(response);
           })
           .catch((error) => toast.error(error.response.data.error));
       }

@@ -5,10 +5,15 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 
 import { login } from '../services/auth';
 
-const LoginForm = () => {
+const LoginForm = ({ setToken }) => {
+  LoginForm.propTypes = {
+    setToken: PropTypes.func,
+  };
+
   const [validated, setValidated] = React.useState(false);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -20,8 +25,9 @@ const LoginForm = () => {
     if (event.currentTarget.checkValidity()) {
       login(email, password)
         .then((response) => {
+          setToken(response.data.token);
+          handleClose();
           toast.success('Logged in!');
-          console.log(response);
         })
         .catch((error) => toast.error(error.response.data.error));
     }

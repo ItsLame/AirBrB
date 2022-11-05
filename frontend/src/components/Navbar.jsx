@@ -1,14 +1,29 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import BSNavbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import { HiSearch, HiUserCircle } from 'react-icons/hi';
+import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 
-const Navbar = () => {
+import { logout } from '../services/auth';
+
+const Navbar = ({ token, setToken }) => {
+  Navbar.propTypes = {
+    token: PropTypes.string,
+    setToken: PropTypes.func,
+  };
+
+  const navigate = useNavigate();
+
   return (
-    <BSNavbar bg="primary" variant="dark" expand="lg">
+    <BSNavbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <BSNavbar.Brand href="#home">
+        <BSNavbar.Brand href="/">
           <svg
             height="30"
             viewBox="0 0 56.7 56.7"
@@ -20,22 +35,57 @@ const Navbar = () => {
           </svg>
           AirBrB
         </BSNavbar.Brand>
+
         <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
         <BSNavbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
+          <Nav className="d-flex justify-content-between align-items-center w-100">
+            <div></div>
+            <Form className="position-relative ms-auto me-auto">
+              <Form.Control
+                type="text"
+                placeholder="Search listings"
+                className="rounded-5"
+              />
+              <Button
+                type="submit"
+                className="position-absolute end-0 top-0 p-0 rounded-circle d-flex align-items-center justify-content-center"
+                style={{ height: 30, width: 30, marginTop: 4, marginRight: 4 }}
+              >
+                <HiSearch size={20} />
+              </Button>
+            </Form>
+
+            <div className="d-flex align-items-center">
+              <Nav.Link>{token ? 'My listings' : 'Become a host'}</Nav.Link>
+              <NavDropdown title={<HiUserCircle size={30} />} align="end">
+                {token
+                  ? (
+                  <NavDropdown.Item
+                    onClick={() => {
+                      logout()
+                        .then((_) => {
+                          setToken('');
+                          navigate('/');
+                          toast.success('Logged out!');
+                        })
+                        .catch((error) => console.error(error));
+                    }}
+                  >
+                    Log out
+                  </NavDropdown.Item>
+                    )
+                  : (
+                  <>
+                    <NavDropdown.Item onClick={() => navigate('login')}>
+                      Log in
+                    </NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => navigate('register')}>
+                      Register
+                    </NavDropdown.Item>
+                  </>
+                    )}
+              </NavDropdown>
+            </div>
           </Nav>
         </BSNavbar.Collapse>
       </Container>

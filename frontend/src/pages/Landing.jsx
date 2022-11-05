@@ -1,17 +1,19 @@
 import React from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
+import { Outlet } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import Navbar from '../components/Navbar';
 
-const Landing = () => {
-  const navigate = useNavigate();
+const Landing = ({ token, setToken }) => {
+  Landing.propTypes = {
+    token: PropTypes.string,
+    setToken: PropTypes.func,
+  };
 
   return (
     <>
-      <Navbar />
-      <Button onClick={() => navigate('login')}>Login</Button>
-      <Button onClick={() => navigate('login')}>Register</Button>
+      <Navbar token={token} setToken={setToken} />
+      <div>Landing</div>
       <Outlet />
     </>
   );
