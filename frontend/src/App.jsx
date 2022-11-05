@@ -12,7 +12,7 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 // --- End Imports ---
 
-function App() {
+const App = () => {
   return (
     // Page Routes
     <BrowserRouter>
@@ -25,6 +25,6 @@ function App() {
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
