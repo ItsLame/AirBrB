@@ -50,11 +50,6 @@ const App = () => {
             path="/my_listings"
             element={<MyListings token={token} setToken={setToken} />}
           >
-            <Route path="login" element={<LoginForm setToken={setToken} />} />
-            <Route
-              path="register"
-              element={<RegisterForm setToken={setToken} />}
-            />
             <Route path="create" element={<CreateListingForm />} />
           </Route>
         )}
