@@ -99,7 +99,7 @@ const LoginForm = ({ setToken }) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary text-light" type="submit">
+          <Button variant="primary" type="submit">
             Log in
           </Button>
         </Modal.Footer>

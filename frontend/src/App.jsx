@@ -9,6 +9,7 @@ import Landing from './pages/Landing';
 import MyListings from './pages/MyListings';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
+import CreateListingForm from './components/CreateListingForm';
 
 const App = () => {
   const [token, setToken] = React.useState(
@@ -42,12 +43,23 @@ const App = () => {
             element={<RegisterForm setToken={setToken} />}
           />
         </Route>
-        <Route
-          path="/my_listings"
-          element={<MyListings token={token} setToken={setToken} />}
-        >
-          <Route path="login" element={<LoginForm setToken={setToken} />} />
-        </Route>
+
+        {/* Only define /my_listings route and sub-routes if token exists */}
+        {token && (
+          <Route
+            path="/my_listings"
+            element={<MyListings token={token} setToken={setToken} />}
+          >
+            <Route path="login" element={<LoginForm setToken={setToken} />} />
+            <Route
+              path="register"
+              element={<RegisterForm setToken={setToken} />}
+            />
+            <Route path="create" element={<CreateListingForm />} />
+          </Route>
+        )}
+
+        <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </BrowserRouter>
   );
