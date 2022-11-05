@@ -1,140 +1,147 @@
-// --- Imports ---
-// React
 import React from 'react';
-import { register } from '../services/auth';
-import { Outlet } from 'react-router-dom';
-// Bootstrap
+import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Modal from 'react-bootstrap/Modal';
-// Toastify
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-// Custom
-import PropTypes from 'prop-types';
-// --- End Imports ---
+import { toast } from 'react-toastify';
 
-const emailField = (email, setEmail) => {
-  return (
-    <FloatingLabel className="mb-3" controlId="email" label="Email">
-      <Form.Control
-        type="email"
-        placeholder="name@example.com"
-        value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
-        }}
-      />
-    </FloatingLabel>
-  );
-};
+import { register } from '../services/auth';
 
-const nameField = (name, setName) => {
-  return (
-    <FloatingLabel className="mb-3" controlId="text" label="Name">
-      <Form.Control
-        type="text"
-        placeholder="exampleName"
-        value={name}
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
-      />
-    </FloatingLabel>
-  );
-};
-
-const passwordField = (password, setPassword) => {
-  return (
-    <FloatingLabel className="mb-3" controlId="password" label="Password">
-      <Form.Control
-        type="password"
-        placeholder="examplePassword"
-        value={password}
-        onChange={(e) => {
-          setPassword(e.target.value);
-        }}
-      />
-    </FloatingLabel>
-  );
-};
-
-const passwordConfirmField = (passwordConfirm, setPasswordConfirm) => {
-  return (
-    <FloatingLabel
-      className="mb-3"
-      controlId="passwordConfirm"
-      label="Confirm Password"
-    >
-      <Form.Control
-        type="password"
-        placeholder="examplePassword"
-        value={passwordConfirm}
-        onChange={(e) => {
-          setPasswordConfirm(e.target.value);
-        }}
-      />
-    </FloatingLabel>
-  );
-};
-
-const registerButton = (email, name, password, passwordConfirm) => {
-  return (
-    <Button
-      onClick={() => {
-        onRegisterHandler(email, name, password, passwordConfirm);
-      }}
-    >
-      Register
-    </Button>
-  );
-};
-
-const onRegisterHandler = (email, name, password, passwordConfirm) => {
-  if (password !== passwordConfirm) {
-    toast.error("Password doesn't match!");
-  } else {
-    register(email, name, password)
-      .then((response) => {
-        toast.success('Register Success!');
-      })
-      .catch((error) => toast.error(error.message));
-  }
-};
-
-export const RegisterForm = ({ show, handleClose }) => {
-  RegisterForm.propTypes = {
-    show: PropTypes.bool,
-    handleClose: PropTypes.func,
-  };
-
+const RegisterForm = () => {
+  const [validated, setValidated] = React.useState(false);
   const [email, setEmail] = React.useState('');
   const [name, setName] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [passwordConfirm, setPasswordConfirm] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (event.currentTarget.checkValidity()) {
+      if (password !== confirmPassword) {
+        toast.error("Password's don't match!");
+      } else {
+        register(email, password, name)
+          .then((response) => {
+            toast.success(`Registered account: ${name}!`);
+            console.log(response);
+          })
+          .catch((error) => toast.error(error.response.data.error));
+      }
+    }
+
+    setValidated(true);
+  };
+
+  const handleClose = () => {
+    navigate('..');
+  };
 
   return (
-    <>
-      <Modal show={show} onHide={handleClose} centered>
+    <Modal show={true} onHide={handleClose} centered>
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Modal.Header closeButton>
           <Modal.Title>Register</Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
-          {emailField(email, setEmail)}
-          {nameField(name, setName)}
-          {passwordField(password, setPassword)}
-          {passwordConfirmField(passwordConfirm, setPasswordConfirm)}
+          {/* Email address field */}
+          <FloatingLabel
+            className="mb-3"
+            controlId="email"
+            label="Email address"
+          >
+            <Form.Control
+              type="email"
+              placeholder="name@example.com"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid email address
+            </Form.Control.Feedback>
+          </FloatingLabel>
+
+          {/* Name field */}
+          <FloatingLabel className="mb-3" controlId="name" label="Name">
+            <Form.Control
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please enter your name
+            </Form.Control.Feedback>
+          </FloatingLabel>
+
+          {/* Password field */}
+          <FloatingLabel className="mb-3" controlId="password" label="Password">
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a password
+            </Form.Control.Feedback>
+          </FloatingLabel>
+
+          {/* Confirm password field */}
+          <FloatingLabel
+            className="mb-3"
+            controlId="confirmPassword"
+            label="Confirm your password"
+          >
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={confirmPassword}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+              }}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please confirm your password
+            </Form.Control.Feedback>
+          </FloatingLabel>
+
           <p>
-            Already registered? <Button>Login Now</Button>
+            Already have an account?
+            <Button
+              variant="dark"
+              className="ms-1"
+              onClick={() => navigate('../login')}
+            >
+              Log in
+            </Button>
           </p>
         </Modal.Body>
+
         <Modal.Footer>
-          {registerButton(email, name, password, passwordConfirm)}
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary text-light" type="submit">
+            Register
+          </Button>
         </Modal.Footer>
-      </Modal>
-      <ToastContainer position="top-center" theme="colored" />
-      <Outlet />
-    </>
+      </Form>
+    </Modal>
   );
 };
+
+export default RegisterForm;

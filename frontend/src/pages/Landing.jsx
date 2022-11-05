@@ -1,66 +1,20 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
-
+import { Outlet, useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
-import { LoginForm } from '../components/LoginForm';
-import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
-export const Landing = () => {
+const Landing = () => {
   const navigate = useNavigate();
-
-  const routeChange = (path) => {
-    navigate(path);
-  };
-
-  const handleLogin = () => {
-    routeChange('/login');
-  };
-
-  const handleRegister = () => {
-    routeChange('/register');
-  };
 
   return (
     <>
       <Navbar />
-      {/* For some reason I need to call this first so that the modals will show */}
-      <LoginForm show={false} />
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <Button onClick={handleLogin}>Login</Button>
-      <Button onClick={handleRegister}>Register</Button>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
-      <h1>Test</h1>
+      <Button onClick={() => navigate('login')}>Login</Button>
+      <Button onClick={() => navigate('login')}>Register</Button>
+      <Outlet />
     </>
   );
 };
+
+export default Landing;

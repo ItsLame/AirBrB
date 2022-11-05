@@ -1,96 +1,105 @@
-// --- Imports ---
-// React
 import React from 'react';
-import { login } from '../services/auth';
-import { Outlet } from 'react-router-dom';
-// Bootstrap
+import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Modal from 'react-bootstrap/Modal';
-// Toastify
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-// Custom
-import PropTypes from 'prop-types';
-// --- End Imports ---
+import { toast } from 'react-toastify';
 
-const emailField = (email, setEmail) => {
-  return (
-    <FloatingLabel className="mb-3" controlId="email" label="Email">
-      <Form.Control
-        type="email"
-        placeholder="name@example.com"
-        value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
-        }}
-      />
-    </FloatingLabel>
-  );
-};
+import { login } from '../services/auth';
 
-const passwordField = (email, setEmail) => {
-  return (
-    <FloatingLabel className="mb-3" controlId="password" label="Password">
-      <Form.Control
-        type="password"
-        placeholder="name@example.com"
-        value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
-        }}
-      />
-    </FloatingLabel>
-  );
-};
-
-const loginButton = (email, password) => {
-  return (
-    <Button
-      onClick={() => {
-        onLoginHandler(email, password);
-      }}
-    >
-      Login
-    </Button>
-  );
-};
-
-const onLoginHandler = (email, password) => {
-  login(email, password)
-    .then((response) => {
-      toast.success('Login Success!');
-    })
-    .catch((error) => toast.error(error.message));
-};
-
-export const LoginForm = ({ show, handleClose }) => {
-  LoginForm.propTypes = {
-    show: PropTypes.bool,
-    handleClose: PropTypes.func,
-  };
-
+const LoginForm = () => {
+  const [validated, setValidated] = React.useState(false);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (event.currentTarget.checkValidity()) {
+      login(email, password)
+        .then((response) => {
+          toast.success('Logged in!');
+          console.log(response);
+        })
+        .catch((error) => toast.error(error.response.data.error));
+    }
+
+    setValidated(true);
+  };
+
+  const handleClose = () => {
+    navigate('..');
+  };
 
   return (
-    <>
-      <Modal show={show} onHide={handleClose} centered>
+    <Modal show={true} onHide={handleClose} centered>
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Modal.Header closeButton>
-          <Modal.Title>Login</Modal.Title>
+          <Modal.Title>Log in</Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
-          {emailField(email, setEmail)}
-          {passwordField(password, setPassword)}
+          {/* Email address field */}
+          <FloatingLabel
+            className="mb-3"
+            controlId="email"
+            label="Email address"
+          >
+            <Form.Control
+              type="email"
+              placeholder="name@example.com"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid email address
+            </Form.Control.Feedback>
+          </FloatingLabel>
+
+          {/* Password field */}
+          <FloatingLabel className="mb-3" controlId="password" label="Password">
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a password
+            </Form.Control.Feedback>
+          </FloatingLabel>
+
           <p>
-            {"Don't"} have an account? <Button>Register now</Button>
+            {"Don't"} have an account?
+            <Button
+              variant="dark"
+              className="ms-1"
+              onClick={() => navigate('../register')}
+            >
+              Register now
+            </Button>
           </p>
         </Modal.Body>
-        <Modal.Footer>{loginButton(email, password)}</Modal.Footer>
-      </Modal>
-      <ToastContainer position="top-center" theme="colored" />
-      <Outlet />
-    </>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary text-light" type="submit">
+            Log in
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
   );
 };
+
+export default LoginForm;
