@@ -13,7 +13,7 @@ import CreateListingForm from './components/CreateListingForm';
 
 const App = () => {
   const [token, setToken] = React.useState(
-    localStorage.getItem(appConfig.LS_ACCESS_TOKEN)
+    localStorage.getItem(appConfig.LS_ACCESS_TOKEN) ?? ''
   );
 
   React.useEffect(() => {
@@ -45,7 +45,7 @@ const App = () => {
         </Route>
 
         {/* Only define /my_listings route and sub-routes if token exists */}
-        {token !== 'null' && token && (
+        {token && (
           <Route
             path="/my_listings"
             element={<MyListings token={token} setToken={setToken} />}
