@@ -13,7 +13,7 @@ const NotFound = () => {
       fluid
       className="d-flex vh-100 p-5 align-items-center justify-content-center bg-dark"
     >
-      <Card className="gap-3 w-75 py-5 align-items-center bg-dark border-0">
+      <Card className="gap-3 w-100 align-items-center bg-dark border-0">
         <h4 className="text-bg-dark">
           <svg
             height="30"
@@ -28,7 +28,7 @@ const NotFound = () => {
         </h4>
         <Alert
           variant="danger"
-          className="d-flex flex-column gap-3 w-75 p-4 align-items-center"
+          className="d-flex flex-column gap-3 w-75 py-4 align-items-center"
         >
           <h5>404 Page not found</h5>
           <Button
