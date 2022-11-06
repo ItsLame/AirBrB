@@ -17,7 +17,11 @@ import { createListing } from '../services/listings';
 import { fileToDataUrl } from '../helpers';
 import PlusMinusField from './PlusMinusField';
 
-const CreateListingForm = () => {
+const CreateListingForm = ({ setMyListings }) => {
+  CreateListingForm.propTypes = {
+    setMyListings: PropTypes.func,
+  };
+
   const [validated, setValidated] = React.useState(false);
   const [title, setTitle] = React.useState('');
   const [thumbnail, setThumbnail] = React.useState('');
@@ -66,6 +70,19 @@ const CreateListingForm = () => {
         .then((response) => {
           // console.log(response.data.listingId);
           handleClose();
+          setMyListings((curr) => [
+            {
+              thumbnail,
+              title,
+              avgRating: 0,
+              propertyType: activePropertyTypeBtn,
+              pricePerNight,
+              numBeds: bedrooms.reduce((a, b) => a + b, 0),
+              numBathrooms,
+              numReviews: 0,
+            },
+            ...curr,
+          ]);
           toast.success(`Created listing: ${title}!`);
         })
         .catch((error) => toast.error(error.response.data.error));

@@ -24,7 +24,10 @@ const Navbar = ({ token, setToken }) => {
     <BSNavbar bg="dark" variant="dark" expand="lg">
       <Container>
         {/* Logo on left, redirects to landing page */}
-        <BSNavbar.Brand onClick={() => navigate('/')}>
+        <BSNavbar.Brand
+          style={{ cursor: 'pointer' }}
+          onClick={() => navigate('/')}
+        >
           <svg
             height="30"
             viewBox="0 0 56.7 56.7"
