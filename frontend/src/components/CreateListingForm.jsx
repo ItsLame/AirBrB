@@ -9,7 +9,7 @@ import Modal from 'react-bootstrap/Modal';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { toast } from 'react-toastify';
 import { HiOutlineOfficeBuilding, HiOutlineHome } from 'react-icons/hi';
-import { HiOutlineHomeModern } from 'react-icons/hi2';
+import { FaHouseUser } from 'react-icons/fa';
 import { BsBuilding } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 
@@ -310,7 +310,7 @@ const CreateListingForm = ({ setMyListings }) => {
               active={activePropertyTypeBtn === 'Guesthouse'}
               onClick={(_) => setActivePropertyTypeBtn('Guesthouse')}
             >
-              <HiOutlineHomeModern size={30} className="mb-3" />
+              <FaHouseUser size={30} className="mb-3" />
               Guesthouse
             </Button>
             <Button
