@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import appConfig from './config.json';
 import Landing from './pages/Landing';
 import MyListings from './pages/MyListings';
+import NotFound from './pages/NotFound';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import CreateListingForm from './components/CreateListingForm';
@@ -54,7 +55,7 @@ const App = () => {
           </Route>
         )}
 
-        <Route path="*" element={<div>404 Not Found</div>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
