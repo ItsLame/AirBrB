@@ -28,7 +28,7 @@ const NotFound = () => {
         </h4>
         <Alert
           variant="danger"
-          className="d-flex flex-column gap-3 w-75 py-4 align-items-center"
+          className="d-flex flex-column gap-3 w-100 py-4 align-items-center text-center"
         >
           <h5>404 Page not found</h5>
           <Button
