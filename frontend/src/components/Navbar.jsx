@@ -21,11 +21,7 @@ const Navbar = ({ token, setToken }) => {
   const navigate = useNavigate();
 
   return (
-    <BSNavbar
-      bg="dark"
-      variant="dark"
-      expand="lg"
-    >
+    <BSNavbar bg="dark" variant="dark" expand="lg">
       <Container>
         {/* Logo on left, redirects to landing page */}
         <BSNavbar.Brand onClick={() => navigate('/')}>
@@ -79,10 +75,7 @@ const Navbar = ({ token, setToken }) => {
 
               {/* User icon dropdown */}
               {/* If logged in, show log out button, otherwise show log in + register buttons */}
-              <NavDropdown
-                title={<HiUserCircle size={30} />}
-                align="end"
-              >
+              <NavDropdown title={<HiUserCircle size={30} />} align="end">
                 {token
                   ? (
                   <NavDropdown.Item
