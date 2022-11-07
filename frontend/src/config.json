@@ -1,4 +1,5 @@
 {
   "BACKEND_PORT": 5005,
-  "LS_ACCESS_TOKEN": "airbrbAccessToken"
+  "LS_ACCESS_TOKEN": "airbrbAccessToken",
+  "LS_EMAIL": "airbrbEmail"
 }

@@ -15,10 +15,17 @@ const App = () => {
   const [token, setToken] = React.useState(
     localStorage.getItem(appConfig.LS_ACCESS_TOKEN) ?? ''
   );
+  const [email, setEmail] = React.useState(
+    localStorage.getItem(appConfig.LS_EMAIL) ?? ''
+  );
 
   React.useEffect(() => {
     localStorage.setItem(appConfig.LS_ACCESS_TOKEN, token);
   }, [token]);
+
+  React.useEffect(() => {
+    localStorage.setItem(appConfig.LS_EMAIL, email);
+  }, [email]);
 
   return (
     <BrowserRouter>
@@ -37,10 +44,15 @@ const App = () => {
       {/* Page Routes */}
       <Routes>
         <Route path="/" element={<Landing token={token} setToken={setToken} />}>
-          <Route path="login" element={<LoginForm setToken={setToken} />} />
+          <Route
+            path="login"
+            element={<LoginForm setToken={setToken} setAppEmail={setEmail} />}
+          />
           <Route
             path="register"
-            element={<RegisterForm setToken={setToken} />}
+            element={
+              <RegisterForm setToken={setToken} setAppEmail={setEmail} />
+            }
           />
         </Route>
 
@@ -48,7 +60,9 @@ const App = () => {
         {token && (
           <Route
             path="/my_listings/*"
-            element={<MyListings token={token} setToken={setToken} />}
+            element={
+              <MyListings token={token} setToken={setToken} email={email} />
+            }
           />
         )}
 

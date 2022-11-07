@@ -1,8 +1,12 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
+import Badge from 'react-bootstrap/Badge';
+import Container from 'react-bootstrap/Container';
 import { IoMdBed } from 'react-icons/io';
 import { FaToilet } from 'react-icons/fa';
 import PropTypes from 'prop-types';
+
+import { StarRating } from './StyledComponents';
 
 const MyListingCard = ({
   thumbnail,
@@ -13,6 +17,8 @@ const MyListingCard = ({
   numBeds,
   numBathrooms,
   numReviews,
+  createdAt,
+  published,
 }) => {
   MyListingCard.propTypes = {
     thumbnail: PropTypes.string,
@@ -23,6 +29,8 @@ const MyListingCard = ({
     numBeds: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     numBathrooms: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     numReviews: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    createdAt: PropTypes.string,
+    published: PropTypes.bool,
   };
 
   return (
@@ -31,7 +39,7 @@ const MyListingCard = ({
       <Card.Img
         variant="top"
         src={thumbnail}
-        alt="My listing thumbnail"
+        alt={`Thumbnail for listing ${title}`}
         style={{
           height: '200px',
           objectFit: 'cover',
@@ -39,26 +47,28 @@ const MyListingCard = ({
       ></Card.Img>
 
       <Card.Body>
-        <Card.Title className="d-flex justify-content-between">
-          {/* Listing title */}
-          <span>{title}</span>
-          {/* Average review */}
-          {numReviews !== 0 && (
-            <span className="fw-normal fs-6 d-flex align-items-center gap-1">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="10"
-                height="10"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-              </svg>
-              <span>{avgRating}</span>
-            </span>
-          )}
-        </Card.Title>
+        <Badge bg={published ? 'success' : 'danger'} className="mb-1">
+          {published ? 'P' : 'Not p'}ublished
+        </Badge>
 
-        <Card.Subtitle className="text-muted mb-2">
+        <Container className="d-flex p-0 mb-2">
+          {/* Listing title */}
+          <Card.Title
+            className="flex-grow-1 m-0"
+            style={{
+              width: '0',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {title}
+          </Card.Title>
+          {/* Average review */}
+          <StarRating ratings={avgRating} reviews={numReviews} />
+        </Container>
+
+        <Card.Subtitle className="mb-2">
           {/* Property type */}
           <span>{propertyType}</span>
           {/* Price per night */}
@@ -74,17 +84,9 @@ const MyListingCard = ({
             <FaToilet size={18} />
           </span>
           <br />
-          {/* Number of reviews */}
-          <span className="text-muted">
-            {numReviews !== 0
-              ? (
-              <u>
-                {numReviews} review{numReviews === 1 ? '' : 's'}
-              </u>
-                )
-              : (
-              <u>No reviews yet!</u>
-                )}
+          <span className="text-muted fst-italic" style={{ fontSize: '8pt' }}>
+            Created at {new Date(createdAt).toLocaleTimeString()} on{' '}
+            {new Date(createdAt).toLocaleDateString()}
           </span>
         </Card.Text>
       </Card.Body>

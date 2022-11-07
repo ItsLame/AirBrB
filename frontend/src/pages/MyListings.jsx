@@ -14,10 +14,11 @@ import MyListingCard from '../components/MyListingCard';
 import CreateListingForm from '../components/CreateListingForm';
 import { getListing, getListings } from '../services/listings';
 
-const MyListings = ({ token, setToken }) => {
+const MyListings = ({ token, setToken, email }) => {
   MyListings.propTypes = {
     token: PropTypes.string,
     setToken: PropTypes.func,
+    email: PropTypes.string,
   };
 
   const navigate = useNavigate();
@@ -29,29 +30,42 @@ const MyListings = ({ token, setToken }) => {
       .then((response) => {
         const promises = [];
         response.data.listings.forEach((listing) => {
-          promises.push(getListing(listing.id));
+          // check if logged in user owns this listing
+          if (listing.owner === email) {
+            promises.push(getListing(listing.id));
+          }
         });
 
         Promise.all(promises)
           .then((responses) => {
+            const listings = [];
             responses.forEach((response) => {
+              // add listing then sort listings by postedOn date
               const listing = response.data.listing;
-              setMyListings((curr) => [
-                {
-                  thumbnail: listing.thumbnail,
-                  title: listing.title,
-                  avgRating: 0,
-                  propertyType: listing.metadata.propertyType,
-                  pricePerNight: listing.price,
-                  numBeds: listing.metadata.bedrooms.reduce((a, b) => a + b, 0),
-                  numBathrooms: listing.metadata.numBathrooms,
-                  numReviews: listing.reviews.length,
-                },
-                ...curr,
-              ]);
+              listings.push({
+                thumbnail: listing.thumbnail,
+                title: listing.title,
+                avgRating: 0,
+                propertyType: listing.metadata.propertyType,
+                pricePerNight: listing.price,
+                numBeds: listing.metadata.bedrooms.reduce((a, b) => a + b, 0),
+                numBathrooms: listing.metadata.numBathrooms,
+                numReviews: listing.reviews.length,
+                createdAt: listing.metadata.createdAt,
+                published: listing.published,
+              });
+            });
+
+            listings.sort((a, b) => {
+              const dateA = new Date(a.createdAt);
+              const dateB = new Date(b.createdAt);
+              if (dateA > dateB) return -1;
+              if (dateA < dateB) return 1;
+              return 0;
             });
 
             setIsListingsLoading(false);
+            setMyListings(listings);
           })
           .catch((error) => console.error(error));
       })
@@ -60,6 +74,8 @@ const MyListings = ({ token, setToken }) => {
 
   return (
     <>
+      {/* Define the /create route here so we can pass the setMyListings function as a prop */}
+      {/* So that when a listing is created we can immediately re-render */}
       <Routes>
         <Route
           path="create"
@@ -67,8 +83,10 @@ const MyListings = ({ token, setToken }) => {
         />
       </Routes>
 
+      {/* Navbar */}
       <Navbar token={token} setToken={setToken} />
 
+      {/* Main content */}
       <Container className="my-5">
         <Row xs={1} md={2} lg={3} xxl={4} className="g-4 h-100">
           {/* Add listing button */}
@@ -125,6 +143,8 @@ const MyListings = ({ token, setToken }) => {
                 numBeds={listing.numBeds}
                 numBathrooms={listing.numBathrooms}
                 numReviews={listing.numReviews}
+                createdAt={listing.createdAt}
+                published={listing.published}
               />
             </Col>
           ))}

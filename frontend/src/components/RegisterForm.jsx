@@ -9,9 +9,10 @@ import PropTypes from 'prop-types';
 
 import { register } from '../services/auth';
 
-const RegisterForm = ({ setToken }) => {
+const RegisterForm = ({ setToken, setAppEmail }) => {
   RegisterForm.propTypes = {
     setToken: PropTypes.func,
+    setAppEmail: PropTypes.func,
   };
 
   const [validated, setValidated] = React.useState(false);
@@ -31,6 +32,7 @@ const RegisterForm = ({ setToken }) => {
         register(email, password, name)
           .then((response) => {
             setToken(response.data.token);
+            setAppEmail(email);
             handleClose();
             toast.success(`Registered account: ${name}!`);
           })

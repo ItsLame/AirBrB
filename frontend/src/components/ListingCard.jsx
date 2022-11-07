@@ -55,17 +55,14 @@ const ListingCard = ({
         <Card className="bg-transparent border-0">
           <Card.Img
             variant="top"
-            // src="https://a0.muscache.com/im/pictures/miso/Hosting-54380902/original/9dc52173-f50d-47e5-b5d9-3c072ad7d40c.jpeg?im_w=960"
             src={thumbnail}
+            alt={`Thumbnail for listing ${title}`}
             style={{
-              // width: '100%',
-              // height: '13rem',
               height: '200px',
               objectFit: 'cover',
             }}
-            alt={`${title} thumbnail`}
-            className="bg-info"
           />
+
           <Card.Body>
             <span>
               <Badge bg="success">Accepted</Badge>
@@ -80,6 +77,7 @@ const ListingCard = ({
                     )} */}
               {/* <span className="bg-danger">asd</span> */}
             </span>
+
             <Container className="d-flex p-0 mb-2">
               <Card.Title
                 className="flex-grow-1 m-0"
@@ -94,12 +92,14 @@ const ListingCard = ({
               </Card.Title>
               <StarRating ratings={1.23} reviews={reviews} />
             </Container>
+
             <Card.Subtitle className="d-flex flex-column mb-2 text-muted">
               <span>{street}</span>
               <span>
                 {city}, {state}, {country}
               </span>
             </Card.Subtitle>
+
             <Card.Text className="fst-italic d-flex">
               <span className="flex-grow-1">${price} per night</span>
               <span className="d-flex gap-2">

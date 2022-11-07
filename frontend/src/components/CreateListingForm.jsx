@@ -65,6 +65,7 @@ const CreateListingForm = ({ setMyListings }) => {
           numBathrooms,
           bedrooms,
           amenities,
+          createdAt: new Date().toISOString(),
         }
       )
         .then((response) => {

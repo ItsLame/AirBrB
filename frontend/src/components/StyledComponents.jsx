@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 const StyledStarRating = styled(Card.Text)`
   &:hover {
     color: #ffc107;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
   }
 `;
 

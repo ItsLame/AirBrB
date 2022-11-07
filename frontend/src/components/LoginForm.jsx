@@ -9,9 +9,10 @@ import PropTypes from 'prop-types';
 
 import { login } from '../services/auth';
 
-const LoginForm = ({ setToken }) => {
+const LoginForm = ({ setToken, setAppEmail }) => {
   LoginForm.propTypes = {
     setToken: PropTypes.func,
+    setAppEmail: PropTypes.func,
   };
 
   const [validated, setValidated] = React.useState(false);
@@ -26,6 +27,7 @@ const LoginForm = ({ setToken }) => {
       login(email, password)
         .then((response) => {
           setToken(response.data.token);
+          setAppEmail(email);
           handleClose();
           toast.success('Logged in!');
         })
