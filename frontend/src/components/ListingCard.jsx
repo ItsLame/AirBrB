@@ -65,7 +65,9 @@ const ListingCard = ({
 
           <Card.Body>
             <span>
-              <Badge bg="success">Accepted</Badge>
+              <Badge bg="success" className="mb-1">
+                Accepted
+              </Badge>
               {/* {accepted === null
                 ? null
                 : accepted
