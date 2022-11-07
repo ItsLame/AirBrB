@@ -85,6 +85,8 @@ const Landing = ({ token, setToken }) => {
     <>
       <Navbar token={token} setToken={setToken} />
       <Container className="my-5">
+        <h1 className="mb-4">All listings</h1>
+
         <Row xs={1} md={2} lg={3} xxl={4} className="g-4 h-100">
           {/* Placeholders when loading */}
           {isListingsLoading &&

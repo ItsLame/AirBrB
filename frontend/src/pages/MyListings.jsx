@@ -91,6 +91,8 @@ const MyListings = ({ token, setToken, email }) => {
 
       {/* Main content */}
       <Container className="my-5">
+        <h1 className="mb-4">My listings</h1>
+
         <Row xs={1} md={2} lg={3} xxl={4} className="g-4 h-100">
           {/* Add listing button */}
           <Col>
