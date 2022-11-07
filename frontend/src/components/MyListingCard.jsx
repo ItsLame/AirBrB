@@ -175,6 +175,17 @@ const MyListingCard = ({
             Publish
           </Button>
         )}
+
+        {/* Unpublish button */}
+        {published && (
+          <Button
+            className="py-0 px-2"
+            style={{ fontSize: '11pt' }}
+            variant="outline-secondary"
+          >
+            Unpublish
+          </Button>
+        )}
       </Card.Footer>
     </Card>
   );
