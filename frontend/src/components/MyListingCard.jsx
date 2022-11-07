@@ -24,12 +24,12 @@ const MyListingCard = ({
   numBeds,
   numBathrooms,
   numReviews,
-  createdAt,
+  lastUpdatedAt,
   published,
   setMyListings,
 }) => {
   MyListingCard.propTypes = {
-    listingId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    listingId: PropTypes.number,
     thumbnail: PropTypes.string,
     title: PropTypes.string,
     avgRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -38,7 +38,7 @@ const MyListingCard = ({
     numBeds: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     numBathrooms: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     numReviews: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    createdAt: PropTypes.string,
+    lastUpdatedAt: PropTypes.string,
     published: PropTypes.bool,
     setMyListings: PropTypes.func,
   };
@@ -65,7 +65,7 @@ const MyListingCard = ({
         <Button
           className="py-0 px-2"
           style={{ fontSize: '11pt' }}
-          variant="outline-danger"
+          variant="danger"
           onClick={() => {
             deleteMyListing();
             document.body.click();
@@ -95,15 +95,13 @@ const MyListingCard = ({
           {published ? 'P' : 'Not p'}ublished
         </Badge>
 
-        <Container className="d-flex p-0 mb-2">
+        <Container className="d-flex p-0 mb-2 align-items-start">
           {/* Listing title */}
           <Card.Title
             className="flex-grow-1 m-0"
             style={{
               width: '0',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
+              overflow: 'wrap',
             }}
           >
             {title}
@@ -129,8 +127,8 @@ const MyListingCard = ({
           </span>
           <br />
           <span className="text-muted fst-italic" style={{ fontSize: '8pt' }}>
-            Created at {new Date(createdAt).toLocaleTimeString()} on{' '}
-            {new Date(createdAt).toLocaleDateString()}
+            Last updated at {new Date(lastUpdatedAt).toLocaleTimeString()} on{' '}
+            {new Date(lastUpdatedAt).toLocaleDateString()}
           </span>
         </Card.Text>
       </Card.Body>

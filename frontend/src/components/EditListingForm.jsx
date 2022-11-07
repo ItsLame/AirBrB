@@ -1,16 +1,16 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 
-import { createListing } from '../services/listings';
+import { updateListing, getListing } from '../services/listings';
 import MyListingFormModalBody from './MyListingFormModalBody';
 
-const CreateListingForm = ({ setMyListings }) => {
-  CreateListingForm.propTypes = {
+const EditListingForm = ({ setMyListings }) => {
+  EditListingForm.propTypes = {
     setMyListings: PropTypes.func,
   };
 
@@ -36,13 +36,35 @@ const CreateListingForm = ({ setMyListings }) => {
   const [showMoreAmenitiesActive, setShowMoreAmenitiesActive] =
     React.useState(false);
   const navigate = useNavigate();
+  const { listingId } = useParams();
+
+  React.useEffect(() => {
+    getListing(listingId)
+      .then((response) => {
+        const listing = response.data.listing;
+        setTitle(listing.title);
+        setThumbnail(listing.thumbnail);
+        setStreet(listing.address.street);
+        setCity(listing.address.city);
+        setState(listing.address.state);
+        setPostcode(listing.address.street);
+        setCountry(listing.address.street);
+        setPricePerNight(listing.price);
+        setActivePropertyTypeBtn(listing.metadata.propertyType);
+        setNumBathrooms(listing.metadata.numBathrooms);
+        setBedrooms(listing.metadata.bedrooms);
+        setAmenities(listing.metadata.amenities);
+      })
+      .catch((error) => console.error(error));
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (event.currentTarget.checkValidity()) {
       const lastUpdatedAt = new Date().toISOString();
-      createListing(
+      updateListing(
+        listingId,
         title,
         {
           street,
@@ -61,25 +83,38 @@ const CreateListingForm = ({ setMyListings }) => {
           lastUpdatedAt,
         }
       )
-        .then((response) => {
+        .then((_) => {
           handleClose();
-          setMyListings((curr) => [
-            {
-              id: parseInt(response.data.listingId, 10),
-              thumbnail,
-              title,
-              avgRating: 0,
-              propertyType: activePropertyTypeBtn,
-              pricePerNight,
-              numBeds: bedrooms.reduce((a, b) => a + b, 0),
-              numBathrooms,
-              numReviews: 0,
-              lastUpdatedAt,
-              published: false,
-            },
-            ...curr,
-          ]);
-          toast.success(`Created listing: ${title}!`);
+          setMyListings((curr) => {
+            // get old listing
+            const oldListing = curr.find(
+              (listing) => listing.id === parseInt(listingId, 10)
+            );
+
+            // remove edited listings
+            const newListings = curr.filter(
+              (listing) => listing.id !== oldListing.id
+            );
+
+            // append edited listing to start (since it is most recently updated)
+            return [
+              {
+                id: oldListing.id,
+                thumbnail,
+                title,
+                avgRating: oldListing.avgRating,
+                propertyType: activePropertyTypeBtn,
+                pricePerNight,
+                numBeds: bedrooms.reduce((a, b) => a + b, 0),
+                numBathrooms,
+                numReviews: oldListing.numReviews,
+                lastUpdatedAt,
+                published: oldListing.published,
+              },
+              ...newListings,
+            ];
+          });
+          toast.success(`Updated listing: ${title}!`);
         })
         .catch((error) => toast.error(error.response.data.error));
     } else {
@@ -97,7 +132,7 @@ const CreateListingForm = ({ setMyListings }) => {
     <Modal show={true} onHide={handleClose} size="lg" centered>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Modal.Header closeButton>
-          <Modal.Title>Add a listing</Modal.Title>
+          <Modal.Title>Edit your listing</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -128,7 +163,7 @@ const CreateListingForm = ({ setMyListings }) => {
             setAmenities={setAmenities}
             showMoreAmenitiesActive={showMoreAmenitiesActive}
             setShowMoreAmenitiesActive={setShowMoreAmenitiesActive}
-            thumbnailRequired={true}
+            thumbnailRequired={false}
           />
         </Modal.Body>
 
@@ -137,7 +172,7 @@ const CreateListingForm = ({ setMyListings }) => {
             Close
           </Button>
           <Button variant="primary" type="submit">
-            Create
+            Save changes
           </Button>
         </Modal.Footer>
       </Form>
@@ -145,4 +180,4 @@ const CreateListingForm = ({ setMyListings }) => {
   );
 };
 
-export default CreateListingForm;
+export default EditListingForm;

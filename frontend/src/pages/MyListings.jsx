@@ -13,6 +13,7 @@ import Navbar from '../components/Navbar';
 import MyListingCard from '../components/MyListingCard';
 import CreateListingForm from '../components/CreateListingForm';
 import PublishListingForm from '../components/PublishListingForm';
+import EditListingForm from '../components/EditListingForm';
 import { getListing, getListings } from '../services/listings';
 
 const MyListings = ({ token, setToken, email }) => {
@@ -26,6 +27,7 @@ const MyListings = ({ token, setToken, email }) => {
   const [myListings, setMyListings] = React.useState([]);
   const [isListingsLoading, setIsListingsLoading] = React.useState(true);
 
+  // set my listings on load
   React.useEffect(() => {
     getListings()
       .then((response) => {
@@ -43,32 +45,32 @@ const MyListings = ({ token, setToken, email }) => {
           .then((responses) => {
             const listings = [];
             responses.forEach(([response, id]) => {
-              // add listing then sort listings by postedOn date
+              // add listing then sort listings by last updated
               const listing = response.data.listing;
               listings.push({
                 id,
                 thumbnail: listing.thumbnail,
                 title: listing.title,
-                avgRating: 0,
+                avgRating: 0, // TODO
                 propertyType: listing.metadata.propertyType,
                 pricePerNight: listing.price,
                 numBeds: listing.metadata.bedrooms.reduce((a, b) => a + b, 0),
                 numBathrooms: listing.metadata.numBathrooms,
                 numReviews: listing.reviews.length,
-                createdAt: listing.metadata.createdAt,
+                lastUpdatedAt: listing.metadata.lastUpdatedAt,
                 published: listing.published,
               });
             });
 
             listings.sort((a, b) => {
-              const dateA = new Date(a.createdAt);
-              const dateB = new Date(b.createdAt);
+              const dateA = new Date(a.lastUpdatedAt);
+              const dateB = new Date(b.lastUpdatedAt);
               if (dateA > dateB) return -1;
               if (dateA < dateB) return 1;
               return 0;
             });
 
-            setIsListingsLoading(false);
+            setIsListingsLoading(false); // hide placeholders
             setMyListings(listings);
           })
           .catch((error) => console.error(error));
@@ -87,7 +89,7 @@ const MyListings = ({ token, setToken, email }) => {
         />
         <Route
           path="edit/:listingId"
-          element={<CreateListingForm setMyListings={setMyListings} />}
+          element={<EditListingForm setMyListings={setMyListings} />}
         />
         <Route
           path="publish/:listingId"
@@ -163,7 +165,7 @@ const MyListings = ({ token, setToken, email }) => {
                 numBeds={listing.numBeds}
                 numBathrooms={listing.numBathrooms}
                 numReviews={listing.numReviews}
-                createdAt={listing.createdAt}
+                lastUpdatedAt={listing.lastUpdatedAt}
                 published={listing.published}
                 setMyListings={setMyListings}
               />
