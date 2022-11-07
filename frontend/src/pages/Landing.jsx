@@ -33,10 +33,10 @@ const Landing = ({ token, setToken }) => {
 
         Promise.all(listingIds)
           .then((ids) => {
-            ids.forEach((id) => {
+            ids.forEach((id, idx) => {
               // append to list
               tempMap = [
-                <Col key={id.data.listing.title}>
+                <Col key={idx}>
                   <ListingCard
                     title={id.data.listing.title}
                     street={id.data.listing.address.street}
@@ -44,7 +44,7 @@ const Landing = ({ token, setToken }) => {
                     state={id.data.listing.address.state}
                     country={id.data.listing.address.country}
                     price={id.data.listing.price}
-                    reviews={id.data.listing.length}
+                    reviews={id.data.listing.reviews.length}
                     thumbnail={id.data.listing.thumbnail}
                   />
                 </Col>,
