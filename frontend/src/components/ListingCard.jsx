@@ -7,6 +7,12 @@ import { BsFillStarFill } from 'react-icons/bs';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 
+import { IoMdBed } from 'react-icons/io';
+import { FaToilet } from 'react-icons/fa';
+import Badge from 'react-bootstrap/Badge';
+
+import '../style/custom.scss';
+
 const ListingCard = ({
   title,
   street,
@@ -16,6 +22,9 @@ const ListingCard = ({
   price,
   reviews,
   thumbnail,
+  beds,
+  bathrooms,
+  accepted,
 }) => {
   ListingCard.propTypes = {
     title: PropTypes.string,
@@ -26,6 +35,9 @@ const ListingCard = ({
     price: PropTypes.string,
     reviews: PropTypes.number,
     thumbnail: PropTypes.string,
+    beds: PropTypes.number,
+    bathrooms: PropTypes.number,
+    accepted: PropTypes.bool,
     // reviews: PropTypes.array,
   };
 
@@ -56,9 +68,22 @@ const ListingCard = ({
             className="bg-info"
           />
           <Card.Body>
-            <Container className="d-flex p-0">
+            <span>
+              {/* <Badge bg="success">Accepted</Badge> */}
+              {accepted === null
+                ? null
+                : accepted
+                  ? (
+                <Badge bg="success">Accepted</Badge>
+                    )
+                  : (
+                <Badge bg="secondary">Pending</Badge>
+                    )}
+              {/* <span className="bg-danger">asd</span> */}
+            </span>
+            <Container className="d-flex p-0 mb-2">
               <Card.Title
-                className="mt-2 flex-grow-1"
+                className="flex-grow-1 m-0"
                 style={{
                   width: '0',
                   whiteSpace: 'nowrap',
@@ -66,22 +91,35 @@ const ListingCard = ({
                   textOverflow: 'ellipsis',
                 }}
               >
-                {title}
+                {title}{' '}
               </Card.Title>
-              <Card.Text className="d-flex gap-1 align-items-center w22">
+              <Card.Text
+                className="d-flex gap-1 align-items-center text-decoration-underline hover-yellow"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  console.log('CLICK REVIEW');
+                }}
+              >
                 <BsFillStarFill />
                 <span>{`0.00 (${reviews})`}</span>
-                {/* <MdRateReview size={20} /> */}
-                {/* <MdOutlineRateReview size={20} /> */}
-                {/* <span>{`${reviews}`}</span> */}
               </Card.Text>
             </Container>
-            <Card.Text className="d-flex flex-column">
+            <Card.Subtitle className="d-flex flex-column mb-2 text-muted">
               <span>{street}</span>
               <span>
                 {city}, {state}, {country}
               </span>
-              <span>${price} per night</span>
+            </Card.Subtitle>
+            <Card.Text className="fst-italic d-flex">
+              <span className="flex-grow-1">${price} per night</span>
+              <span className="d-flex gap-2">
+                <span>
+                  {beds} <IoMdBed size={25} />
+                </span>
+                <span>
+                  {bathrooms} <FaToilet size={17} />
+                </span>
+              </span>
             </Card.Text>
           </Card.Body>
         </Card>

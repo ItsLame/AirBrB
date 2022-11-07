@@ -29,13 +29,13 @@ const Landing = ({ token, setToken }) => {
         listingIds = response.data.listings.map((x) => getListing(x.id));
 
         // temporary list
-        let tempMap = [];
+        let tempList = [];
 
         Promise.all(listingIds)
           .then((ids) => {
             ids.forEach((id, idx) => {
               // append to list
-              tempMap = [
+              tempList = [
                 <Col key={idx}>
                   <ListingCard
                     title={id.data.listing.title}
@@ -46,20 +46,27 @@ const Landing = ({ token, setToken }) => {
                     price={id.data.listing.price}
                     reviews={id.data.listing.reviews.length}
                     thumbnail={id.data.listing.thumbnail}
+                    beds={id.data.listing.metadata.bedrooms.reduce(
+                      (a, b) => a + b
+                    )}
+                    bathrooms={id.data.listing.metadata.numBathrooms}
+                    // TODO: get accepted/pending/none status
+                    // true if accepted, false if pending, null if none
+                    accepted={null}
                   />
                 </Col>,
-                ...tempMap,
+                ...tempList,
               ];
 
               // sort alphabetically
-              tempMap = tempMap.sort((a, b) =>
+              tempList = tempList.sort((a, b) =>
                 a.props.children.props.title > b.props.children.props.title
                   ? 1
                   : -1
               );
 
               // set temporary list to listings
-              setListings(tempMap);
+              setListings(tempList);
 
               // load done
               setIsListingsLoading(false);
