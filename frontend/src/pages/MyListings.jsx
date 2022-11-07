@@ -12,6 +12,7 @@ import { HiPlusCircle } from 'react-icons/hi';
 import Navbar from '../components/Navbar';
 import MyListingCard from '../components/MyListingCard';
 import CreateListingForm from '../components/CreateListingForm';
+import PublishListingForm from '../components/PublishListingForm';
 import { getListing, getListings } from '../services/listings';
 
 const MyListings = ({ token, setToken, email }) => {
@@ -77,12 +78,25 @@ const MyListings = ({ token, setToken, email }) => {
 
   return (
     <>
-      {/* Define the /create route here so we can pass the setMyListings function as a prop */}
-      {/* So that when a listing is created we can immediately re-render */}
+      {/* Define these routes here so we can pass the setMyListings function as a prop */}
+      {/* So that we can immediately re-render */}
       <Routes>
         <Route
           path="create"
           element={<CreateListingForm setMyListings={setMyListings} />}
+        />
+        <Route
+          path="edit/:listingId"
+          element={<CreateListingForm setMyListings={setMyListings} />}
+        />
+        <Route
+          path="publish/:listingId"
+          element={
+            <PublishListingForm
+              myListings={myListings}
+              setMyListings={setMyListings}
+            />
+          }
         />
       </Routes>
 

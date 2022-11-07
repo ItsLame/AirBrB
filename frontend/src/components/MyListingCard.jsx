@@ -8,10 +8,11 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { IoMdBed } from 'react-icons/io';
 import { FaToilet } from 'react-icons/fa';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { StarRating } from './StyledComponents';
 import { deleteListing } from '../services/listings';
-import { toast } from 'react-toastify';
 
 const MyListingCard = ({
   listingId,
@@ -41,6 +42,8 @@ const MyListingCard = ({
     published: PropTypes.bool,
     setMyListings: PropTypes.func,
   };
+
+  const navigate = useNavigate();
 
   // Delete this listing
   const deleteMyListing = () => {
@@ -133,6 +136,7 @@ const MyListingCard = ({
       </Card.Body>
 
       <Card.Footer className="d-flex gap-2">
+        {/* Delete button */}
         <OverlayTrigger
           trigger="click"
           placement="bottom"
@@ -149,22 +153,28 @@ const MyListingCard = ({
           </Button>
         </OverlayTrigger>
 
+        {/* Edit button */}
         <span className="flex-grow-1"></span>
         <Button
           className="py-0 px-2"
           style={{ fontSize: '11pt' }}
           variant="outline-primary"
+          onClick={() => navigate(`edit/${listingId}`)}
         >
           Edit
         </Button>
 
-        <Button
-          className="py-0 px-2"
-          style={{ fontSize: '11pt' }}
-          variant="outline-success"
-        >
-          Publish
-        </Button>
+        {/* Publish button */}
+        {!published && (
+          <Button
+            className="py-0 px-2"
+            style={{ fontSize: '11pt' }}
+            variant="outline-success"
+            onClick={() => navigate(`publish/${listingId}`)}
+          >
+            Publish
+          </Button>
+        )}
       </Card.Footer>
     </Card>
   );
