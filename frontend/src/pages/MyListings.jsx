@@ -169,6 +169,13 @@ const MyListings = ({ token, setToken, email }) => {
               </Col>
             ))}
 
+          {/* If no listings */}
+          {myListings.length === 0 && (
+            <h5 className="text-muted w-100 fw-normal">
+              You have not created any listings yet!
+            </h5>
+          )}
+
           {/* My listings */}
           {myListings.map((listing, idx) => (
             <Col key={idx}>
