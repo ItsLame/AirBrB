@@ -89,7 +89,12 @@ const MyListings = ({ token, setToken, email }) => {
         />
         <Route
           path="edit/:listingId"
-          element={<EditListingForm setMyListings={setMyListings} />}
+          element={
+            <EditListingForm
+              myListings={myListings}
+              setMyListings={setMyListings}
+            />
+          }
         />
         <Route
           path="publish/:listingId"
@@ -107,11 +112,23 @@ const MyListings = ({ token, setToken, email }) => {
 
       {/* Main content */}
       <Container className="my-5">
-        <h1 className="mb-4">My listings</h1>
+        <div className="d-flex gap-3 mb-4 align-items-center">
+          <h1>My listings</h1>
+
+          {/* Add listing button */}
+          <Button
+            variant="outline-dark"
+            className="d-flex gap-2 align-items-center"
+            onClick={() => navigate('create')}
+          >
+            <Card.Title>Add a listing</Card.Title>
+            <HiPlusCircle size={30} />
+          </Button>
+        </div>
 
         <Row xs={1} md={2} lg={3} xxl={4} className="g-4 h-100">
           {/* Add listing button */}
-          <Col>
+          {/* <Col>
             <Card
               className="w-100 h-100"
               border="light"
@@ -122,11 +139,11 @@ const MyListings = ({ token, setToken, email }) => {
                 <HiPlusCircle size={30} />
               </Button>
             </Card>
-          </Col>
+          </Col> */}
 
           {/* Placeholders when loading */}
           {isListingsLoading &&
-            [...Array(5)].map((_, idx) => (
+            [...Array(6)].map((_, idx) => (
               <Col key={idx}>
                 <Card>
                   <Card.Img
