@@ -6,12 +6,11 @@ import Container from 'react-bootstrap/Container';
 // import { MdOutlineRateReview } from 'react-icons/md';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
-
 import { IoMdBed } from 'react-icons/io';
 import { FaToilet } from 'react-icons/fa';
 import Badge from 'react-bootstrap/Badge';
 
-import { StarRating } from './StyleComponents';
+import { StarRating } from './StyledComponents';
 
 const ListingCard = ({
   title,
