@@ -2,13 +2,19 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Popover from 'react-bootstrap/Popover';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { IoMdBed } from 'react-icons/io';
 import { FaToilet } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 
 import { StarRating } from './StyledComponents';
+import { deleteListing } from '../services/listings';
+import { toast } from 'react-toastify';
 
 const MyListingCard = ({
+  listingId,
   thumbnail,
   title,
   avgRating,
@@ -19,8 +25,10 @@ const MyListingCard = ({
   numReviews,
   createdAt,
   published,
+  setMyListings,
 }) => {
   MyListingCard.propTypes = {
+    listingId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     thumbnail: PropTypes.string,
     title: PropTypes.string,
     avgRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -31,7 +39,40 @@ const MyListingCard = ({
     numReviews: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     createdAt: PropTypes.string,
     published: PropTypes.bool,
+    setMyListings: PropTypes.func,
   };
+
+  // Delete this listing
+  const deleteMyListing = () => {
+    deleteListing(listingId)
+      .then((_) => {
+        setMyListings((curr) =>
+          curr.filter((listing) => listing.id !== listingId)
+        );
+        toast.success(`Deleted listing: ${title}!`);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  // Confirm delete popover
+  const confirmDelete = (
+    <Popover id="confirm-delete-popover">
+      <Popover.Body className="d-flex gap-2 align-items-center">
+        Are you sure?
+        <Button
+          className="py-0 px-2"
+          style={{ fontSize: '11pt' }}
+          variant="outline-danger"
+          onClick={() => {
+            deleteMyListing();
+            document.body.click();
+          }}
+        >
+          Delete
+        </Button>
+      </Popover.Body>
+    </Popover>
+  );
 
   return (
     <Card border="dark" className="h-100 overflow-auto">
@@ -90,6 +131,41 @@ const MyListingCard = ({
           </span>
         </Card.Text>
       </Card.Body>
+
+      <Card.Footer className="d-flex gap-2">
+        <OverlayTrigger
+          trigger="click"
+          placement="bottom"
+          overlay={confirmDelete}
+          rootClose
+          rootCloseEvent="click"
+        >
+          <Button
+            className="py-0 px-2"
+            style={{ fontSize: '11pt' }}
+            variant="outline-danger"
+          >
+            Delete
+          </Button>
+        </OverlayTrigger>
+
+        <span className="flex-grow-1"></span>
+        <Button
+          className="py-0 px-2"
+          style={{ fontSize: '11pt' }}
+          variant="outline-primary"
+        >
+          Edit
+        </Button>
+
+        <Button
+          className="py-0 px-2"
+          style={{ fontSize: '11pt' }}
+          variant="outline-success"
+        >
+          Publish
+        </Button>
+      </Card.Footer>
     </Card>
   );
 };

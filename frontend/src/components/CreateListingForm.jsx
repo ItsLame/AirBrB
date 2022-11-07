@@ -49,6 +49,7 @@ const CreateListingForm = ({ setMyListings }) => {
     event.preventDefault();
 
     if (event.currentTarget.checkValidity()) {
+      const createdAt = new Date().toISOString();
       createListing(
         title,
         {
@@ -65,14 +66,14 @@ const CreateListingForm = ({ setMyListings }) => {
           numBathrooms,
           bedrooms,
           amenities,
-          createdAt: new Date().toISOString(),
+          createdAt,
         }
       )
         .then((response) => {
-          // console.log(response.data.listingId);
           handleClose();
           setMyListings((curr) => [
             {
+              id: response.data.listingId,
               thumbnail,
               title,
               avgRating: 0,
@@ -81,6 +82,8 @@ const CreateListingForm = ({ setMyListings }) => {
               numBeds: bedrooms.reduce((a, b) => a + b, 0),
               numBathrooms,
               numReviews: 0,
+              createdAt,
+              published: false,
             },
             ...curr,
           ]);

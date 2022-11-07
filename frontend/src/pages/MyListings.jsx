@@ -32,17 +32,20 @@ const MyListings = ({ token, setToken, email }) => {
         response.data.listings.forEach((listing) => {
           // check if logged in user owns this listing
           if (listing.owner === email) {
-            promises.push(getListing(listing.id));
+            promises.push(
+              getListing(listing.id).then((response) => [response, listing.id])
+            );
           }
         });
 
         Promise.all(promises)
           .then((responses) => {
             const listings = [];
-            responses.forEach((response) => {
+            responses.forEach(([response, id]) => {
               // add listing then sort listings by postedOn date
               const listing = response.data.listing;
               listings.push({
+                id,
                 thumbnail: listing.thumbnail,
                 title: listing.title,
                 avgRating: 0,
@@ -135,6 +138,7 @@ const MyListings = ({ token, setToken, email }) => {
           {myListings.map((listing, idx) => (
             <Col key={idx}>
               <MyListingCard
+                listingId={listing.id}
                 thumbnail={listing.thumbnail}
                 title={listing.title}
                 avgRating={listing.avgRating}
@@ -145,6 +149,7 @@ const MyListings = ({ token, setToken, email }) => {
                 numReviews={listing.numReviews}
                 createdAt={listing.createdAt}
                 published={listing.published}
+                setMyListings={setMyListings}
               />
             </Col>
           ))}
