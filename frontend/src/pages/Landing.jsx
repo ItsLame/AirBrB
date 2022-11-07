@@ -90,7 +90,7 @@ const Landing = ({ token, setToken }) => {
         <Row xs={1} md={2} lg={3} xxl={4} className="g-4 h-100">
           {/* Placeholders when loading */}
           {isListingsLoading &&
-            [...Array(6)].map((_, idx) => (
+            [...Array(4)].map((_, idx) => (
               <Col key={idx}>
                 <Card>
                   <Card.Img

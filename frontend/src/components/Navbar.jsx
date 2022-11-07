@@ -21,7 +21,7 @@ const Navbar = ({ token, setToken }) => {
   const navigate = useNavigate();
 
   return (
-    <BSNavbar bg="dark" variant="dark" expand="lg">
+    <BSNavbar bg="dark" variant="dark" expand="md">
       <Container>
         {/* Logo on left, redirects to landing page */}
         <BSNavbar.Brand
@@ -40,12 +40,10 @@ const Navbar = ({ token, setToken }) => {
           AirBrB
         </BSNavbar.Brand>
 
-        <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
+        <BSNavbar.Toggle className="mb-2" aria-controls="basic-navbar-nav" />
         <BSNavbar.Collapse id="basic-navbar-nav">
-          <Nav className="d-flex justify-content-between align-items-center w-100">
-            <div></div>
-
-            {/* Search bar */}
+          {/* Middle nav search bar */}
+          <Nav className="m-auto">
             <Form className="position-relative">
               <Form.Control
                 type="text"
@@ -55,58 +53,69 @@ const Navbar = ({ token, setToken }) => {
               <Button
                 type="submit"
                 className="position-absolute end-0 top-0 p-0 rounded-circle d-flex align-items-center justify-content-center"
-                style={{ height: 30, width: 30, marginTop: 4, marginRight: 4 }}
+                style={{
+                  height: 30,
+                  width: 30,
+                  marginTop: 4,
+                  marginRight: 4,
+                }}
               >
                 <HiSearch size={20} />
               </Button>
             </Form>
+          </Nav>
 
-            {/* Right side navbar */}
-            <div className="d-flex align-items-center">
-              {/* My listings (logged in) or Become a host (logged out) button */}
+          {/* Right side navbar */}
+          <Nav>
+            {/* My listings (logged in) or Become a host (logged out) button */}
+            {token
+              ? (
+              <Nav.Link
+                style={{ paddingTop: '11px' }}
+                onClick={() => navigate('my_listings')}
+              >
+                My listings
+              </Nav.Link>
+                )
+              : (
+              <Nav.Link
+                style={{ paddingTop: '11px' }}
+                onClick={() => navigate('register')}
+              >
+                Become a host
+              </Nav.Link>
+                )}
+
+            {/* User icon dropdown */}
+            {/* If logged in, show log out button, otherwise show log in + register buttons */}
+            <NavDropdown title={<HiUserCircle size={30} />} align="end">
               {token
                 ? (
-                <Nav.Link onClick={() => navigate('/my_listings')}>
-                  My listings
-                </Nav.Link>
+                <NavDropdown.Item
+                  onClick={() => {
+                    logout()
+                      .then((_) => {
+                        setToken('');
+                        navigate('/');
+                        toast.success('Logged out!');
+                      })
+                      .catch((error) => console.error(error));
+                  }}
+                >
+                  Log out
+                </NavDropdown.Item>
                   )
                 : (
-                <Nav.Link onClick={() => navigate('register')}>
-                  Become a host
-                </Nav.Link>
-                  )}
-
-              {/* User icon dropdown */}
-              {/* If logged in, show log out button, otherwise show log in + register buttons */}
-              <NavDropdown title={<HiUserCircle size={30} />} align="end">
-                {token
-                  ? (
-                  <NavDropdown.Item
-                    onClick={() => {
-                      logout()
-                        .then((_) => {
-                          setToken('');
-                          navigate('/');
-                          toast.success('Logged out!');
-                        })
-                        .catch((error) => console.error(error));
-                    }}
-                  >
-                    Log out
+                <>
+                  <NavDropdown.Item onClick={() => navigate('login')}>
+                    Log in
                   </NavDropdown.Item>
-                    )
-                  : (
-                  <>
-                    <NavDropdown.Item onClick={() => navigate('login')}>
-                      Log in
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={() => navigate('register')}>
-                      Register
-                    </NavDropdown.Item>
-                  </>
-                    )}
-              </NavDropdown>
-            </div>
+                  <NavDropdown.Item onClick={() => navigate('register')}>
+                    Register
+                  </NavDropdown.Item>
+                </>
+                  )}
+            </NavDropdown>
           </Nav>
         </BSNavbar.Collapse>
       </Container>

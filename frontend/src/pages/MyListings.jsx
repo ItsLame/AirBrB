@@ -143,7 +143,7 @@ const MyListings = ({ token, setToken, email }) => {
 
           {/* Placeholders when loading */}
           {isListingsLoading &&
-            [...Array(6)].map((_, idx) => (
+            [...Array(4)].map((_, idx) => (
               <Col key={idx}>
                 <Card>
                   <Card.Img
@@ -170,7 +170,7 @@ const MyListings = ({ token, setToken, email }) => {
             ))}
 
           {/* If no listings */}
-          {myListings.length === 0 && (
+          {!isListingsLoading && myListings.length === 0 && (
             <h5 className="text-muted w-100 fw-normal">
               You have not created any listings yet!
             </h5>
