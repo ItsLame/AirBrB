@@ -11,7 +11,7 @@ import { FaHouseUser } from 'react-icons/fa';
 import { BsBuilding } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 
-import { fileToDataUrl } from '../helpers';
+import { fileToDataUrl } from '../../helpers';
 import PlusMinusField from './PlusMinusField';
 
 const MyListingFormModalBody = ({

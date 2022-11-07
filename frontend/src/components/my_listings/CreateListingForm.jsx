@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 
-import { createListing } from '../services/listings';
+import { createListing } from '../../services/listings';
 import MyListingFormModalBody from './MyListingFormModalBody';
 
 const CreateListingForm = ({ setMyListings }) => {

@@ -10,7 +10,7 @@ import { IoMdBed } from 'react-icons/io';
 import { FaToilet } from 'react-icons/fa';
 import Badge from 'react-bootstrap/Badge';
 
-import { StarRating } from './StyledComponents';
+import { StarRating } from '../StyledComponents';
 
 const ListingCard = ({
   title,

@@ -7,31 +7,37 @@ import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 
-import { login } from '../services/auth';
+import { register } from '../../services/auth';
 
-const LoginForm = ({ setToken, setAppEmail }) => {
-  LoginForm.propTypes = {
+const RegisterForm = ({ setToken, setAppEmail }) => {
+  RegisterForm.propTypes = {
     setToken: PropTypes.func,
     setAppEmail: PropTypes.func,
   };
 
   const [validated, setValidated] = React.useState(false);
   const [email, setEmail] = React.useState('');
+  const [name, setName] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (event.currentTarget.checkValidity()) {
-      login(email, password)
-        .then((response) => {
-          setToken(response.data.token);
-          setAppEmail(email);
-          handleClose();
-          toast.success('Logged in!');
-        })
-        .catch((error) => toast.error(error.response.data.error));
+      if (password !== confirmPassword) {
+        toast.error("Passwords don't match!");
+      } else {
+        register(email, password, name)
+          .then((response) => {
+            setToken(response.data.token);
+            setAppEmail(email);
+            handleClose();
+            toast.success(`Registered account: ${name}!`);
+          })
+          .catch((error) => toast.error(error.response.data.error));
+      }
     }
 
     setValidated(true);
@@ -45,7 +51,7 @@ const LoginForm = ({ setToken, setAppEmail }) => {
     <Modal show={true} onHide={handleClose} centered>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Modal.Header closeButton>
-          <Modal.Title>Log in</Modal.Title>
+          <Modal.Title>Register</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -69,6 +75,22 @@ const LoginForm = ({ setToken, setAppEmail }) => {
             </Form.Control.Feedback>
           </FloatingLabel>
 
+          {/* Name field */}
+          <FloatingLabel className="mb-3" controlId="name" label="Name">
+            <Form.Control
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please enter your name
+            </Form.Control.Feedback>
+          </FloatingLabel>
+
           {/* Password field */}
           <FloatingLabel className="mb-3" controlId="password" label="Password">
             <Form.Control
@@ -85,14 +107,34 @@ const LoginForm = ({ setToken, setAppEmail }) => {
             </Form.Control.Feedback>
           </FloatingLabel>
 
+          {/* Confirm password field */}
+          <FloatingLabel
+            className="mb-3"
+            controlId="confirmPassword"
+            label="Confirm your password"
+          >
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={confirmPassword}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+              }}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please confirm your password
+            </Form.Control.Feedback>
+          </FloatingLabel>
+
           <p>
-            {"Don't"} have an account?
+            Already have an account?
             <Button
               variant="dark"
               className="ms-1"
-              onClick={() => navigate('../register')}
+              onClick={() => navigate('../login')}
             >
-              Register now
+              Log in
             </Button>
           </p>
         </Modal.Body>
@@ -102,7 +144,7 @@ const LoginForm = ({ setToken, setAppEmail }) => {
             Close
           </Button>
           <Button variant="primary" type="submit">
-            Log in
+            Register
           </Button>
         </Modal.Footer>
       </Form>
@@ -110,4 +152,4 @@ const LoginForm = ({ setToken, setAppEmail }) => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

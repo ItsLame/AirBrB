@@ -10,10 +10,10 @@ import Placeholder from 'react-bootstrap/Placeholder';
 import { HiPlusCircle } from 'react-icons/hi';
 
 import Navbar from '../components/Navbar';
-import MyListingCard from '../components/MyListingCard';
-import CreateListingForm from '../components/CreateListingForm';
-import PublishListingForm from '../components/PublishListingForm';
-import EditListingForm from '../components/EditListingForm';
+import MyListingCard from '../components/my_listings/MyListingCard';
+import CreateListingForm from '../components/my_listings/CreateListingForm';
+import PublishListingForm from '../components/my_listings/PublishListingForm';
+import EditListingForm from '../components/my_listings/EditListingForm';
 import { getListing, getListings } from '../services/listings';
 
 const MyListings = ({ token, setToken, email }) => {

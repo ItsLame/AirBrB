@@ -9,7 +9,7 @@ import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 
-import { publishListing } from '../services/listings';
+import { publishListing } from '../../services/listings';
 
 const PublishListingForm = ({ myListings, setMyListings }) => {
   PublishListingForm.propTypes = {

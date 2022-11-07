@@ -11,8 +11,8 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { StarRating } from './StyledComponents';
-import { deleteListing } from '../services/listings';
+import { StarRating } from '../StyledComponents';
+import { deleteListing } from '../../services/listings';
 
 const MyListingCard = ({
   listingId,

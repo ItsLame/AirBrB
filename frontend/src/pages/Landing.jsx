@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import Navbar from '../components/Navbar';
-import ListingCard from '../components/ListingCard';
+import ListingCard from '../components/listings/ListingCard';
 import { getListing, getListings } from '../services/listings';
 // import { getListing, getListings } from '../services/listings';
 

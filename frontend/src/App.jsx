@@ -8,8 +8,8 @@ import appConfig from './config.json';
 import Landing from './pages/Landing';
 import MyListings from './pages/MyListings';
 import NotFound from './pages/NotFound';
-import LoginForm from './components/LoginForm';
-import RegisterForm from './components/RegisterForm';
+import LoginForm from './components/auth/LoginForm';
+import RegisterForm from './components/auth/RegisterForm';
 
 const App = () => {
   const [token, setToken] = React.useState(
