@@ -9,7 +9,8 @@ import Col from 'react-bootstrap/Col';
 
 import Navbar from '../components/Navbar';
 import ListingCard from '../components/ListingCard';
-import { getListings } from '../services/listings';
+import { getListing, getListings } from '../services/listings';
+// import { getListing, getListings } from '../services/listings';
 
 const Landing = ({ token, setToken }) => {
   Landing.propTypes = {
@@ -21,35 +22,56 @@ const Landing = ({ token, setToken }) => {
   const [isListingsLoading, setIsListingsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    getListings().then((response) => {
-      // temporary list
-      let tempMap = [];
+    getListings()
+      .then((response) => {
+        // listing ids
+        let listingIds = [];
+        listingIds = response.data.listings.map((x) => getListing(x.id));
 
-      // map to list
-      tempMap = response.data.listings.map((x) => (
-        <Col key={x.title}>
-          <ListingCard
-            title={x.title}
-            street={x.address.street}
-            city={x.address.city}
-            state={x.address.state}
-            country={x.address.country}
-            price={x.price}
-            reviews={x.reviews.length}
-            thumbnail={x.thumbnail}
-          />
-        </Col>
-      ));
+        // temporary list
+        let tempMap = [];
 
-      // sort alphabetically
-      tempMap = tempMap.sort((a, b) =>
-        a.props.children.props.title > b.props.children.props.title ? 1 : -1
-      );
+        Promise.all(listingIds)
+          .then((ids) => {
+            ids.forEach((id) => {
+              // append to list
+              tempMap = [
+                <Col key={id.data.listing.title}>
+                  <ListingCard
+                    title={id.data.listing.title}
+                    street={id.data.listing.address.street}
+                    city={id.data.listing.address.city}
+                    state={id.data.listing.address.state}
+                    country={id.data.listing.address.country}
+                    price={id.data.listing.price}
+                    reviews={id.data.listing.length}
+                    thumbnail={id.data.listing.thumbnail}
+                  />
+                </Col>,
+                ...tempMap,
+              ];
 
-      // set temporary list to listings
-      setListings(tempMap);
-      setIsListingsLoading(false);
-    });
+              // sort alphabetically
+              tempMap = tempMap.sort((a, b) =>
+                a.props.children.props.title > b.props.children.props.title
+                  ? 1
+                  : -1
+              );
+
+              // set temporary list to listings
+              setListings(tempMap);
+
+              // load done
+              setIsListingsLoading(false);
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (
