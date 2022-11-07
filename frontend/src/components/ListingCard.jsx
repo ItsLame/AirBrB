@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
-import { BsFillStarFill } from 'react-icons/bs';
+// import { BsFillStarFill } from 'react-icons/bs';
 // import { MdRateReview } from 'react-icons/md';
 // import { MdOutlineRateReview } from 'react-icons/md';
 import Button from 'react-bootstrap/Button';
@@ -11,7 +11,7 @@ import { IoMdBed } from 'react-icons/io';
 import { FaToilet } from 'react-icons/fa';
 import Badge from 'react-bootstrap/Badge';
 
-import '../style/custom.scss';
+import { StarRating } from './StyleComponents';
 
 const ListingCard = ({
   title,
@@ -69,8 +69,8 @@ const ListingCard = ({
           />
           <Card.Body>
             <span>
-              {/* <Badge bg="success">Accepted</Badge> */}
-              {accepted === null
+              <Badge bg="success">Accepted</Badge>
+              {/* {accepted === null
                 ? null
                 : accepted
                   ? (
@@ -78,7 +78,7 @@ const ListingCard = ({
                     )
                   : (
                 <Badge bg="secondary">Pending</Badge>
-                    )}
+                    )} */}
               {/* <span className="bg-danger">asd</span> */}
             </span>
             <Container className="d-flex p-0 mb-2">
@@ -93,16 +93,7 @@ const ListingCard = ({
               >
                 {title}{' '}
               </Card.Title>
-              <Card.Text
-                className="d-flex gap-1 align-items-center text-decoration-underline hover-yellow"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  console.log('CLICK REVIEW');
-                }}
-              >
-                <BsFillStarFill />
-                <span>{`0.00 (${reviews})`}</span>
-              </Card.Text>
+              <StarRating ratings={1.23} reviews={reviews} />
             </Container>
             <Card.Subtitle className="d-flex flex-column mb-2 text-muted">
               <span>{street}</span>

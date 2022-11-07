@@ -52,7 +52,7 @@ const Landing = ({ token, setToken }) => {
                     bathrooms={id.data.listing.metadata.numBathrooms}
                     // TODO: get accepted/pending/none status
                     // true if accepted, false if pending, null if none
-                    accepted={null}
+                    accepted={true}
                   />
                 </Col>,
                 ...tempList,
