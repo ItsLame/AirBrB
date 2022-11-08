@@ -58,8 +58,8 @@ const EditListingForm = ({ myListings, setMyListings }) => {
         setStreet(listing.address.street);
         setCity(listing.address.city);
         setState(listing.address.state);
-        setPostcode(listing.address.street);
-        setCountry(listing.address.street);
+        setPostcode(listing.address.postcode);
+        setCountry(listing.address.country);
         setPricePerNight(listing.price);
         setActivePropertyTypeBtn(listing.metadata.propertyType);
         setNumBathrooms(listing.metadata.numBathrooms);

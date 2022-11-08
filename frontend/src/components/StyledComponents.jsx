@@ -12,10 +12,10 @@ const StyledStarRating = styled(Card.Text)`
   }
 `;
 
-export const StarRating = ({ ratings, reviews }) => {
+export const StarRating = ({ avgRating, numReviews }) => {
   StarRating.propTypes = {
-    ratings: PropTypes.number,
-    reviews: PropTypes.number,
+    avgRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    numReviews: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
   return (
@@ -28,7 +28,7 @@ export const StarRating = ({ ratings, reviews }) => {
         }}
       >
         <BsFillStarFill />
-        <span>{`${ratings} (${reviews})`}</span>
+        <span>{`${avgRating} (${numReviews})`}</span>
       </StyledStarRating>
     </>
   );

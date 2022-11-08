@@ -24,66 +24,70 @@ const Landing = ({ token, setToken }) => {
   React.useEffect(() => {
     getListings()
       .then((response) => {
-        // listing ids
-        let listingIds = [];
-        listingIds = response.data.listings.map((x) => getListing(x.id));
+        let promises = [];
+        promises = response.data.listings.map((listing) =>
+          getListing(listing.id)
+        );
 
         // temporary list
-        let tempList = [];
+        let newListings = [];
 
-        Promise.all(listingIds)
-          .then((ids) => {
-            ids.forEach((id, idx) => {
-              // append to list
-              tempList = [
+        Promise.all(promises)
+          .then((responses) => {
+            responses.forEach((response, idx) => {
+              // prepend to list
+              const listing = response.data.listing;
+              newListings = [
                 <Col key={idx}>
                   <ListingCard
-                    title={id.data.listing.title}
-                    street={id.data.listing.address.street}
-                    city={id.data.listing.address.city}
-                    state={id.data.listing.address.state}
-                    country={id.data.listing.address.country}
-                    price={id.data.listing.price}
-                    reviews={id.data.listing.reviews.length}
-                    thumbnail={id.data.listing.thumbnail}
-                    beds={id.data.listing.metadata.bedrooms.reduce(
-                      (a, b) => a + b
+                    title={listing.title}
+                    street={listing.address.street}
+                    city={listing.address.city}
+                    state={listing.address.state}
+                    country={listing.address.country}
+                    pricePerNight={listing.price}
+                    numReviews={listing.reviews.length}
+                    avgRating={0} // TODO
+                    thumbnail={listing.thumbnail}
+                    numBeds={listing.metadata.bedrooms.reduce(
+                      (a, b) => a + b,
+                      0
                     )}
-                    bathrooms={id.data.listing.metadata.numBathrooms}
+                    numBathrooms={listing.metadata.numBathrooms}
                     // TODO: get accepted/pending/none status
                     // true if accepted, false if pending, null if none
                     accepted={true}
                   />
                 </Col>,
-                ...tempList,
+                ...newListings,
               ];
 
-              // sort alphabetically
-              tempList = tempList.sort((a, b) =>
+              // sort alphabetically (note: titles cannot be =)
+              newListings = newListings.sort((a, b) =>
                 a.props.children.props.title > b.props.children.props.title
                   ? 1
                   : -1
               );
 
-              // set temporary list to listings
-              setListings(tempList);
-
-              // load done
               setIsListingsLoading(false);
+              setListings(newListings);
             });
           })
-          .catch((err) => {
-            console.log(err);
+          .catch((error) => {
+            console.error(error);
           });
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.error(error);
       });
   }, []);
 
   return (
     <>
+      {/* Navbar */}
       <Navbar token={token} setToken={setToken} />
+
+      {/* Main content */}
       <Container className="my-5">
         <h1 className="mb-4">All listings</h1>
 

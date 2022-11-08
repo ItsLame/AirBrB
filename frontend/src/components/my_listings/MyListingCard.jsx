@@ -88,26 +88,30 @@ const MyListingCard = ({
           height: '200px',
           objectFit: 'cover',
         }}
-      ></Card.Img>
+      />
 
-      <Card.Body>
+      <Card.Body className="d-flex flex-column align-items-start">
         <Badge bg={published ? 'success' : 'danger'} className="mb-1">
           {published ? 'P' : 'Not p'}ublished
         </Badge>
 
-        <Container className="d-flex p-0 mb-2 align-items-start">
+        <Container className="d-flex gap-1 p-0 mb-2 align-items-start">
           {/* Listing title */}
           <Card.Title
             className="flex-grow-1 m-0"
             style={{
               width: '0',
-              overflow: 'wrap',
+              display: '-webkit-box',
+              WebkitBoxOrient: 'vertical',
+              WebkitLineClamp: 2,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
             }}
           >
             {title}
           </Card.Title>
           {/* Average review */}
-          <StarRating ratings={avgRating} reviews={numReviews} />
+          <StarRating avgRating={avgRating} numReviews={numReviews} />
         </Container>
 
         <Card.Subtitle className="mb-2">
@@ -119,7 +123,7 @@ const MyListingCard = ({
           </span>
         </Card.Subtitle>
 
-        <Card.Text>
+        <Card.Text className="mt-auto mb-0">
           {/* Number of beds and bathrooms */}
           <span>
             {numBeds} <IoMdBed size={25} /> {numBathrooms}{' '}
