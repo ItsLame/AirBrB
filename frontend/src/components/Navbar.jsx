@@ -12,10 +12,11 @@ import PropTypes from 'prop-types';
 
 import { logout } from '../services/auth';
 
-const Navbar = ({ token, setToken }) => {
+const Navbar = ({ token, setToken, setAppEmail }) => {
   Navbar.propTypes = {
     token: PropTypes.string,
     setToken: PropTypes.func,
+    setAppEmail: PropTypes.func,
   };
 
   const navigate = useNavigate();
@@ -72,7 +73,7 @@ const Navbar = ({ token, setToken }) => {
               ? (
               <Nav.Link
                 style={{ paddingTop: '11px' }}
-                onClick={() => navigate('my_listings')}
+                onClick={() => navigate('/my_listings')}
               >
                 My listings
               </Nav.Link>
@@ -96,6 +97,7 @@ const Navbar = ({ token, setToken }) => {
                     logout()
                       .then((_) => {
                         setToken('');
+                        setAppEmail('');
                         navigate('/');
                         toast.success('Logged out!');
                       })

@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import appConfig from './config.json';
 import Landing from './pages/Landing';
+import Listing from './pages/Listing';
 import MyListings from './pages/MyListings';
 import NotFound from './pages/NotFound';
 import LoginForm from './components/auth/LoginForm';
@@ -43,7 +44,13 @@ const App = () => {
 
       {/* Page Routes */}
       <Routes>
-        <Route path="/" element={<Landing token={token} setToken={setToken} />}>
+        {/* Landing page */}
+        <Route
+          path="/"
+          element={
+            <Landing token={token} setToken={setToken} setAppEmail={setEmail} />
+          }
+        >
           <Route
             path="login"
             element={<LoginForm setToken={setToken} setAppEmail={setEmail} />}
@@ -57,15 +64,30 @@ const App = () => {
         </Route>
 
         {/* Only define /my_listings route if token exists */}
+        {/* My listings (dont need login/register here because these actions arent possible - to view this page login is required) */}
         {token && (
           <Route
-            path="/my_listings/*"
+            path="my_listings/*"
             element={
-              <MyListings token={token} setToken={setToken} email={email} />
+              <MyListings
+                token={token}
+                setToken={setToken}
+                email={email}
+                setAppEmail={setEmail}
+              />
             }
           />
         )}
 
+        {/* Single listing page */}
+        <Route
+          path="listing/:listingId/*"
+          element={
+            <Listing token={token} setToken={setToken} setAppEmail={setEmail} />
+          }
+        />
+
+        {/* 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

@@ -16,11 +16,12 @@ import PublishListingForm from '../components/my_listings/PublishListingForm';
 import EditListingForm from '../components/my_listings/EditListingForm';
 import { getListing, getListings } from '../services/listings';
 
-const MyListings = ({ token, setToken, email }) => {
+const MyListings = ({ token, setToken, email, setAppEmail }) => {
   MyListings.propTypes = {
     token: PropTypes.string,
     setToken: PropTypes.func,
     email: PropTypes.string,
+    setAppEmail: PropTypes.func,
   };
 
   const navigate = useNavigate();
@@ -108,7 +109,7 @@ const MyListings = ({ token, setToken, email }) => {
       </Routes>
 
       {/* Navbar */}
-      <Navbar token={token} setToken={setToken} />
+      <Navbar token={token} setToken={setToken} setAppEmail={setAppEmail} />
 
       {/* Main content */}
       <Container className="my-5">

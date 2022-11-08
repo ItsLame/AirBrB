@@ -12,10 +12,11 @@ import ListingCard from '../components/listings/ListingCard';
 import { getListing, getListings } from '../services/listings';
 // import { getListing, getListings } from '../services/listings';
 
-const Landing = ({ token, setToken }) => {
+const Landing = ({ token, setToken, setAppEmail }) => {
   Landing.propTypes = {
     token: PropTypes.string,
     setToken: PropTypes.func,
+    setAppEmail: PropTypes.func,
   };
 
   const [listings, setListings] = React.useState([]);
@@ -26,7 +27,7 @@ const Landing = ({ token, setToken }) => {
       .then((response) => {
         let promises = [];
         promises = response.data.listings.map((listing) =>
-          getListing(listing.id)
+          getListing(listing.id).then((response) => [response, listing.id])
         );
 
         // temporary list
@@ -34,12 +35,13 @@ const Landing = ({ token, setToken }) => {
 
         Promise.all(promises)
           .then((responses) => {
-            responses.forEach((response, idx) => {
+            responses.forEach(([response, id]) => {
               // prepend to list
               const listing = response.data.listing;
               newListings = [
-                <Col key={idx}>
+                <Col key={id}>
                   <ListingCard
+                    listingId={id}
                     title={listing.title}
                     street={listing.address.street}
                     city={listing.address.city}
@@ -85,7 +87,7 @@ const Landing = ({ token, setToken }) => {
   return (
     <>
       {/* Navbar */}
-      <Navbar token={token} setToken={setToken} />
+      <Navbar token={token} setToken={setToken} setAppEmail={setAppEmail} />
 
       {/* Main content */}
       <Container className="my-5">

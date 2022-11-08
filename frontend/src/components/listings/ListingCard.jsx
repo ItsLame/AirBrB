@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 import { IoMdBed } from 'react-icons/io';
 import { FaToilet } from 'react-icons/fa';
 import Badge from 'react-bootstrap/Badge';
+import { useNavigate } from 'react-router-dom';
 
 import { StarRating } from '../StyledComponents';
 
 const ListingCard = ({
+  listingId,
   title,
   street,
   city,
@@ -23,6 +25,7 @@ const ListingCard = ({
   accepted,
 }) => {
   ListingCard.propTypes = {
+    listingId: PropTypes.number,
     title: PropTypes.string,
     street: PropTypes.string,
     city: PropTypes.string,
@@ -38,8 +41,10 @@ const ListingCard = ({
     // reviews: PropTypes.array,
   };
 
+  const navigate = useNavigate();
+
   const handleClick = () => {
-    console.log(`Click ${title}`);
+    navigate(`/listing/${listingId}`);
   };
 
   return (
