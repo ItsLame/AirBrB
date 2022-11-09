@@ -110,7 +110,7 @@ const SearchForm = ({ show, closeAction, searchElement }) => {
             </FloatingLabel>
             {/* filter toggle button */}
             <Button
-              variant="outline-primary"
+              variant="outline-dark"
               // type="submit"
               className="d-flex align-items-center"
               active={filterToggle}
@@ -188,6 +188,7 @@ const SearchForm = ({ show, closeAction, searchElement }) => {
                       onChange={(event) => {
                         event.target.valueAsNumber > minPrice &&
                           minPrice >= maxPrice &&
+                          maxPrice > 0 &&
                           setMaxPrice(event.target.valueAsNumber);
 
                         setMinPrice(event.target.valueAsNumber);
@@ -211,6 +212,10 @@ const SearchForm = ({ show, closeAction, searchElement }) => {
                           setMinPrice(event.target.valueAsNumber);
 
                         setMaxPrice(event.target.valueAsNumber);
+
+                        event.target.valueAsNumber > 0 &&
+                          minPrice > event.target.valueAsNumber &&
+                          setMaxPrice(minPrice);
                       }}
                       required
                     />
