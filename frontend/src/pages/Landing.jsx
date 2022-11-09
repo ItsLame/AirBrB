@@ -10,6 +10,7 @@ import Col from 'react-bootstrap/Col';
 import Navbar from '../components/Navbar';
 import ListingCard from '../components/listings/ListingCard';
 import { getListing, getListings } from '../services/listings';
+import SearchToggle from '../components/listings/SearchToggle';
 
 const Landing = ({ token, setToken, setAppEmail }) => {
   Landing.propTypes = {
@@ -89,6 +90,9 @@ const Landing = ({ token, setToken, setAppEmail }) => {
       <Navbar
         token={token}
         setToken={setToken}
+        middleElement={
+          <SearchToggle />
+        }
         setAppEmail={setAppEmail}
       />
 
@@ -127,6 +131,7 @@ const Landing = ({ token, setToken, setAppEmail }) => {
           {listings}
         </Row>
       </Container>
+
       <Outlet />
     </>
   );
