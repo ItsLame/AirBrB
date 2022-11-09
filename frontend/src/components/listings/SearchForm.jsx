@@ -10,6 +10,7 @@ import FormRange from 'react-bootstrap/esm/FormRange';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 const SearchForm = ({ show, closeAction, searchElement }) => {
   SearchForm.propTypes = {
@@ -178,55 +179,61 @@ const SearchForm = ({ show, closeAction, searchElement }) => {
               <Row xs={1} sm={2} className="g-3 h-100 mb-3">
                 {/* Minimum price field */}
                 <Col>
-                  <FloatingLabel controlId="number" label="Minimum price">
-                    <Form.Control
-                      type="number"
-                      placeholder="01/01/2022"
-                      min="0"
-                      step="1"
-                      value={minPrice}
-                      onChange={(event) => {
-                        event.target.valueAsNumber > minPrice &&
-                          minPrice >= maxPrice &&
-                          maxPrice > 0 &&
-                          setMaxPrice(event.target.valueAsNumber);
+                  <InputGroup className="mb-3">
+                    <InputGroup.Text>$</InputGroup.Text>
+                    <FloatingLabel controlId="number" label="Minimum price">
+                      <Form.Control
+                        type="number"
+                        placeholder="01/01/2022"
+                        min="0"
+                        step="1"
+                        value={minPrice}
+                        onChange={(event) => {
+                          event.target.valueAsNumber > minPrice &&
+                            minPrice >= maxPrice &&
+                            maxPrice > 0 &&
+                            setMaxPrice(event.target.valueAsNumber);
 
-                        setMinPrice(event.target.valueAsNumber);
-                      }}
-                      required
-                    />
-                  </FloatingLabel>
+                          setMinPrice(event.target.valueAsNumber);
+                        }}
+                        required
+                      />
+                    </FloatingLabel>
+                  </InputGroup>
                 </Col>
                 {/* Maximum price field */}
                 <Col>
-                  <FloatingLabel controlId="number" label="Maximum price">
-                    <Form.Control
-                      type="number"
-                      placeholder="01/01/2022"
-                      min="0"
-                      step="1"
-                      value={maxPrice}
-                      onChange={(event) => {
-                        event.target.valueAsNumber < maxPrice &&
-                          maxPrice <= minPrice &&
-                          setMinPrice(event.target.valueAsNumber);
+                  <InputGroup className="mb-3">
+                    <InputGroup.Text>$</InputGroup.Text>
+                    <FloatingLabel controlId="number" label="Maximum price">
+                      <Form.Control
+                        type="number"
+                        placeholder="01/01/2022"
+                        min="0"
+                        step="1"
+                        value={maxPrice}
+                        onChange={(event) => {
+                          event.target.valueAsNumber < maxPrice &&
+                            maxPrice <= minPrice &&
+                            setMinPrice(event.target.valueAsNumber);
 
-                        setMaxPrice(event.target.valueAsNumber);
+                          setMaxPrice(event.target.valueAsNumber);
 
-                        event.target.valueAsNumber > 0 &&
-                          minPrice > event.target.valueAsNumber &&
-                          setMaxPrice(minPrice);
-                      }}
-                      required
-                    />
-                  </FloatingLabel>
+                          event.target.valueAsNumber > 0 &&
+                            minPrice > event.target.valueAsNumber &&
+                            setMaxPrice(minPrice);
+                        }}
+                        required
+                      />
+                    </FloatingLabel>
+                  </InputGroup>
                 </Col>
               </Row>
 
               {/* Ratings */}
               <h5 className="text-secondary">Ratings</h5>
 
-              <Container className="p-0 d-flex flex-wrap gap-3 mb-3">
+              <Container className="p-0 d-flex flex-wrap gap-2 mb-3">
                 {/* Highest rating button */}
                 <Button
                   variant="outline-dark"
