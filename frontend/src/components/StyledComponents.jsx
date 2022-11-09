@@ -5,10 +5,13 @@ import { BsFillStarFill } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 
 const StyledStarRating = styled(Card.Text)`
+  & {
+    transition: all 100ms ease-in-out;
+  }
+
   &:hover {
     color: #ffc107;
     cursor: pointer;
-    transition: all 0.2s ease-in;
   }
 `;
 
