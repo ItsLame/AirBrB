@@ -11,6 +11,7 @@ import Navbar from '../components/Navbar';
 import ListingCard from '../components/listings/ListingCard';
 import { getListing, getListings } from '../services/listings';
 import SearchToggle from '../components/listings/SearchToggle';
+import SearchForm from '../components/listings/SearchForm';
 
 const Landing = ({ token, setToken, setAppEmail }) => {
   Landing.propTypes = {
@@ -84,6 +85,10 @@ const Landing = ({ token, setToken, setAppEmail }) => {
       });
   }, []);
 
+  const [show, setShow] = React.useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <>
       {/* Navbar */}
@@ -91,7 +96,11 @@ const Landing = ({ token, setToken, setAppEmail }) => {
         token={token}
         setToken={setToken}
         middleElement={
-          <SearchToggle />
+          <SearchToggle
+            onClickHandler={() => {
+              handleShow();
+            }}
+          />
         }
         setAppEmail={setAppEmail}
       />
@@ -132,6 +141,7 @@ const Landing = ({ token, setToken, setAppEmail }) => {
         </Row>
       </Container>
 
+      <SearchForm show={show} closeAction={handleClose} />
       <Outlet />
     </>
   );
