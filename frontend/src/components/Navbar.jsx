@@ -4,20 +4,16 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import BSNavbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-// import Form from 'react-bootstrap/Form';
-// import Button from 'react-bootstrap/Button';
 import { HiUserCircle } from 'react-icons/hi';
-// import { HiSearch, HiUserCircle } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 
 import { logout } from '../services/auth';
 
-const Navbar = ({ token, setToken, middleElement, setAppEmail }) => {
+const Navbar = ({ token, setToken, setAppEmail }) => {
   Navbar.propTypes = {
     token: PropTypes.string,
     setToken: PropTypes.func,
-    middleElement: PropTypes.element,
     setAppEmail: PropTypes.func,
   };
 
@@ -46,7 +42,7 @@ const Navbar = ({ token, setToken, middleElement, setAppEmail }) => {
         <BSNavbar.Toggle className="mb-2" aria-controls="basic-navbar-nav" />
         <BSNavbar.Collapse id="basic-navbar-nav">
           {/* Middle nav search bar */}
-          <Nav className="m-auto">{middleElement ?? middleElement}</Nav>
+          <Nav className="m-auto"></Nav>
           {/* {search && (
             <Nav className="m-auto">
               <Form className="position-relative">

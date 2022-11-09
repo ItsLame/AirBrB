@@ -6,14 +6,10 @@ import Placeholder from 'react-bootstrap/Placeholder';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-// import Form from 'react-bootstrap/Form';
 
 import Navbar from '../components/Navbar';
 import ListingCard from '../components/listings/ListingCard';
 import { getListing, getListings } from '../services/listings';
-import SearchToggle from '../components/listings/SearchToggle';
-import SearchForm from '../components/listings/SearchForm';
-// import { getListing, getListings } from '../services/listings';
 
 const Landing = ({ token, setToken, setAppEmail }) => {
   Landing.propTypes = {
@@ -87,25 +83,12 @@ const Landing = ({ token, setToken, setAppEmail }) => {
       });
   }, []);
 
-  const [show, setShow] = React.useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   return (
     <>
       {/* Navbar */}
       <Navbar
         token={token}
         setToken={setToken}
-        search={false}
-        searchAction={handleShow}
-        middleElement={
-          <SearchToggle
-            onSearchToggle={() => {
-              handleShow();
-            }}
-          />
-        }
         setAppEmail={setAppEmail}
       />
 
@@ -144,8 +127,6 @@ const Landing = ({ token, setToken, setAppEmail }) => {
           {listings}
         </Row>
       </Container>
-
-      <SearchForm show={show} closeAction={handleClose} />
       <Outlet />
     </>
   );
