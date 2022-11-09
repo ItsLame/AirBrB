@@ -10,10 +10,11 @@ import PropTypes from 'prop-types';
 
 import { logout } from '../services/auth';
 
-const Navbar = ({ token, setToken, setAppEmail }) => {
+const Navbar = ({ token, setToken, middleElement, setAppEmail }) => {
   Navbar.propTypes = {
     token: PropTypes.string,
     setToken: PropTypes.func,
+    middleElement: PropTypes.element,
     setAppEmail: PropTypes.func,
   };
 
@@ -42,33 +43,7 @@ const Navbar = ({ token, setToken, setAppEmail }) => {
         <BSNavbar.Toggle className="mb-2" aria-controls="basic-navbar-nav" />
         <BSNavbar.Collapse id="basic-navbar-nav">
           {/* Middle nav search bar */}
-          <Nav className="m-auto"></Nav>
-          {/* {search && (
-            <Nav className="m-auto">
-              <Form className="position-relative">
-                <Form.Control
-                  type="text"
-                  placeholder="Search listings"
-                  className="rounded-5"
-                  onFocus={(event) => {
-                    searchAction();
-                  }}
-                />
-                <Button
-                  type="submit"
-                  className="position-absolute end-0 top-0 p-0 rounded-circle d-flex align-items-center justify-content-center"
-                  style={{
-                    height: 30,
-                    width: 30,
-                    marginTop: 4,
-                    marginRight: 4,
-                  }}
-                >
-                  <HiSearch size={20} />
-                </Button>
-              </Form>
-            </Nav>
-          )} */}
+          <Nav className="m-auto">{middleElement ?? middleElement}</Nav>
 
           {/* Right side navbar */}
           <Nav>
