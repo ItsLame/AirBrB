@@ -253,48 +253,54 @@ const MyListingFormModalBody = ({
 
       {/* Property type buttons */}
       <h5>Property type</h5>
-      <div className="d-flex gap-3 mb-3">
-        <Button
-          variant="outline-dark"
-          className="d-flex flex-column fw-bold"
-          style={{ width: '25%' }}
-          active={activePropertyTypeBtn === 'House'}
-          onClick={(_) => setActivePropertyTypeBtn('House')}
-        >
-          <HiOutlineHome size={30} className="mb-3" />
-          House
-        </Button>
-        <Button
-          variant="outline-dark"
-          className="d-flex flex-column fw-bold"
-          style={{ width: '25%' }}
-          active={activePropertyTypeBtn === 'Apartment'}
-          onClick={(_) => setActivePropertyTypeBtn('Apartment')}
-        >
-          <BsBuilding size={30} className="mb-3" />
-          Apartment
-        </Button>
-        <Button
-          variant="outline-dark"
-          className="d-flex flex-column fw-bold"
-          style={{ width: '25%' }}
-          active={activePropertyTypeBtn === 'Guesthouse'}
-          onClick={(_) => setActivePropertyTypeBtn('Guesthouse')}
-        >
-          <FaHouseUser size={30} className="mb-3" />
-          Guesthouse
-        </Button>
-        <Button
-          variant="outline-dark"
-          className="d-flex flex-column fw-bold"
-          style={{ width: '25%' }}
-          active={activePropertyTypeBtn === 'Hotel'}
-          onClick={(_) => setActivePropertyTypeBtn('Hotel')}
-        >
-          <HiOutlineOfficeBuilding size={30} className="mb-3" />
-          Hotel
-        </Button>
-      </div>
+      {/* <div className="d-flex gap-3 mb-3"> */}
+      <Row xs={2} sm={3} md={4} className="g-3 h-100 mb-3">
+        <Col>
+          <Button
+            variant="outline-dark"
+            className="d-flex flex-column fw-bold w-100"
+            active={activePropertyTypeBtn === 'House'}
+            onClick={(_) => setActivePropertyTypeBtn('House')}
+          >
+            <HiOutlineHome size={30} className="mb-3" />
+            House
+          </Button>
+        </Col>
+        <Col>
+          <Button
+            variant="outline-dark"
+            className="d-flex flex-column fw-bold w-100"
+            active={activePropertyTypeBtn === 'Apartment'}
+            onClick={(_) => setActivePropertyTypeBtn('Apartment')}
+          >
+            <BsBuilding size={30} className="mb-3" />
+            Apartment
+          </Button>
+        </Col>
+        <Col>
+          <Button
+            variant="outline-dark"
+            className="d-flex flex-column fw-bold w-100"
+            active={activePropertyTypeBtn === 'Guesthouse'}
+            onClick={(_) => setActivePropertyTypeBtn('Guesthouse')}
+          >
+            <FaHouseUser size={30} className="mb-3" />
+            Guesthouse
+          </Button>
+        </Col>
+        <Col>
+          <Button
+            variant="outline-dark"
+            className="d-flex flex-column fw-bold w-100"
+            active={activePropertyTypeBtn === 'Hotel'}
+            onClick={(_) => setActivePropertyTypeBtn('Hotel')}
+          >
+            <HiOutlineOfficeBuilding size={30} className="mb-3" />
+            Hotel
+          </Button>
+        </Col>
+      </Row>
+      {/* </div> */}
 
       {/* Number of bathrooms field */}
       <h5>Number of bathrooms</h5>

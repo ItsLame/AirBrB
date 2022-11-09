@@ -88,7 +88,7 @@ const SearchForm = ({ show, closeAction, searchElement }) => {
             <FloatingLabel
               className="flex-grow-1"
               controlId="number"
-              label="Title, city"
+              label="Title, City"
             >
               <Form.Control
                 type="text"
@@ -179,7 +179,7 @@ const SearchForm = ({ show, closeAction, searchElement }) => {
               <Row xs={1} sm={2} className="g-3 h-100 mb-3">
                 {/* Minimum price field */}
                 <Col>
-                  <InputGroup className="mb-3">
+                  <InputGroup>
                     <InputGroup.Text>$</InputGroup.Text>
                     <FloatingLabel controlId="number" label="Minimum price">
                       <Form.Control
@@ -203,7 +203,7 @@ const SearchForm = ({ show, closeAction, searchElement }) => {
                 </Col>
                 {/* Maximum price field */}
                 <Col>
-                  <InputGroup className="mb-3">
+                  <InputGroup>
                     <InputGroup.Text>$</InputGroup.Text>
                     <FloatingLabel controlId="number" label="Maximum price">
                       <Form.Control
