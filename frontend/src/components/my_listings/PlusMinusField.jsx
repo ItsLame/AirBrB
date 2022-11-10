@@ -20,7 +20,7 @@ const PlusMinusField = ({ onMinus, num, onPlus, fs }) => {
       >
         <HiMinus size={20} />
       </Button>
-      <div className={`fs-${fs}`}>{num}</div>
+      <div className={`fs-${fs} text-center`}>{num}</div>
       <Button
         variant="outline-dark"
         className="p-1 rounded-circle d-flex align-items-center justify-content-center"

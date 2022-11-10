@@ -254,7 +254,7 @@ const MyListingFormModalBody = ({
       {/* Property type buttons */}
       <h5>Property type</h5>
       {/* <div className="d-flex gap-3 mb-3"> */}
-      <Row xs={2} sm={3} md={4} className="g-3 h-100 mb-3">
+      <Row xs={2} sm={2} md={2} lg={4} className="g-3 h-100 mb-3">
         <Col>
           <Button
             variant="outline-dark"
@@ -318,7 +318,7 @@ const MyListingFormModalBody = ({
           return (
             <div key={idx} className="d-flex align-items-center w-100">
               {/* Bedroom number */}
-              <span>Bedroom {idx + 1}</span>
+              <span className='text-center'>Room {idx + 1}</span>
 
               {/* Stretched separator */}
               <hr className="mx-3 flex-fill" />
