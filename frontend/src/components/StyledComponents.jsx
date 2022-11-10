@@ -24,14 +24,15 @@ export const StarRating = ({ avgRating, numReviews }) => {
   return (
     <>
       <StyledStarRating
-        className="d-flex gap-1 align-items-center text-decoration-underline"
+        className="d-flex gap-1 align-items-center text-decoration-underline mb-0 flex-nowrap"
         onClick={(event) => {
           event.stopPropagation();
           console.log('CLICK REVIEW');
         }}
       >
-        <BsFillStarFill />
-        <span>{`${avgRating} (${numReviews})`}</span>
+        <BsFillStarFill size={10} />
+        <span>{avgRating}</span>
+        <span>({numReviews})</span>
       </StyledStarRating>
     </>
   );
