@@ -22,6 +22,9 @@ const Landing = ({ token, setToken, setAppEmail }) => {
 
   const [listings, setListings] = React.useState([]);
   const [isListingsLoading, setIsListingsLoading] = React.useState(true);
+  const [show, setShow] = React.useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   React.useEffect(() => {
     getListings()
@@ -84,10 +87,6 @@ const Landing = ({ token, setToken, setAppEmail }) => {
         console.error(error);
       });
   }, []);
-
-  const [show, setShow] = React.useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   return (
     <>
