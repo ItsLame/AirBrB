@@ -23,6 +23,7 @@ const Landing = ({ token, setToken, setAppEmail }) => {
   const [listings, setListings] = React.useState([]);
   const [isListingsLoading, setIsListingsLoading] = React.useState(true);
   const [show, setShow] = React.useState(false);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
