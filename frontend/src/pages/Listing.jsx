@@ -41,8 +41,9 @@ import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
 import LoginForm from '../components/auth/LoginForm';
 import RegisterForm from '../components/auth/RegisterForm';
-import { getListing } from '../services/listings';
 import { StarRating } from '../components/StyledComponents';
+import MakeBookingForm from '../components/bookings/MakeBookingForm';
+import { getListing } from '../services/listings';
 
 const Listing = ({ token, setToken, setAppEmail }) => {
   Listing.propTypes = {
@@ -197,22 +198,47 @@ const Listing = ({ token, setToken, setAppEmail }) => {
   return (
     <>
       {/* Sub routes */}
-      {!token && (
-        <Routes>
+      <Routes>
+        {/* Define login and register routes if user is not logged in */}
+        {!token && (
+          <>
+            <Route
+              path="login"
+              element={
+                <LoginForm setToken={setToken} setAppEmail={setAppEmail} />
+              }
+            />
+            <Route
+              path="register"
+              element={
+                <RegisterForm setToken={setToken} setAppEmail={setAppEmail} />
+              }
+            />
+          </>
+        )}
+
+        {/* Route book to booking form if logged in, otherwise route to login page */}
+        {token
+          ? (
           <Route
-            path="login"
+            path="book"
+            element={
+              <MakeBookingForm
+                listingId={listingId}
+                availability={availability}
+              />
+            }
+          />
+            )
+          : (
+          <Route
+            path="book"
             element={
               <LoginForm setToken={setToken} setAppEmail={setAppEmail} />
             }
           />
-          <Route
-            path="register"
-            element={
-              <RegisterForm setToken={setToken} setAppEmail={setAppEmail} />
-            }
-          />
-        </Routes>
-      )}
+            )}
+      </Routes>
 
       {/* Navbar */}
       <Navbar token={token} setToken={setToken} setAppEmail={setAppEmail} />
