@@ -1,10 +1,11 @@
 import React from 'react';
-import { useParams, Route, Routes } from 'react-router-dom';
+import { useParams, Route, Routes, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
 import Carousel from 'react-bootstrap/Carousel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import {
   MdLocalLaundryService,
@@ -29,12 +30,14 @@ import {
   FaBabyCarriage,
   FaWater,
   FaUmbrellaBeach,
+  FaCalendarCheck,
 } from 'react-icons/fa';
 import { TbToolsKitchen2 } from 'react-icons/tb';
 import { CgGym } from 'react-icons/cg';
 import { ImFire } from 'react-icons/im';
 import { BsAlarm } from 'react-icons/bs';
 
+import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
 import LoginForm from '../components/auth/LoginForm';
 import RegisterForm from '../components/auth/RegisterForm';
@@ -48,6 +51,7 @@ const Listing = ({ token, setToken, setAppEmail }) => {
     setAppEmail: PropTypes.func,
   };
 
+  const navigate = useNavigate();
   const { listingId } = useParams();
   const [title, setTitle] = React.useState(null);
   const [street, setStreet] = React.useState(null);
@@ -70,12 +74,21 @@ const Listing = ({ token, setToken, setAppEmail }) => {
   const [numReviews, setNumReviews] = React.useState(null);
   const [showAllAmenitiesActive, setShowAllAmenitiesActive] =
     React.useState(false);
+  const [notFound, setNotFound] = React.useState(false);
 
   React.useEffect(() => {
     getListing(listingId)
       .then((response) => {
         const listing = response.data.listing;
-        console.log(listing);
+
+        // the getListing route always succeeds even if
+        // listingId isnt a valid listing
+        // so we do this check here to check for invalid listings
+        if (Object.keys(listing).length === 0) {
+          setNotFound(true);
+          return;
+        }
+
         setTitle(listing.title);
         setStreet(listing.address.street);
         setState(listing.address.state);
@@ -177,8 +190,13 @@ const Listing = ({ token, setToken, setAppEmail }) => {
     </Row>
   );
 
+  if (notFound) {
+    return <NotFound />;
+  }
+
   return (
     <>
+      {/* Sub routes */}
       {!token && (
         <Routes>
           <Route
@@ -206,7 +224,17 @@ const Listing = ({ token, setToken, setAppEmail }) => {
             {/* Title */}
             {title !== null
               ? (
-              <h1 style={{ overflowWrap: 'break-word' }}>{title}</h1>
+              <div className="d-flex gap-3 mb-2 align-items-center">
+                <h1 style={{ overflowWrap: 'break-word' }}>{title}</h1>
+                <Button
+                  variant="dark"
+                  className="d-flex gap-2 align-items-center"
+                  onClick={() => navigate('book')}
+                >
+                  <Card.Title>Book now</Card.Title>
+                  <FaCalendarCheck size={20} />
+                </Button>
+              </div>
                 )
               : (
               <h1 className="placeholder-glow">
@@ -439,7 +467,7 @@ const Listing = ({ token, setToken, setAppEmail }) => {
 
         <h4>Reviews</h4>
 
-        {console.log(availability)}
+        {console.log('avail + ' + availability)}
       </Container>
     </>
   );
