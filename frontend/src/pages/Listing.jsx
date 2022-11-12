@@ -250,17 +250,7 @@ const Listing = ({ token, setToken, setAppEmail }) => {
             {/* Title */}
             {title !== null
               ? (
-              <div className="d-flex gap-3 mb-2 align-items-center">
-                <h1 style={{ overflowWrap: 'break-word' }}>{title}</h1>
-                <Button
-                  variant="dark"
-                  className="d-flex gap-2 align-items-center"
-                  onClick={() => navigate('book')}
-                >
-                  <Card.Title>Book now</Card.Title>
-                  <FaCalendarCheck size={20} />
-                </Button>
-              </div>
+              <h1 style={{ overflowWrap: 'break-word' }}>{title}</h1>
                 )
               : (
               <h1 className="placeholder-glow">
@@ -322,14 +312,34 @@ const Listing = ({ token, setToken, setAppEmail }) => {
             {/* Price per night */}
             {pricePerNight
               ? (
-              <div className="fst-italic">
+              <div className="fst-italic mb-2">
                 <u>${pricePerNight} per night</u>
               </div>
                 )
               : (
-              <div className="placeholder-glow">
+              <div className="placeholder-glow mb-2">
                 <span className="placeholder col-3"></span>
               </div>
+                )}
+
+            {/* Book now button */}
+            {availability
+              ? (
+              <Button
+                variant="dark"
+                className="d-flex gap-2 align-items-center"
+                onClick={() => navigate('book')}
+              >
+                <Card.Title>Book now</Card.Title>
+                <FaCalendarCheck size={20} />
+              </Button>
+                )
+              : (
+              <a
+                href="#"
+                tabIndex="-1"
+                className="btn btn-dark disabled col-3 placeholder"
+              ></a>
                 )}
             <hr />
 
