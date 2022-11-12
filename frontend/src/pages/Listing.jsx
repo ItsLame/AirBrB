@@ -226,6 +226,7 @@ const Listing = ({ token, setToken, setAppEmail }) => {
               <MakeBookingForm
                 listingId={listingId}
                 availability={availability}
+                pricePerNight={parseInt(pricePerNight, 10)}
               />
             }
           />
