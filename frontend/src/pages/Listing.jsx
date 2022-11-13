@@ -314,7 +314,7 @@ const Listing = ({ token, setToken, setAppEmail }) => {
             {pricePerNight
               ? (
               <div className="fst-italic mb-2">
-                <u>${pricePerNight} per night</u>
+                <u>${pricePerNight.toFixed(2)} per night</u>
               </div>
                 )
               : (

@@ -115,7 +115,7 @@ const ListingCard = ({
 
         <Card.Text className="mt-auto mb-0 fst-italic d-flex w-100">
           <span className="flex-grow-1">
-            <u>${pricePerNight} per night</u>
+            <u>${pricePerNight.toFixed(2)} per night</u>
           </span>
           <span className="d-flex gap-2">
             <span>

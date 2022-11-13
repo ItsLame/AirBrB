@@ -119,7 +119,7 @@ const MyListingCard = ({
           <span>{propertyType}</span>
           {/* Price per night */}
           <span className="fw-normal fst-italic">
-            —${pricePerNight} per night
+            —${pricePerNight.toFixed(2)} per night
           </span>
         </Card.Subtitle>
 
