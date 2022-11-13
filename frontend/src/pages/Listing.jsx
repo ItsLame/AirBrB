@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import Badge from 'react-bootstrap/Badge';
 import {
   MdLocalLaundryService,
   MdIron,
@@ -44,6 +45,7 @@ import RegisterForm from '../components/auth/RegisterForm';
 import { StarRating } from '../components/StyledComponents';
 import MakeBookingForm from '../components/bookings/MakeBookingForm';
 import { getListing } from '../services/listings';
+import { getBookings } from '../services/bookings';
 
 const Listing = ({ token, setToken, email, setAppEmail }) => {
   Listing.propTypes = {
@@ -77,8 +79,20 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
   const [showAllAmenitiesActive, setShowAllAmenitiesActive] =
     React.useState(false);
   const [notFound, setNotFound] = React.useState(false);
+  const [bookings, setBookings] = React.useState([]);
 
   React.useEffect(() => {
+    getBookings()
+      .then((response) =>
+        setBookings(
+          response.data.bookings.filter(
+            (booking) =>
+              booking.owner === email && booking.listingId === listingId
+          )
+        )
+      )
+      .catch((error) => console.error(error));
+
     getListing(listingId)
       .then((response) => {
         const listing = response.data.listing;
@@ -228,6 +242,8 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                 listingId={listingId}
                 availability={availability}
                 pricePerNight={pricePerNight}
+                setBookings={setBookings}
+                email={email}
               />
             }
           />
@@ -351,6 +367,78 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
               ></a>
                 )}
             <hr />
+
+            {availability && bookings.length !== 0 && (
+              <>
+                <h5>Your bookings</h5>
+                {bookings
+                  .sort((a, b) => {
+                    const statusMap = { accepted: 1, pending: 2, declined: 3 };
+                    if (statusMap[a.status] < statusMap[b.status]) return -1;
+                    if (statusMap[a.status] > statusMap[b.status]) return 1;
+                    if (
+                      new Date(a.dateRange.start) < new Date(b.dateRange.start)
+                    ) {
+                      return -1;
+                    }
+                    if (
+                      new Date(a.dateRange.start) > new Date(b.dateRange.start)
+                    ) {
+                      return 1;
+                    }
+                    if (new Date(a.dateRange.end) < new Date(b.dateRange.end)) {
+                      return -1;
+                    }
+                    if (new Date(a.dateRange.end) > new Date(b.dateRange.end)) {
+                      return 1;
+                    }
+                    return 0;
+                  })
+                  .map((booking, idx) => {
+                    let status = booking.status;
+                    status = status.charAt(0).toUpperCase() + status.slice(1);
+                    return (
+                      <div key={idx}>
+                        <div className="d-flex align-items-center gap-2">
+                          <Badge
+                            bg={
+                              status === 'Pending'
+                                ? 'primary'
+                                : status === 'Declined'
+                                  ? 'danger'
+                                  : 'success'
+                            }
+                          >
+                            {status}
+                          </Badge>
+                          <hr className="invisible flex-grow-1" />
+                          <span className="text-center lh-1 my-1">{`${new Date(
+                            booking.dateRange.start
+                          ).toLocaleDateString('default', {
+                            weekday: 'short',
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                          })} — ${new Date(
+                            booking.dateRange.end
+                          ).toLocaleDateString('default', {
+                            weekday: 'short',
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                          })}`}</span>
+                          <hr className="invisible flex-grow-1" />
+                          <u>${booking.totalPrice.toFixed(2)}</u>
+                        </div>
+                        {idx !== bookings.length - 1 && (
+                          <hr className="my-0" style={{ color: 'lightgray' }} />
+                        )}
+                      </div>
+                    );
+                  })}
+                <hr />
+              </>
+            )}
 
             {/* Amenities */}
             {essentialsAmenities !== null &&

@@ -13,11 +13,19 @@ import { createBooking } from '../../services/bookings';
 import { formatDate, addOneDay, minusOneDay } from '../../helpers';
 // import NotFound from '../../pages/NotFound';
 
-const MakeBookingForm = ({ listingId, pricePerNight, availability }) => {
+const MakeBookingForm = ({
+  listingId,
+  pricePerNight,
+  availability,
+  setBookings,
+  email,
+}) => {
   MakeBookingForm.propTypes = {
     listingId: PropTypes.string,
     pricePerNight: PropTypes.number,
     availability: PropTypes.array,
+    setBookings: PropTypes.func,
+    email: PropTypes.string,
   };
 
   const navigate = useNavigate();
@@ -44,6 +52,17 @@ const MakeBookingForm = ({ listingId, pricePerNight, availability }) => {
         .then((response) => {
           // console.log(response);
           handleClose();
+          setBookings((bookings) => [
+            ...bookings,
+            {
+              id: response.data.bookingId,
+              owner: email,
+              dateRange: { start: startDate, end: endDate },
+              totalPrice,
+              listingId,
+              status: 'pending',
+            },
+          ]);
           toast.success('Requested booking!');
         })
         .catch((error) => console.error(error));
