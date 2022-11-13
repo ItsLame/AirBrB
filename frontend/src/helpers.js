@@ -34,6 +34,11 @@ export const addOneDay = (date) => {
   return new Date(date.setDate(date.getDate() + 1));
 };
 
+// add one day to a Date object
+export const minusOneDay = (date) => {
+  return new Date(date.setDate(date.getDate() - 1));
+};
+
 // format a Date object to YYYY-MM-DD
 export const formatDate = (date) => {
   return date.toLocaleDateString().split('/').reverse().join('-');

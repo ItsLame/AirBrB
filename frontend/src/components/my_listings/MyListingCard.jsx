@@ -34,7 +34,7 @@ const MyListingCard = ({
     title: PropTypes.string,
     avgRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     propertyType: PropTypes.string,
-    pricePerNight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    pricePerNight: PropTypes.number,
     numBeds: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     numBathrooms: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     numReviews: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

@@ -58,7 +58,7 @@ const MyListingFormModalBody = ({
     setPostcode: PropTypes.func,
     country: PropTypes.string,
     setCountry: PropTypes.func,
-    pricePerNight: PropTypes.string,
+    pricePerNight: PropTypes.number,
     setPricePerNight: PropTypes.func,
     activePropertyTypeBtn: PropTypes.string,
     setActivePropertyTypeBtn: PropTypes.func,
@@ -240,11 +240,11 @@ const MyListingFormModalBody = ({
           <Form.Control
             type="number"
             min="0"
-            step="1"
+            step="0.01"
             placeholder="Price per night"
             value={pricePerNight}
             onChange={(e) => {
-              setPricePerNight(e.target.value);
+              setPricePerNight(e.target.valueAsNumber);
             }}
             required
           />
@@ -318,7 +318,7 @@ const MyListingFormModalBody = ({
           return (
             <div key={idx} className="d-flex align-items-center w-100">
               {/* Bedroom number */}
-              <span className='text-center'>Room {idx + 1}</span>
+              <span className="text-center">Room {idx + 1}</span>
 
               {/* Stretched separator */}
               <hr className="mx-3 flex-fill" />

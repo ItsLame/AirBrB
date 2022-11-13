@@ -31,7 +31,7 @@ const ListingCard = ({
     city: PropTypes.string,
     state: PropTypes.string,
     country: PropTypes.string,
-    pricePerNight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    pricePerNight: PropTypes.number,
     numReviews: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     avgRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     thumbnail: PropTypes.string,

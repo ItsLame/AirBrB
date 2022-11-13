@@ -23,7 +23,7 @@ const EditListingForm = ({ myListings, setMyListings }) => {
   const [state, setState] = React.useState('');
   const [postcode, setPostcode] = React.useState('');
   const [country, setCountry] = React.useState('');
-  const [pricePerNight, setPricePerNight] = React.useState('');
+  const [pricePerNight, setPricePerNight] = React.useState(0);
   const [activePropertyTypeBtn, setActivePropertyTypeBtn] =
     React.useState('House');
   const [numBathrooms, setNumBathrooms] = React.useState(1);
