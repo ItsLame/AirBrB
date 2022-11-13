@@ -34,6 +34,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
         const promises = [];
         response.data.listings.forEach((listing) => {
           // check if logged in user owns this listing
+          // TODO: if they do dont render it since it is not bookable
           if (listing.owner !== email) {
             promises.push(
               getListing(listing.id).then((response) => [response, listing.id])
@@ -47,33 +48,35 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
         Promise.all(promises)
           .then((responses) => {
             responses.forEach(([response, id]) => {
-              // prepend to list
+              // prepend to list if listing is published
               const listing = response.data.listing;
-              newListings = [
-                <Col key={id}>
-                  <ListingCard
-                    listingId={id}
-                    title={listing.title}
-                    street={listing.address.street}
-                    city={listing.address.city}
-                    state={listing.address.state}
-                    country={listing.address.country}
-                    pricePerNight={listing.price}
-                    numReviews={listing.reviews.length}
-                    avgRating={0} // TODO
-                    thumbnail={listing.thumbnail}
-                    numBeds={listing.metadata.bedrooms.reduce(
-                      (a, b) => a + b,
-                      0
-                    )}
-                    numBathrooms={listing.metadata.numBathrooms}
-                    // TODO: get accepted/pending/none status
-                    // true if accepted, false if pending, null if none
-                    accepted={true}
-                  />
-                </Col>,
-                ...newListings,
-              ];
+              if (listing.published) {
+                newListings = [
+                  <Col key={id}>
+                    <ListingCard
+                      listingId={id}
+                      title={listing.title}
+                      street={listing.address.street}
+                      city={listing.address.city}
+                      state={listing.address.state}
+                      country={listing.address.country}
+                      pricePerNight={listing.price}
+                      numReviews={listing.reviews.length}
+                      avgRating={0} // TODO
+                      thumbnail={listing.thumbnail}
+                      numBeds={listing.metadata.bedrooms.reduce(
+                        (a, b) => a + b,
+                        0
+                      )}
+                      numBathrooms={listing.metadata.numBathrooms}
+                      // TODO: get accepted/pending/none status
+                      // true if accepted, false if pending, null if none
+                      accepted={true}
+                    />
+                  </Col>,
+                  ...newListings,
+                ];
+              }
             });
 
             // sort alphabetically (note: titles cannot be =)
