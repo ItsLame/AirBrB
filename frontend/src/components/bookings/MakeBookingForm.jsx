@@ -104,79 +104,66 @@ const MakeBookingForm = ({ listingId, pricePerNight, availability }) => {
                       month: 'short',
                       day: 'numeric',
                     }
-                  )}${
-                    dateRange.start !== dateRange.end
-                      ? ' — ' +
-                        new Date(dateRange.end).toLocaleDateString('default', {
-                          weekday: 'short',
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric',
-                        })
-                      : ''
-                  }`}
+                  )} — ${new Date(dateRange.end).toLocaleDateString('default', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}`}
                   id={`booking-availaibility-${idx}`}
                   name="booking-availability"
                   onChange={(e) => {
                     if (e.target.checked) {
-                      if (dateRange.start === dateRange.end) {
-                        // no further input
-                        setStartDate(dateRange.start);
-                        setEndDate(dateRange.end);
-                      } else {
-                        // further input required
-                        setStartDate('');
-                        setEndDate('');
-                      }
+                      setStartDate('');
+                      setEndDate('');
                       setSelectedAvailability(idx);
                     }
                   }}
                 />
 
                 {/* If this radio is selected, and the availability is a date range, then render date inputs */}
-                {selectedAvailability === idx &&
-                  dateRange.start !== dateRange.end && (
-                    <Row className="g-2 mt-1 mb-3 mx-1 d-flex align-items-center justify-content-center">
-                      <Col md>
-                        <FloatingLabel
-                          controlId={`booking-start-${idx}`}
-                          label="Start date"
-                        >
-                          <Form.Control
-                            type="date"
-                            placeholder="Start date"
-                            min={dateRange.start}
-                            max={formatDate(
-                              minusOneDay(new Date(endDate || dateRange.end))
-                            )}
-                            onChange={(e) => {
-                              setStartDate(e.target.value);
-                            }}
-                            required
-                          />
-                        </FloatingLabel>
-                      </Col>
+                {selectedAvailability === idx && (
+                  <Row className="g-2 mt-1 mb-3 mx-1 d-flex align-items-center justify-content-center">
+                    <Col md>
+                      <FloatingLabel
+                        controlId={`booking-start-${idx}`}
+                        label="Start date"
+                      >
+                        <Form.Control
+                          type="date"
+                          placeholder="Start date"
+                          min={dateRange.start}
+                          max={formatDate(
+                            minusOneDay(new Date(endDate || dateRange.end))
+                          )}
+                          onChange={(e) => {
+                            setStartDate(e.target.value);
+                          }}
+                          required
+                        />
+                      </FloatingLabel>
+                    </Col>
 
-                      <Col md>
-                        <FloatingLabel
-                          controlId={`booking-end-${idx}`}
-                          label="End date"
-                        >
-                          <Form.Control
-                            type="date"
-                            placeholder="End date"
-                            min={formatDate(
-                              addOneDay(new Date(startDate || dateRange.start))
-                            )}
-                            max={dateRange.end}
-                            onChange={(e) => {
-                              setEndDate(e.target.value);
-                            }}
-                            required
-                          />
-                        </FloatingLabel>
-                      </Col>
-                    </Row>
+                    <Col md>
+                      <FloatingLabel
+                        controlId={`booking-end-${idx}`}
+                        label="End date"
+                      >
+                        <Form.Control
+                          type="date"
+                          placeholder="End date"
+                          min={formatDate(
+                            addOneDay(new Date(startDate || dateRange.start))
+                          )}
+                          max={dateRange.end}
+                          onChange={(e) => {
+                            setEndDate(e.target.value);
+                          }}
+                          required
+                        />
+                      </FloatingLabel>
+                    </Col>
+                  </Row>
                 )}
               </div>
             );
