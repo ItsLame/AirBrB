@@ -34,12 +34,9 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
         const promises = [];
         response.data.listings.forEach((listing) => {
           // check if logged in user owns this listing
-          // TODO: if they do dont render it since it is not bookable
-          if (listing.owner !== email) {
-            promises.push(
-              getListing(listing.id).then((response) => [response, listing.id])
-            );
-          }
+          promises.push(
+            getListing(listing.id).then((response) => [response, listing.id])
+          );
         });
 
         // temporary list

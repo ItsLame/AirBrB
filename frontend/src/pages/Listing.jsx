@@ -332,14 +332,16 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
             {/* Book now button */}
             {availability
               ? (
-              <Button
-                variant="dark"
-                className="d-flex gap-2 align-items-center"
-                onClick={() => navigate('book')}
-              >
-                <Card.Title>Book now</Card.Title>
-                <FaCalendarCheck size={20} />
-              </Button>
+                  owner !== email && (
+                <Button
+                  variant="dark"
+                  className="d-flex gap-2 align-items-center"
+                  onClick={() => navigate('book')}
+                >
+                  <Card.Title>Book now</Card.Title>
+                  <FaCalendarCheck size={20} />
+                </Button>
+                  )
                 )
               : (
               <a
