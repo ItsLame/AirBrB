@@ -48,7 +48,12 @@ const App = () => {
         <Route
           path="/"
           element={
-            <Landing token={token} setToken={setToken} setAppEmail={setEmail} />
+            <Landing
+              token={token}
+              setToken={setToken}
+              email={email}
+              setAppEmail={setEmail}
+            />
           }
         >
           <Route

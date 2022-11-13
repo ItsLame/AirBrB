@@ -13,10 +13,11 @@ import { getListing, getListings } from '../services/listings';
 import SearchToggle from '../components/listings/SearchToggle';
 import SearchForm from '../components/listings/SearchForm';
 
-const Landing = ({ token, setToken, setAppEmail }) => {
+const Landing = ({ token, setToken, email, setAppEmail }) => {
   Landing.propTypes = {
     token: PropTypes.string,
     setToken: PropTypes.func,
+    email: PropTypes.string,
     setAppEmail: PropTypes.func,
   };
 
@@ -27,13 +28,18 @@ const Landing = ({ token, setToken, setAppEmail }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  React.useEffect(() => {
+  const render = () => {
     getListings()
       .then((response) => {
-        let promises = [];
-        promises = response.data.listings.map((listing) =>
-          getListing(listing.id).then((response) => [response, listing.id])
-        );
+        const promises = [];
+        response.data.listings.forEach((listing) => {
+          // check if logged in user owns this listing
+          if (listing.owner !== email) {
+            promises.push(
+              getListing(listing.id).then((response) => [response, listing.id])
+            );
+          }
+        });
 
         // temporary list
         let newListings = [];
@@ -68,17 +74,17 @@ const Landing = ({ token, setToken, setAppEmail }) => {
                 </Col>,
                 ...newListings,
               ];
-
-              // sort alphabetically (note: titles cannot be =)
-              newListings = newListings.sort((a, b) =>
-                a.props.children.props.title > b.props.children.props.title
-                  ? 1
-                  : -1
-              );
-
-              setIsListingsLoading(false);
-              setListings(newListings);
             });
+
+            // sort alphabetically (note: titles cannot be =)
+            newListings = newListings.sort((a, b) =>
+              a.props.children.props.title > b.props.children.props.title
+                ? 1
+                : -1
+            );
+
+            setIsListingsLoading(false);
+            setListings(newListings);
           })
           .catch((error) => {
             console.error(error);
@@ -87,7 +93,10 @@ const Landing = ({ token, setToken, setAppEmail }) => {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  };
+
+  React.useEffect(render, []);
+  React.useEffect(render, [email]);
 
   return (
     <>
@@ -136,6 +145,13 @@ const Landing = ({ token, setToken, setAppEmail }) => {
                 </Card>
               </Col>
             ))}
+
+          {/* If no listings */}
+          {!isListingsLoading && listings.length === 0 && (
+            <h5 className="text-muted w-100 fw-normal">
+              There are no bookable listings yet!
+            </h5>
+          )}
 
           {listings}
         </Row>

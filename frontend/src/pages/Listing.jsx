@@ -503,8 +503,6 @@ const Listing = ({ token, setToken, setAppEmail }) => {
         <hr />
 
         <h4>Reviews</h4>
-
-        {console.log('avail + ' + availability)}
       </Container>
     </>
   );
