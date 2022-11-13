@@ -12,6 +12,7 @@ import ListingCard from '../components/listings/ListingCard';
 import { getListing, getListings } from '../services/listings';
 import SearchToggle from '../components/listings/SearchToggle';
 import SearchForm from '../components/listings/SearchForm';
+import { getBookings } from '../services/bookings';
 
 const Landing = ({ token, setToken, email, setAppEmail }) => {
   Landing.propTypes = {
@@ -28,7 +29,15 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const render = () => {
+  const render = async () => {
+    // get bookings if logged in
+    let bookings = [];
+    if (token) {
+      bookings = await getBookings()
+        .then((response) => response.data.bookings)
+        .catch((error) => console.error(error));
+    }
+
     getListings()
       .then((response) => {
         const promises = [];
@@ -66,9 +75,11 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                         0
                       )}
                       numBathrooms={listing.metadata.numBathrooms}
-                      // TODO: get accepted/pending/none status
-                      // true if accepted, false if pending, null if none
-                      accepted={true}
+                      bookings={bookings.filter(
+                        (booking) =>
+                          booking.owner === email &&
+                          booking.listingId === id.toString()
+                      )}
                     />
                   </Col>,
                   ...newListings,
@@ -76,12 +87,29 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
               }
             });
 
-            // sort alphabetically (note: titles cannot be =)
-            newListings = newListings.sort((a, b) =>
-              a.props.children.props.title > b.props.children.props.title
+            // sort by num accepted bookings, then num pending bookings, then alphabetically (note: titles cannot be =)
+            newListings = newListings.sort((a, b) => {
+              const numAcceptedA = a.props.children.props.bookings.filter(
+                (booking) => booking.status === 'accepted'
+              ).length;
+              const numAcceptedB = b.props.children.props.bookings.filter(
+                (booking) => booking.status === 'accepted'
+              ).length;
+              const numPendingA = a.props.children.props.bookings.filter(
+                (booking) => booking.status === 'pending'
+              ).length;
+              const numPendingB = b.props.children.props.bookings.filter(
+                (booking) => booking.status === 'pending'
+              ).length;
+
+              if (numAcceptedA > numAcceptedB) return -1;
+              if (numAcceptedA < numAcceptedB) return 1;
+              if (numPendingA > numPendingB) return -1;
+              if (numPendingA < numPendingB) return 1;
+              return a.props.children.props.title > b.props.children.props.title
                 ? 1
-                : -1
-            );
+                : -1;
+            });
 
             setIsListingsLoading(false);
             setListings(newListings);

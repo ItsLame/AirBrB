@@ -42,7 +42,7 @@ const MakeBookingForm = ({ listingId, pricePerNight, availability }) => {
     if (event.currentTarget.checkValidity()) {
       createBooking(listingId, { start: startDate, end: endDate }, totalPrice)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           handleClose();
           toast.success('Requested booking!');
         })

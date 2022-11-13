@@ -22,7 +22,7 @@ const ListingCard = ({
   thumbnail,
   numBeds,
   numBathrooms,
-  accepted,
+  bookings,
 }) => {
   ListingCard.propTypes = {
     listingId: PropTypes.number,
@@ -37,8 +37,7 @@ const ListingCard = ({
     thumbnail: PropTypes.string,
     numBeds: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     numBathrooms: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    accepted: PropTypes.bool,
-    // reviews: PropTypes.array,
+    bookings: PropTypes.array,
   };
 
   const navigate = useNavigate();
@@ -75,19 +74,26 @@ const ListingCard = ({
       />
 
       <Card.Body className="d-flex flex-column align-items-start">
-        <Badge bg="success" className="mb-1">
-          Accepted
-        </Badge>
-        {/* {accepted === null
-                ? null
-                : accepted
-                  ? (
-                <Badge bg="success">Accepted</Badge>
-                    )
-                  : (
-                <Badge bg="secondary">Pending</Badge>
-                    )} */}
-        {/* <span className="bg-danger">asd</span> */}
+        <div className="d-flex flex-wrap gap-1 mb-1">
+          {bookings.map((booking, idx) => {
+            let status = booking.status;
+            status = status.charAt(0).toUpperCase() + status.slice(1);
+            return (
+              <Badge
+                key={idx}
+                bg={
+                  status === 'Pending'
+                    ? 'primary'
+                    : status === 'Declined'
+                      ? 'danger'
+                      : 'success'
+                }
+              >
+                {status}
+              </Badge>
+            );
+          })}
+        </div>
 
         <Container className="d-flex gap-1 p-0 mb-2 align-items-start">
           <Card.Title
