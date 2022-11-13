@@ -430,14 +430,14 @@ const Listing = ({ token, setToken, setAppEmail }) => {
                 </h6>
                 <Row xs={1} sm={1} md={2} className="mb-3">
                   <Col>
-                    {[...Array(5)].map((i) => (
+                    {[...Array(5)].map((_, i) => (
                       <div key={i} className="placeholder-glow">
                         <span className="placeholder col-5"></span>
                       </div>
                     ))}
                   </Col>
                   <Col>
-                    {[...Array(5)].map((i) => (
+                    {[...Array(5)].map((_, i) => (
                       <div key={i} className="placeholder-glow">
                         <span className="placeholder col-5"></span>
                       </div>
