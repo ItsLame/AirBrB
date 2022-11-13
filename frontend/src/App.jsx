@@ -88,7 +88,12 @@ const App = () => {
         <Route
           path="listing/:listingId/*"
           element={
-            <Listing token={token} setToken={setToken} setAppEmail={setEmail} />
+            <Listing
+              token={token}
+              setToken={setToken}
+              email={email}
+              setAppEmail={setEmail}
+            />
           }
         />
 

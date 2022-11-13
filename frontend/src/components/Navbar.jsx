@@ -10,11 +10,12 @@ import PropTypes from 'prop-types';
 
 import { logout } from '../services/auth';
 
-const Navbar = ({ token, setToken, middleElement, setAppEmail }) => {
+const Navbar = ({ token, setToken, middleElement, email, setAppEmail }) => {
   Navbar.propTypes = {
     token: PropTypes.string,
     setToken: PropTypes.func,
     middleElement: PropTypes.element,
+    email: PropTypes.string,
     setAppEmail: PropTypes.func,
   };
 
@@ -72,20 +73,24 @@ const Navbar = ({ token, setToken, middleElement, setAppEmail }) => {
             <NavDropdown title={<HiUserCircle size={30} />} align="end">
               {token
                 ? (
-                <NavDropdown.Item
-                  onClick={() => {
-                    logout()
-                      .then((_) => {
-                        setToken('');
-                        setAppEmail('');
-                        navigate('/');
-                        toast.success('Logged out!');
-                      })
-                      .catch((error) => console.error(error));
-                  }}
-                >
-                  Log out
-                </NavDropdown.Item>
+                <>
+                  <NavDropdown.ItemText className='text-muted'>{email}</NavDropdown.ItemText>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item
+                    onClick={() => {
+                      logout()
+                        .then((_) => {
+                          setToken('');
+                          setAppEmail('');
+                          navigate('/');
+                          toast.success('Logged out!');
+                        })
+                        .catch((error) => console.error(error));
+                    }}
+                  >
+                    Log out
+                  </NavDropdown.Item>
+                </>
                   )
                 : (
                 <>

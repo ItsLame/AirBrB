@@ -109,7 +109,12 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
       </Routes>
 
       {/* Navbar */}
-      <Navbar token={token} setToken={setToken} setAppEmail={setAppEmail} />
+      <Navbar
+        token={token}
+        setToken={setToken}
+        email={email}
+        setAppEmail={setAppEmail}
+      />
 
       {/* Main content */}
       <Container className="my-5">

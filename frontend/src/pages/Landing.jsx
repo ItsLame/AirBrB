@@ -111,6 +111,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             }}
           />
         }
+        email={email}
         setAppEmail={setAppEmail}
       />
 

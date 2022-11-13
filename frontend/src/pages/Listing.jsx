@@ -45,10 +45,11 @@ import { StarRating } from '../components/StyledComponents';
 import MakeBookingForm from '../components/bookings/MakeBookingForm';
 import { getListing } from '../services/listings';
 
-const Listing = ({ token, setToken, setAppEmail }) => {
+const Listing = ({ token, setToken, email, setAppEmail }) => {
   Listing.propTypes = {
     token: PropTypes.string,
     setToken: PropTypes.func,
+    email: PropTypes.string,
     setAppEmail: PropTypes.func,
   };
 
@@ -242,7 +243,12 @@ const Listing = ({ token, setToken, setAppEmail }) => {
       </Routes>
 
       {/* Navbar */}
-      <Navbar token={token} setToken={setToken} setAppEmail={setAppEmail} />
+      <Navbar
+        token={token}
+        setToken={setToken}
+        email={email}
+        setAppEmail={setAppEmail}
+      />
 
       {/* Main content */}
       <Container className="my-5">
