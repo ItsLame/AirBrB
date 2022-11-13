@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import { AiOutlineClose } from 'react-icons/ai';
 
 import { publishListing } from '../../services/listings';
+import { getTodayDate, formatDate, addOneDay } from '../../helpers';
 
 const PublishListingForm = ({ myListings, setMyListings }) => {
   PublishListingForm.propTypes = {
@@ -21,21 +22,6 @@ const PublishListingForm = ({ myListings, setMyListings }) => {
   const navigate = useNavigate();
   const { listingId } = useParams();
   const [validated, setValidated] = React.useState(false);
-
-  // add one day to a Date object
-  const addOneDay = (date) => {
-    return new Date(date.setDate(date.getDate() + 1));
-  };
-
-  // format a Date object to YYYY-MM-DD
-  const formatDate = (date) => {
-    return date.toLocaleDateString().split('/').reverse().join('-');
-  };
-
-  // get todays date in YYYY-MM-DD string format
-  const getTodayDate = () => {
-    return formatDate(new Date());
-  };
 
   const [availability, setAvailability] = React.useState([
     {

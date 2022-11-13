@@ -28,3 +28,18 @@ export const fileToDataUrl = (file) => {
   reader.readAsDataURL(file);
   return dataUrlPromise;
 };
+
+// add one day to a Date object
+export const addOneDay = (date) => {
+  return new Date(date.setDate(date.getDate() + 1));
+};
+
+// format a Date object to YYYY-MM-DD
+export const formatDate = (date) => {
+  return date.toLocaleDateString().split('/').reverse().join('-');
+};
+
+// get todays date in YYYY-MM-DD string format
+export const getTodayDate = () => {
+  return formatDate(new Date());
+};
