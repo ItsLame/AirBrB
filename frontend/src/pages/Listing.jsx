@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
+import Table from 'react-bootstrap/Table';
 import {
   MdLocalLaundryService,
   MdIron,
@@ -371,71 +372,92 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
             {availability && bookings.length !== 0 && (
               <>
                 <h5>Your bookings</h5>
-                {bookings
-                  .sort((a, b) => {
-                    const statusMap = { accepted: 1, pending: 2, declined: 3 };
-                    if (statusMap[a.status] < statusMap[b.status]) return -1;
-                    if (statusMap[a.status] > statusMap[b.status]) return 1;
-                    if (
-                      new Date(a.dateRange.start) < new Date(b.dateRange.start)
-                    ) {
-                      return -1;
-                    }
-                    if (
-                      new Date(a.dateRange.start) > new Date(b.dateRange.start)
-                    ) {
-                      return 1;
-                    }
-                    if (new Date(a.dateRange.end) < new Date(b.dateRange.end)) {
-                      return -1;
-                    }
-                    if (new Date(a.dateRange.end) > new Date(b.dateRange.end)) {
-                      return 1;
-                    }
-                    return 0;
-                  })
-                  .map((booking, idx) => {
-                    let status = booking.status;
-                    status = status.charAt(0).toUpperCase() + status.slice(1);
-                    return (
-                      <div key={idx}>
-                        <div className="d-flex align-items-center gap-2">
-                          <Badge
-                            bg={
-                              status === 'Pending'
-                                ? 'primary'
-                                : status === 'Declined'
-                                  ? 'danger'
-                                  : 'success'
+                <Table hover striped>
+                  <tbody>
+                    {bookings
+                      .sort((a, b) => {
+                        const statusMap = {
+                          accepted: 1,
+                          pending: 2,
+                          declined: 3,
+                        };
+                        if (statusMap[a.status] < statusMap[b.status]) { return -1; }
+                        if (statusMap[a.status] > statusMap[b.status]) return 1;
+                        if (
+                          new Date(a.dateRange.start) <
+                          new Date(b.dateRange.start)
+                        ) {
+                          return -1;
+                        }
+                        if (
+                          new Date(a.dateRange.start) >
+                          new Date(b.dateRange.start)
+                        ) {
+                          return 1;
+                        }
+                        if (
+                          new Date(a.dateRange.end) < new Date(b.dateRange.end)
+                        ) {
+                          return -1;
+                        }
+                        if (
+                          new Date(a.dateRange.end) > new Date(b.dateRange.end)
+                        ) {
+                          return 1;
+                        }
+                        return 0;
+                      })
+                      .map((booking, idx) => {
+                        let status = booking.status;
+                        status =
+                          status.charAt(0).toUpperCase() + status.slice(1);
+                        return (
+                          <tr
+                            key={idx}
+                            style={
+                              idx === bookings.length - 1
+                                ? { borderBottom: 'hidden ' }
+                                : {}
                             }
                           >
-                            {status}
-                          </Badge>
-                          <hr className="invisible flex-grow-1" />
-                          <span className="text-center lh-1 my-1">{`${new Date(
-                            booking.dateRange.start
-                          ).toLocaleDateString('default', {
-                            weekday: 'short',
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                          })} — ${new Date(
-                            booking.dateRange.end
-                          ).toLocaleDateString('default', {
-                            weekday: 'short',
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                          })}`}</span>
-                          <hr className="invisible flex-grow-1" />
-                          <u>${booking.totalPrice.toFixed(2)}</u>
-                        </div>
-                        {idx !== bookings.length - 1 && (
-                          <hr className="my-0" style={{ color: 'lightgray' }} />
-                        )}
-                      </div>
-                    );
-                  })}
+                            <td>
+                              <Badge
+                                bg={
+                                  status === 'Pending'
+                                    ? 'primary'
+                                    : status === 'Declined'
+                                      ? 'danger'
+                                      : 'success'
+                                }
+                              >
+                                {status}
+                              </Badge>
+                            </td>
+
+                            <td className="text-center">{`${new Date(
+                              booking.dateRange.start
+                            ).toLocaleDateString('default', {
+                              weekday: 'short',
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                            })} — ${new Date(
+                              booking.dateRange.end
+                            ).toLocaleDateString('default', {
+                              weekday: 'short',
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                            })}`}</td>
+
+                            <td className="text-end">
+                              <u>${booking.totalPrice.toFixed(2)}</u>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </Table>
                 <hr />
               </>
             )}
