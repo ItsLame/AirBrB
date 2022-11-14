@@ -8,10 +8,11 @@ import PropTypes from 'prop-types';
 
 import { updateListing, getListing } from '../../services/listings';
 import MyListingFormModalBody from './MyListingFormModalBody';
+import NotFound from '../../pages/NotFound';
 
-const EditListingForm = ({ myListings, setMyListings }) => {
+const EditListingForm = ({ email, setMyListings }) => {
   EditListingForm.propTypes = {
-    myListings: PropTypes.array,
+    email: PropTypes.string,
     setMyListings: PropTypes.func,
   };
 
@@ -38,21 +39,19 @@ const EditListingForm = ({ myListings, setMyListings }) => {
     React.useState(false);
   const navigate = useNavigate();
   const { listingId } = useParams();
+  const [notFound, setNotFound] = React.useState(false);
 
   React.useEffect(() => {
-    // check if listing exists (only fails if user manually navigates to url)
-    if (
-      myListings.filter((listing) => listing.id === parseInt(listingId, 10))
-        .length === 0
-    ) {
-      handleClose();
-      toast.error('That listing does not exist!');
-      return;
-    }
-
     getListing(listingId)
       .then((response) => {
         const listing = response.data.listing;
+
+        // listing must exist and be owned by the logged in user
+        if (Object.keys(listing).length === 0 || listing.owner !== email) {
+          setNotFound(true);
+          return;
+        }
+
         setTitle(listing.title);
         setThumbnail(listing.thumbnail);
         setStreet(listing.address.street);
@@ -138,6 +137,10 @@ const EditListingForm = ({ myListings, setMyListings }) => {
   const handleClose = () => {
     navigate('..');
   };
+
+  if (notFound) {
+    return <NotFound />;
+  }
 
   return (
     <Modal show={true} onHide={handleClose} size="lg" centered>

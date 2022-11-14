@@ -91,19 +91,13 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
         <Route
           path="edit/:listingId"
           element={
-            <EditListingForm
-              myListings={myListings}
-              setMyListings={setMyListings}
-            />
+            <EditListingForm email={email} setMyListings={setMyListings} />
           }
         />
         <Route
           path="publish/:listingId"
           element={
-            <PublishListingForm
-              myListings={myListings}
-              setMyListings={setMyListings}
-            />
+            <PublishListingForm email={email} setMyListings={setMyListings} />
           }
         />
       </Routes>

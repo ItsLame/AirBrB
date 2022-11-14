@@ -123,7 +123,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
         // the getListing route always succeeds even if
         // listingId isnt a valid listing
         // so we do this check here to check for invalid listings
-        if (Object.keys(listing).length === 0) {
+        if (Object.keys(listing).length === 0 || listing.owner !== email) {
           setNotFound(true);
           return;
         }
@@ -149,10 +149,6 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
         setThumbnail(listing.thumbnail);
         setPublished(listing.published);
         setPostedOn(listing.postedOn);
-
-        if (listing.owner !== email) {
-          setNotFound(true);
-        }
       })
       .catch((error) => console.error(error));
   }, []);

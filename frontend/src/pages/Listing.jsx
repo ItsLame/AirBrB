@@ -75,7 +75,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
         // the getListing route always succeeds even if
         // listingId isnt a valid listing
         // so we do this check here to check for invalid listings
-        if (Object.keys(listing).length === 0) {
+        if (Object.keys(listing).length === 0 || !listing.published) {
           setNotFound(true);
           return;
         }

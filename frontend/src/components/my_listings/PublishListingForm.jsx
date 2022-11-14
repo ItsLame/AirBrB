@@ -10,50 +10,44 @@ import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import { AiOutlineClose } from 'react-icons/ai';
 
-import { publishListing } from '../../services/listings';
+import { getListing, publishListing } from '../../services/listings';
 import { getTodayDate, formatDate, addOneDay } from '../../helpers';
+import NotFound from '../../pages/NotFound';
 
-const PublishListingForm = ({ myListings, setMyListings }) => {
+const PublishListingForm = ({ email, setMyListings }) => {
   PublishListingForm.propTypes = {
-    myListings: PropTypes.array,
+    email: PropTypes.string,
     setMyListings: PropTypes.func,
   };
 
   const navigate = useNavigate();
   const { listingId } = useParams();
   const [validated, setValidated] = React.useState(false);
-
   const [availability, setAvailability] = React.useState([
     {
       start: getTodayDate(),
       end: formatDate(addOneDay(new Date(getTodayDate()))),
     },
   ]);
+  const [notFound, setNotFound] = React.useState(false);
+
+  React.useEffect(() => {
+    getListing(listingId).then((response) => {
+      const listing = response.data.listing;
+
+      // listing must exist, be owned by the logged in user and be unpublished
+      if (
+        Object.keys(listing).length === 0 ||
+        listing.owner !== email ||
+        listing.published
+      ) {
+        setNotFound(true);
+      }
+    });
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    // check if listing exists (only fails if user manually navigates to url)
-    if (
-      myListings.filter((listing) => listing.id === parseInt(listingId, 10))
-        .length === 0
-    ) {
-      handleClose();
-      toast.error('That listing does not exist!');
-      return;
-    }
-
-    // check if listing exists and is unpublished (only fails if user manually navigates to url)
-    if (
-      myListings.filter(
-        (listing) =>
-          !listing.published && listing.id === parseInt(listingId, 10)
-      ).length === 0
-    ) {
-      handleClose();
-      toast.error('That listing is already published!');
-      return;
-    }
 
     if (event.currentTarget.checkValidity()) {
       publishListing(listingId, availability)
@@ -79,6 +73,10 @@ const PublishListingForm = ({ myListings, setMyListings }) => {
   const handleClose = () => {
     navigate('..');
   };
+
+  if (notFound) {
+    return <NotFound />;
+  }
 
   return (
     <Modal show={true} onHide={handleClose} centered>
