@@ -8,12 +8,17 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Table from 'react-bootstrap/Table';
+import { toast } from 'react-toastify';
 
 import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
 import { StarRating } from '../components/StyledComponents';
 import { getListing } from '../services/listings';
-import { getBookings } from '../services/bookings';
+import {
+  acceptBooking,
+  declineBooking,
+  getBookings,
+} from '../services/bookings';
 import AmenityList from '../components/AmenityList';
 
 const MyListing = ({ token, setToken, email, setAppEmail }) => {
@@ -96,8 +101,6 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
         setPublished(listing.published);
         setPostedOn(listing.postedOn);
 
-        console.log(bookings, postedOn);
-
         if (listing.owner !== email) {
           setNotFound(true);
         }
@@ -126,9 +129,23 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
             {/* Published status badge */}
             {published !== null
               ? (
-              <Badge bg={published ? 'success' : 'danger'}>
-                {published ? 'Published' : 'Not published'}
-              </Badge>
+              <>
+                <Badge className="me-1" bg={published ? 'success' : 'danger'}>
+                  {published ? 'Published' : 'Not published'}
+                </Badge>
+                {published &&
+                  (() => {
+                    const daysSince = Math.ceil(
+                      (new Date() - new Date(postedOn)) / (1000 * 60 * 60 * 24)
+                    );
+                    return (
+                      <Badge bg="secondary" className="fw-normal">
+                        since {new Date(postedOn).toLocaleDateString()} (
+                        {daysSince} day{daysSince === 1 ? '' : 's'})
+                      </Badge>
+                    );
+                  })()}
+              </>
                 )
               : (
               <span className="placeholder-glow">
@@ -400,7 +417,12 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
 
             {/* Booking requests */}
             <h5>Booking requests</h5>
-            {bookings.length === 0
+            <h6 className="text-muted mb-0">
+              Bookings with status <Badge bg="primary">Pending</Badge>
+            </h6>
+            {/* <p className='text-muted fst-italic' style={{ fontSize: '10pt' }}>Sorted by nearest booking date</p> */}
+            {bookings.filter((booking) => booking.status === 'pending')
+              .length === 0
               ? (
               <p className="text-muted fst-italic">No booking requests yet!</p>
                 )
@@ -420,8 +442,16 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                   {bookings
                     .filter((booking) => booking.status === 'pending')
                     .sort((a, b) => {
-                      if (a.totalPrice > b.totalPrice) return -1;
-                      if (a.totalPrice < b.totalPrice) return 1;
+                      if (
+                        new Date(a.dateRange.start) <
+                        new Date(b.dateRange.start)
+                      ) { return -1; }
+                      if (
+                        new Date(a.dateRange.start) >
+                        new Date(b.dateRange.start)
+                      ) { return 1; }
+                      if (new Date(a.dateRange.end) < new Date(b.dateRange.end)) { return -1; }
+                      if (new Date(a.dateRange.end) > new Date(b.dateRange.end)) { return 1; }
                       return 0;
                     })
                     .map((booking, idx) => {
@@ -453,19 +483,49 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                             ).toLocaleDateString()}
                           </td>
                           <td>${booking.totalPrice.toFixed(2)}</td>
-                          <td>
+                          <td style={{ width: '175px' }}>
                             <div className="d-flex flex-nowrap gap-1">
                               <Button
-                                style={{ fontSize: '10pt', width: '60px' }}
-                                className="px-2 py-0"
+                                style={{ fontSize: '10pt', width: '65px' }}
+                                className="px-2 py-0 fw-bold"
                                 variant="success"
+                                onClick={() => {
+                                  acceptBooking(booking.id)
+                                    .then((_) => {
+                                      setBookings((bookings) =>
+                                        bookings.map((b) => {
+                                          if (b.id === booking.id) { b.status = 'accepted'; }
+                                          return b;
+                                        })
+                                      );
+                                      toast.success(
+                                        `Accepted booking request from ${booking.owner} for $${booking.totalPrice}`
+                                      );
+                                    })
+                                    .catch((error) => console.error(error));
+                                }}
                               >
                                 Accept
                               </Button>
                               <Button
-                                style={{ fontSize: '10pt', width: '60px' }}
-                                className="px-2 py-0"
+                                style={{ fontSize: '10pt', width: '65px' }}
+                                className="px-2 py-0 fw-bold"
                                 variant="danger"
+                                onClick={() => {
+                                  declineBooking(booking.id)
+                                    .then((_) => {
+                                      setBookings((bookings) =>
+                                        bookings.map((b) => {
+                                          if (b.id === booking.id) { b.status = 'declined'; }
+                                          return b;
+                                        })
+                                      );
+                                      toast.success(
+                                        `Declined booking request from ${booking.owner}`
+                                      );
+                                    })
+                                    .catch((error) => console.error(error));
+                                }}
                               >
                                 Deny
                               </Button>
@@ -481,9 +541,99 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
 
             {/* Booking history */}
             <h5>Booking history</h5>
+            <h6 className="text-muted mb-0">
+              Bookings with status <Badge bg="success">Accepted</Badge> or{' '}
+              <Badge bg="danger">Declined</Badge>
+            </h6>
+            {/* <p className='text-muted fst-italic' style={{ fontSize: '10pt' }}>Sorted by furthest booking date</p> */}
+            {bookings.filter((booking) => booking.status !== 'pending')
+              .length === 0
+              ? (
+              <p className="text-muted fst-italic">No booking history yet!</p>
+                )
+              : (
+              <Table hover striped size="sm">
+                <thead>
+                  <tr>
+                    <th>From</th>
+                    <th>Nights</th>
+                    <th>Start date</th>
+                    <th>End date</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookings
+                    .filter((booking) => booking.status !== 'pending')
+                    .sort((a, b) => {
+                      if (
+                        new Date(a.dateRange.start) <
+                        new Date(b.dateRange.start)
+                      ) { return 1; }
+                      if (
+                        new Date(a.dateRange.start) >
+                        new Date(b.dateRange.start)
+                      ) { return -1; }
+                      if (new Date(a.dateRange.end) < new Date(b.dateRange.end)) { return 1; }
+                      if (new Date(a.dateRange.end) > new Date(b.dateRange.end)) { return -1; }
+                      return 0;
+                    })
+                    .map((booking, idx) => {
+                      return (
+                        <tr
+                          key={idx}
+                          style={
+                            idx === bookings.length - 1
+                              ? { borderBottom: 'hidden ' }
+                              : {}
+                          }
+                        >
+                          <td>{booking.owner}</td>
+                          <td>
+                            {Math.round(
+                              (new Date(booking.dateRange.end) -
+                                new Date(booking.dateRange.start)) /
+                                (1000 * 60 * 60 * 24)
+                            )}
+                          </td>
+                          <td>
+                            {new Date(
+                              booking.dateRange.start
+                            ).toLocaleDateString()}
+                          </td>
+                          <td>
+                            {new Date(
+                              booking.dateRange.end
+                            ).toLocaleDateString()}
+                          </td>
+                          <td>${booking.totalPrice.toFixed(2)}</td>
+                          <td style={{ width: '175px' }}>
+                            <Badge
+                              bg={
+                                booking.status === 'accepted'
+                                  ? 'success'
+                                  : 'danger'
+                              }
+                            >
+                              {booking.status === 'accepted'
+                                ? 'Accepted'
+                                : 'Declined'}
+                            </Badge>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </Table>
+                )}
             <hr />
           </>
         )}
+
+        {/* Yearly profits and stats */}
+        <h5>Performance in {new Date().getFullYear()}</h5>
+        <hr />
 
         {/* <h5>Reviews</h5> */}
       </Container>

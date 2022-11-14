@@ -267,7 +267,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
             {availability && bookings.length !== 0 && (
               <>
                 <h5>Your bookings</h5>
-                <Table hover striped>
+                <Table hover striped size="sm">
                   <tbody>
                     {bookings
                       .sort((a, b) => {
