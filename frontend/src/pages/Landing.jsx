@@ -80,6 +80,8 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                           booking.owner === email &&
                           booking.listingId === id.toString()
                       )}
+                      owner={listing.owner}
+                      email={email}
                     />
                   </Col>,
                   ...newListings,

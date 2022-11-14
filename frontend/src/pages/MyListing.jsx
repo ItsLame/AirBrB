@@ -437,7 +437,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
         </Row>
         <hr />
 
-        {/* Only show availabilities, booking requests, booking history and reviews if published */}
+        {/* Only show availabilities, booking requests, booking history, performance and reviews if published */}
         {published && (
           <>
             {/* Availabilities */}
@@ -467,10 +467,9 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
 
             {/* Booking requests */}
             <h5>Booking requests</h5>
-            <h6 className="text-muted mb-0">
+            <h6 className="text-muted mb-3">
               Bookings with status <Badge bg="primary">Pending</Badge>
             </h6>
-            {/* <p className='text-muted fst-italic' style={{ fontSize: '10pt' }}>Sorted by nearest booking date</p> */}
             {bookings.filter((booking) => booking.status === 'pending')
               .length === 0
               ? (
@@ -608,11 +607,10 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
 
             {/* Booking history */}
             <h5>Booking history</h5>
-            <h6 className="text-muted mb-0">
+            <h6 className="text-muted mb-3">
               Bookings with status <Badge bg="success">Accepted</Badge> or{' '}
               <Badge bg="danger">Declined</Badge>
             </h6>
-            {/* <p className='text-muted fst-italic' style={{ fontSize: '10pt' }}>Sorted by furthest booking date</p> */}
             {bookings.filter((booking) => booking.status !== 'pending')
               .length === 0
               ? (
@@ -711,7 +709,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
 
             {/* Yearly profits and stats */}
             <h5 className="mt-4">Performance in {new Date().getFullYear()}</h5>
-            <div className="ms-2 d-flex gap-5 mb-3">
+            <div className="ms-2 d-flex gap-3 mb-3 w-100 flex-wrap">
               <div className="d-flex align-items-center gap-2">
                 <GiReceiveMoney size={45} />
                 <div className="d-flex flex-column justify-content-center">
@@ -752,12 +750,9 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                   </span>
                 </div>
               </div>
-              {/* <div className='d-flex align-items-center justify-content-between'>
-          <BiCalendarCheck />
-          <span>Bookings this year:</span>
-          <span>{yearlyBookings} with {yearlyDaysBooked} days booked</span>
-        </div> */}
             </div>
+
+            {/* Graphs */}
             <Row>
               <Col>
                 <Bar

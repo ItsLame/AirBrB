@@ -24,6 +24,8 @@ const ListingCard = ({
   numBeds,
   numBathrooms,
   bookings,
+  owner,
+  email,
 }) => {
   ListingCard.propTypes = {
     listingId: PropTypes.number,
@@ -39,12 +41,16 @@ const ListingCard = ({
     numBeds: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     numBathrooms: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     bookings: PropTypes.array,
+    owner: PropTypes.string,
+    email: PropTypes.string,
   };
 
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/listing/${listingId}`);
+    navigate(
+      owner === email ? `/my_listing/${listingId}` : `/listing/${listingId}`
+    );
   };
 
   return (
@@ -76,6 +82,8 @@ const ListingCard = ({
 
       <Card.Body className="d-flex flex-column align-items-start">
         <div className="d-flex flex-wrap gap-1 mb-1">
+          {owner === email && <Badge bg="dark">Mine</Badge>}
+
           {bookings.map((booking, idx) => {
             let status = booking.status;
             status = status.charAt(0).toUpperCase() + status.slice(1);
