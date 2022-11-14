@@ -8,6 +8,15 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Placeholder from 'react-bootstrap/Placeholder';
 import { HiPlusCircle } from 'react-icons/hi';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 
 import Navbar from '../components/Navbar';
 import MyListingCard from '../components/my_listings/MyListingCard';
@@ -15,6 +24,10 @@ import CreateListingForm from '../components/my_listings/CreateListingForm';
 import PublishListingForm from '../components/my_listings/PublishListingForm';
 import EditListingForm from '../components/my_listings/EditListingForm';
 import { getListing, getListings } from '../services/listings';
+import { getBookings } from '../services/bookings';
+import { currencyFormatter } from '../helpers';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const MyListings = ({ token, setToken, email, setAppEmail }) => {
   MyListings.propTypes = {
@@ -27,6 +40,8 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
   const navigate = useNavigate();
   const [myListings, setMyListings] = React.useState([]);
   const [isListingsLoading, setIsListingsLoading] = React.useState(true);
+  const [bookings, setBookings] = React.useState([]);
+  const [monthsProfit, setMonthsProfit] = React.useState([]);
 
   // set my listings on load
   React.useEffect(() => {
@@ -78,6 +93,57 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
       })
       .catch((error) => console.error(error));
   }, []);
+
+  // get accepted bookings for any listing that the user owns
+  React.useEffect(() => {
+    getBookings()
+      .then((response) =>
+        setBookings(
+          response.data.bookings.filter((booking) => {
+            return (
+              booking.status === 'accepted' &&
+              myListings.some(
+                (listing) => parseInt(booking.listingId, 10) === listing.id
+              )
+            );
+          })
+        )
+      )
+      .catch((error) => console.error(error));
+  }, [myListings]);
+
+  // calculate months profit when bookings is found
+  React.useEffect(() => {
+    const newMonthsProfit = new Array(31).fill(0);
+    bookings.forEach((booking) => {
+      const today = new Date(new Date().setHours(0, 0, 0, 0));
+      const todayCopy = new Date(new Date().setHours(0, 0, 0, 0));
+      const start = new Date(
+        new Date(booking.dateRange.start).setHours(0, 0, 0, 0)
+      );
+      const end = new Date(
+        new Date(booking.dateRange.end).setHours(0, 0, 0, 0)
+      );
+
+      const pricePerNight =
+        booking.totalPrice / ((end - start) / (24 * 60 * 60 * 1000));
+
+      for (
+        let day = new Date(todayCopy.setDate(todayCopy.getDate() - 30)); // 30 days ago
+        day <= today; // until today (0 days ago)
+        day = new Date(day.setDate(day.getDate() + 1)) // increment 1 day
+      ) {
+        // check if this day is part of the booking
+        if (start <= day && day < end) {
+          const daysAgo = Math.round(
+            Math.abs((day - today) / (24 * 60 * 60 * 1000))
+          );
+          newMonthsProfit[daysAgo] += pricePerNight;
+        }
+      }
+    });
+    setMonthsProfit(newMonthsProfit);
+  }, [bookings]);
 
   return (
     <>
@@ -196,6 +262,56 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
             </Col>
           ))}
         </Row>
+
+        {/* Last month profits */}
+        <h1 className="mt-5">Last month{"'s"} profits</h1>
+        <Bar
+          style={{ width: '0' }}
+          options={{
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              tooltip: {
+                callbacks: {
+                  title: (tooltipItems) =>
+                    tooltipItems[0].parsed.x +
+                    ' day' +
+                    (tooltipItems[0].parsed.x === 1 ? '' : 's') +
+                    ' ago',
+                  label: (tooltipItem) =>
+                    currencyFormatter.format(tooltipItem.parsed.y) +
+                    ' in profit',
+                },
+              },
+            },
+            scales: {
+              y: {
+                title: {
+                  display: true,
+                  text: 'Profit ($)',
+                },
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: 'Days ago',
+                },
+              },
+            },
+          }}
+          data={{
+            labels: [...Array(31).keys()],
+            datasets: [
+              {
+                label: 'Profit for the past 31 days',
+                data: monthsProfit,
+                backgroundColor: 'rgba(100, 235, 100, 0.5)',
+              },
+            ],
+          }}
+        />
       </Container>
       <Outlet />
     </>
