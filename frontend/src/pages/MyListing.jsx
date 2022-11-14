@@ -560,7 +560,11 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                                         })
                                       );
                                       toast.success(
-                                        `Accepted booking request from ${booking.owner} for $${booking.totalPrice}`
+                                        `Accepted booking request from ${
+                                          booking.owner
+                                        } for ${currencyFormatter.format(
+                                          booking.totalPrice
+                                        )}`
                                       );
                                     })
                                     .catch((error) => console.error(error));
