@@ -1,35 +1,28 @@
 import React from 'react';
-import { useParams, Route, Routes, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
 import Carousel from 'react-bootstrap/Carousel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
-import Table from 'react-bootstrap/Table';
-import { FaCalendarCheck } from 'react-icons/fa';
 
 import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
-import LoginForm from '../components/auth/LoginForm';
-import RegisterForm from '../components/auth/RegisterForm';
 import { StarRating } from '../components/StyledComponents';
-import MakeBookingForm from '../components/bookings/MakeBookingForm';
 import { getListing } from '../services/listings';
 import { getBookings } from '../services/bookings';
 import AmenityList from '../components/AmenityList';
 
-const Listing = ({ token, setToken, email, setAppEmail }) => {
-  Listing.propTypes = {
+const MyListing = ({ token, setToken, email, setAppEmail }) => {
+  MyListing.propTypes = {
     token: PropTypes.string,
     setToken: PropTypes.func,
     email: PropTypes.string,
     setAppEmail: PropTypes.func,
   };
 
-  const navigate = useNavigate();
   const { listingId } = useParams();
   const [title, setTitle] = React.useState(null);
   const [street, setStreet] = React.useState(null);
@@ -54,6 +47,8 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
     React.useState(false);
   const [notFound, setNotFound] = React.useState(false);
   const [bookings, setBookings] = React.useState([]);
+  const [published, setPublished] = React.useState(null);
+  const [postedOn, setPostedOn] = React.useState(null);
 
   React.useEffect(() => {
     getBookings()
@@ -98,6 +93,14 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
         setAvgRating(0); // TODO
         setNumReviews(listing.reviews.length);
         setThumbnail(listing.thumbnail);
+        setPublished(listing.published);
+        setPostedOn(listing.postedOn);
+
+        console.log(bookings, availability, postedOn);
+
+        if (listing.owner !== email) {
+          setNotFound(true);
+        }
       })
       .catch((error) => console.error(error));
   }, []);
@@ -108,52 +111,6 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
 
   return (
     <>
-      {/* Sub routes */}
-      <Routes>
-        {/* Define login and register routes if user is not logged in */}
-        {!token && (
-          <>
-            <Route
-              path="login"
-              element={
-                <LoginForm setToken={setToken} setAppEmail={setAppEmail} />
-              }
-            />
-            <Route
-              path="register"
-              element={
-                <RegisterForm setToken={setToken} setAppEmail={setAppEmail} />
-              }
-            />
-          </>
-        )}
-
-        {/* Route book to booking form if logged in, otherwise route to login page */}
-        {token
-          ? (
-          <Route
-            path="book"
-            element={
-              <MakeBookingForm
-                listingId={listingId}
-                availability={availability}
-                pricePerNight={pricePerNight}
-                setBookings={setBookings}
-                email={email}
-              />
-            }
-          />
-            )
-          : (
-          <Route
-            path="book"
-            element={
-              <LoginForm setToken={setToken} setAppEmail={setAppEmail} />
-            }
-          />
-            )}
-      </Routes>
-
       {/* Navbar */}
       <Navbar
         token={token}
@@ -166,6 +123,19 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
       <Container className="my-5">
         <Row xs={1} sm={1} md={1} lg={2}>
           <Col>
+            {/* Published status badge */}
+            {published !== null
+              ? (
+              <Badge bg={published ? 'success' : 'danger'}>
+                {published ? 'Published' : 'Not published'}
+              </Badge>
+                )
+              : (
+              <span className="placeholder-glow">
+                <span className="placeholder col-2 placeholder-md"></span>
+              </span>
+                )}
+
             {/* Title */}
             {title !== null
               ? (
@@ -240,124 +210,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                 <span className="placeholder col-3"></span>
               </div>
                 )}
-
-            {/* Book now button */}
-            {availability
-              ? (
-                  owner !== email && (
-                <Button
-                  variant="dark"
-                  className="d-flex gap-2 align-items-center"
-                  onClick={() => navigate('book')}
-                >
-                  <Card.Title>Book now</Card.Title>
-                  <FaCalendarCheck size={20} />
-                </Button>
-                  )
-                )
-              : (
-              <a
-                href="#"
-                tabIndex="-1"
-                className="btn btn-dark disabled col-3 placeholder"
-              ></a>
-                )}
             <hr />
-
-            {availability && bookings.length !== 0 && (
-              <>
-                <h5>Your bookings</h5>
-                <Table hover striped>
-                  <tbody>
-                    {bookings
-                      .sort((a, b) => {
-                        const statusMap = {
-                          accepted: 1,
-                          pending: 2,
-                          declined: 3,
-                        };
-                        if (statusMap[a.status] < statusMap[b.status]) {
-                          return -1;
-                        }
-                        if (statusMap[a.status] > statusMap[b.status]) return 1;
-                        if (
-                          new Date(a.dateRange.start) <
-                          new Date(b.dateRange.start)
-                        ) {
-                          return -1;
-                        }
-                        if (
-                          new Date(a.dateRange.start) >
-                          new Date(b.dateRange.start)
-                        ) {
-                          return 1;
-                        }
-                        if (
-                          new Date(a.dateRange.end) < new Date(b.dateRange.end)
-                        ) {
-                          return -1;
-                        }
-                        if (
-                          new Date(a.dateRange.end) > new Date(b.dateRange.end)
-                        ) {
-                          return 1;
-                        }
-                        return 0;
-                      })
-                      .map((booking, idx) => {
-                        let status = booking.status;
-                        status =
-                          status.charAt(0).toUpperCase() + status.slice(1);
-                        return (
-                          <tr
-                            key={idx}
-                            style={
-                              idx === bookings.length - 1
-                                ? { borderBottom: 'hidden ' }
-                                : {}
-                            }
-                          >
-                            <td>
-                              <Badge
-                                bg={
-                                  status === 'Pending'
-                                    ? 'primary'
-                                    : status === 'Declined'
-                                      ? 'danger'
-                                      : 'success'
-                                }
-                              >
-                                {status}
-                              </Badge>
-                            </td>
-
-                            <td className="text-center">{`${new Date(
-                              booking.dateRange.start
-                            ).toLocaleDateString('default', {
-                              weekday: 'short',
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                            })} — ${new Date(
-                              booking.dateRange.end
-                            ).toLocaleDateString('default', {
-                              weekday: 'short',
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                            })}`}</td>
-
-                            <td className="text-end">
-                              <u>${booking.totalPrice.toFixed(2)}</u>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </Table>
-                <hr />
-              </>
-            )}
 
             {/* Amenities */}
             {essentialsAmenities !== null &&
@@ -366,7 +219,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
             safetyAmenities !== null
               ? (
               <>
-                <h5>What this place offers</h5>
+                <h5>Amenities</h5>
 
                 {/* If no amenities show a message */}
                 {!essentialsAmenities?.length &&
@@ -517,10 +370,23 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
         </Row>
         <hr />
 
-        {/* <h4>Reviews</h4> */}
+        {published && (
+          <>
+            <h5>Availabilities</h5>
+            <hr />
+
+            <h5>Booking requests</h5>
+            <hr />
+
+            <h5>Booking history</h5>
+            <hr />
+          </>
+        )}
+
+        {/* <h5>Reviews</h5> */}
       </Container>
     </>
   );
 };
 
-export default Listing;
+export default MyListing;

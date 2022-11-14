@@ -79,7 +79,7 @@ const MyListingCard = ({
   );
 
   const handleClick = (e) => {
-    navigate(listingId.toString());
+    navigate('/my_listing/' + listingId);
   };
 
   return (

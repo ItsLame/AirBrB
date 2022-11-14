@@ -11,6 +11,7 @@ import MyListings from './pages/MyListings';
 import NotFound from './pages/NotFound';
 import LoginForm from './components/auth/LoginForm';
 import RegisterForm from './components/auth/RegisterForm';
+import MyListing from './pages/MyListing';
 
 const App = () => {
   const [token, setToken] = React.useState(
@@ -75,6 +76,21 @@ const App = () => {
             path="my_listings/*"
             element={
               <MyListings
+                token={token}
+                setToken={setToken}
+                email={email}
+                setAppEmail={setEmail}
+              />
+            }
+          />
+        )}
+
+        {/* Single my listing page */}
+        {token && (
+          <Route
+            path="my_listing/:listingId/*"
+            element={
+              <MyListing
                 token={token}
                 setToken={setToken}
                 email={email}
