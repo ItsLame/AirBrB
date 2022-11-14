@@ -51,7 +51,7 @@ const ListingCard = ({
       border="dark"
       className="h-100 overflow-auto"
       onClick={handleClick}
-      onMouseEnter={(e) => {
+      onMouseOver={(e) => {
         e.currentTarget.classList.add('bg-dark');
         e.currentTarget.classList.add('text-light');
         e.currentTarget.classList.remove('border-dark');

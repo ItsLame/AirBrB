@@ -59,14 +59,15 @@ const MyListingCard = ({
 
   // Confirm delete popover
   const confirmDelete = (
-    <Popover id="confirm-delete-popover">
+    <Popover id="confirm-delete-popover" onClick={(e) => e.stopPropagation()}>
       <Popover.Body className="d-flex gap-2 align-items-center">
         Are you sure?
         <Button
           className="py-0 px-2"
           style={{ fontSize: '11pt' }}
           variant="danger"
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             deleteMyListing();
             document.body.click();
           }}
@@ -77,8 +78,27 @@ const MyListingCard = ({
     </Popover>
   );
 
+  const handleClick = (e) => {
+    navigate(listingId.toString());
+  };
+
   return (
-    <Card border="dark" className="h-100 overflow-auto">
+    <Card
+      border="dark"
+      className="h-100 overflow-auto"
+      onClick={handleClick}
+      onMouseOver={(e) => {
+        e.currentTarget.classList.add('bg-dark');
+        e.currentTarget.classList.add('text-light');
+        e.currentTarget.classList.remove('border-dark');
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.classList.remove('bg-dark');
+        e.currentTarget.classList.remove('text-light');
+        e.currentTarget.classList.add('border-dark');
+      }}
+      style={{ cursor: 'pointer', transition: 'all 0.1s ease-in' }}
+    >
       {/* Listing thumbnail */}
       <Card.Img
         variant="top"
@@ -150,6 +170,7 @@ const MyListingCard = ({
             className="py-0 px-2"
             style={{ fontSize: '11pt' }}
             variant="outline-danger"
+            onClick={(e) => e.stopPropagation()}
           >
             Delete
           </Button>
@@ -161,7 +182,10 @@ const MyListingCard = ({
           className="py-0 px-2"
           style={{ fontSize: '11pt' }}
           variant="outline-primary"
-          onClick={() => navigate(`edit/${listingId}`)}
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`edit/${listingId}`);
+          }}
         >
           Edit
         </Button>
@@ -172,7 +196,10 @@ const MyListingCard = ({
             className="py-0 px-2"
             style={{ fontSize: '11pt' }}
             variant="outline-success"
-            onClick={() => navigate(`publish/${listingId}`)}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`publish/${listingId}`);
+            }}
           >
             Publish
           </Button>
