@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { StarRating } from '../StyledComponents';
-import { deleteListing } from '../../services/listings';
+import { deleteListing, unpublishListing } from '../../services/listings';
 import { currencyFormatter } from '../../helpers';
 
 const MyListingCard = ({
@@ -74,6 +74,46 @@ const MyListingCard = ({
           }}
         >
           Delete
+        </Button>
+      </Popover.Body>
+    </Popover>
+  );
+
+  const unpublishMyListing = () => {
+    unpublishListing(listingId)
+      .then((_) => {
+        setMyListings((curr) =>
+          curr.map((listing) => {
+            if (listing.id === listingId) {
+              listing.published = false;
+            }
+            return listing;
+          })
+        );
+        toast.success(`Unpublished listing: ${title}!`);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  // Confirm unpublish popover
+  const confirmUnpublish = (
+    <Popover
+      id="confirm-unpublish-popover"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <Popover.Body className="d-flex gap-2 align-items-center">
+        Are you sure?
+        <Button
+          className="py-0 px-2"
+          style={{ fontSize: '11pt' }}
+          variant="secondary"
+          onClick={(e) => {
+            e.stopPropagation();
+            unpublishMyListing();
+            document.body.click();
+          }}
+        >
+          Unpublish
         </Button>
       </Popover.Body>
     </Popover>
@@ -208,13 +248,22 @@ const MyListingCard = ({
 
         {/* Unpublish button */}
         {published && (
-          <Button
-            className="py-0 px-2"
-            style={{ fontSize: '11pt' }}
-            variant="outline-secondary"
+          <OverlayTrigger
+            trigger="click"
+            placement="bottom"
+            overlay={confirmUnpublish}
+            rootClose
+            rootCloseEvent="click"
           >
-            Unpublish
-          </Button>
+            <Button
+              className="py-0 px-2"
+              style={{ fontSize: '11pt' }}
+              variant="outline-secondary"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Unpublish
+            </Button>
+          </OverlayTrigger>
         )}
       </Card.Footer>
     </Card>
