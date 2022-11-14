@@ -64,7 +64,6 @@ const PublishListingForm = ({ email, setMyListings }) => {
           toast.success('Published listing!');
         })
         .catch((error) => console.error(error));
-      console.log('valid');
     }
 
     setValidated(true);
