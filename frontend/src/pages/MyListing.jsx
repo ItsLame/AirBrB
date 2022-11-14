@@ -9,6 +9,18 @@ import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Table from 'react-bootstrap/Table';
 import { toast } from 'react-toastify';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import { BiCalendarCheck } from 'react-icons/bi';
+import { GiReceiveMoney } from 'react-icons/gi';
+import { BsCalendarDay } from 'react-icons/bs';
 
 import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
@@ -20,6 +32,9 @@ import {
   getBookings,
 } from '../services/bookings';
 import AmenityList from '../components/AmenityList';
+import { currencyFormatter } from '../helpers';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const MyListing = ({ token, setToken, email, setAppEmail }) => {
   MyListing.propTypes = {
@@ -55,6 +70,40 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
   const [bookings, setBookings] = React.useState([]);
   const [published, setPublished] = React.useState(null);
   const [postedOn, setPostedOn] = React.useState(null);
+  const [monthlyBookings, setMonthlyBookings] = React.useState([]);
+  const [monthlyProfits, setMonthlyProfits] = React.useState([]);
+  const [yearlyBookings, setYearlyBookings] = React.useState(0);
+  const [yearlyProfit, setYearlyProfit] = React.useState(0);
+  const [yearlyDaysBooked, setYearlyDaysBooked] = React.useState(0);
+
+  React.useEffect(() => {
+    const newMonthlyBookings = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const newMonthlyProfits = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let newYearlyDaysBooked = 0;
+
+    bookings.forEach((booking) => {
+      if (booking.status === 'accepted') {
+        const bookingYear = new Date(booking.dateRange.start).getFullYear();
+        const nowYear = new Date().getFullYear();
+        if (bookingYear === nowYear) {
+          const bookingMonth = new Date(booking.dateRange.start).getMonth();
+          newMonthlyBookings[bookingMonth]++;
+          newMonthlyProfits[bookingMonth] += booking.totalPrice;
+          newYearlyDaysBooked += Math.round(
+            (new Date(booking.dateRange.end) -
+              new Date(booking.dateRange.start)) /
+              (1000 * 60 * 60 * 24)
+          );
+        }
+      }
+    });
+
+    setMonthlyBookings(newMonthlyBookings);
+    setMonthlyProfits(newMonthlyProfits);
+    setYearlyBookings(newMonthlyBookings.reduce((a, b) => a + b, 0));
+    setYearlyProfit(newMonthlyProfits.reduce((a, b) => a + b, 0));
+    setYearlyDaysBooked(newYearlyDaysBooked);
+  }, [bookings]);
 
   React.useEffect(() => {
     getBookings()
@@ -136,7 +185,8 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                 {published &&
                   (() => {
                     const daysSince = Math.ceil(
-                      (new Date() - new Date(postedOn)) / (1000 * 60 * 60 * 24)
+                      (new Date() - new Date(postedOn).setHours(0, 0, 0, 0)) /
+                        (1000 * 60 * 60 * 24)
                     );
                     return (
                       <Badge bg="secondary" className="fw-normal">
@@ -219,7 +269,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
             {pricePerNight
               ? (
               <div className="fst-italic mb-2">
-                <u>${pricePerNight.toFixed(2)} per night</u>
+                <u>{currencyFormatter.format(pricePerNight)} per night</u>
               </div>
                 )
               : (
@@ -445,13 +495,25 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                       if (
                         new Date(a.dateRange.start) <
                         new Date(b.dateRange.start)
-                      ) { return -1; }
+                      ) {
+                        return -1;
+                      }
                       if (
                         new Date(a.dateRange.start) >
                         new Date(b.dateRange.start)
-                      ) { return 1; }
-                      if (new Date(a.dateRange.end) < new Date(b.dateRange.end)) { return -1; }
-                      if (new Date(a.dateRange.end) > new Date(b.dateRange.end)) { return 1; }
+                      ) {
+                        return 1;
+                      }
+                      if (
+                        new Date(a.dateRange.end) < new Date(b.dateRange.end)
+                      ) {
+                        return -1;
+                      }
+                      if (
+                        new Date(a.dateRange.end) > new Date(b.dateRange.end)
+                      ) {
+                        return 1;
+                      }
                       return 0;
                     })
                     .map((booking, idx) => {
@@ -482,19 +544,23 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                               booking.dateRange.end
                             ).toLocaleDateString()}
                           </td>
-                          <td>${booking.totalPrice.toFixed(2)}</td>
+                          <td>
+                            {currencyFormatter.format(booking.totalPrice)}
+                          </td>
                           <td style={{ width: '175px' }}>
                             <div className="d-flex flex-nowrap gap-1">
                               <Button
                                 style={{ fontSize: '10pt', width: '65px' }}
                                 className="px-2 py-0 fw-bold"
-                                variant="success"
+                                variant="outline-success"
                                 onClick={() => {
                                   acceptBooking(booking.id)
                                     .then((_) => {
                                       setBookings((bookings) =>
                                         bookings.map((b) => {
-                                          if (b.id === booking.id) { b.status = 'accepted'; }
+                                          if (b.id === booking.id) {
+                                            b.status = 'accepted';
+                                          }
                                           return b;
                                         })
                                       );
@@ -510,13 +576,15 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                               <Button
                                 style={{ fontSize: '10pt', width: '65px' }}
                                 className="px-2 py-0 fw-bold"
-                                variant="danger"
+                                variant="outline-danger"
                                 onClick={() => {
                                   declineBooking(booking.id)
                                     .then((_) => {
                                       setBookings((bookings) =>
                                         bookings.map((b) => {
-                                          if (b.id === booking.id) { b.status = 'declined'; }
+                                          if (b.id === booking.id) {
+                                            b.status = 'declined';
+                                          }
                                           return b;
                                         })
                                       );
@@ -537,7 +605,6 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                 </tbody>
               </Table>
                 )}
-            <hr />
 
             {/* Booking history */}
             <h5>Booking history</h5>
@@ -570,13 +637,25 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                       if (
                         new Date(a.dateRange.start) <
                         new Date(b.dateRange.start)
-                      ) { return 1; }
+                      ) {
+                        return 1;
+                      }
                       if (
                         new Date(a.dateRange.start) >
                         new Date(b.dateRange.start)
-                      ) { return -1; }
-                      if (new Date(a.dateRange.end) < new Date(b.dateRange.end)) { return 1; }
-                      if (new Date(a.dateRange.end) > new Date(b.dateRange.end)) { return -1; }
+                      ) {
+                        return -1;
+                      }
+                      if (
+                        new Date(a.dateRange.end) < new Date(b.dateRange.end)
+                      ) {
+                        return 1;
+                      }
+                      if (
+                        new Date(a.dateRange.end) > new Date(b.dateRange.end)
+                      ) {
+                        return -1;
+                      }
                       return 0;
                     })
                     .map((booking, idx) => {
@@ -607,7 +686,9 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                               booking.dateRange.end
                             ).toLocaleDateString()}
                           </td>
-                          <td>${booking.totalPrice.toFixed(2)}</td>
+                          <td>
+                            {currencyFormatter.format(booking.totalPrice)}
+                          </td>
                           <td style={{ width: '175px' }}>
                             <Badge
                               bg={
@@ -627,13 +708,133 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                 </tbody>
               </Table>
                 )}
+
+            {/* Yearly profits and stats */}
+            <h5 className="mt-4">Performance in {new Date().getFullYear()}</h5>
+            <div className="ms-2 d-flex gap-5 mb-3">
+              <div className="d-flex align-items-center gap-2">
+                <GiReceiveMoney size={45} />
+                <div className="d-flex flex-column justify-content-center">
+                  <span className="fs-4 text-muted lh-1">
+                    {currencyFormatter.format(yearlyProfit)}
+                  </span>
+                  <span
+                    className="fst-italic lh-1"
+                    style={{ fontSize: '10pt' }}
+                  >
+                    IN PROFIT
+                  </span>
+                </div>
+              </div>
+              <div className="d-flex align-items-center gap-2">
+                <BiCalendarCheck size={45} />
+                <div className="d-flex flex-column justify-content-center">
+                  <span className="fs-4 text-muted lh-1">{yearlyBookings}</span>
+                  <span
+                    className="fst-italic lh-1"
+                    style={{ fontSize: '10pt' }}
+                  >
+                    BOOKINGS
+                  </span>
+                </div>
+              </div>
+              <div className="d-flex align-items-center gap-2">
+                <BsCalendarDay size={40} />
+                <div className="d-flex flex-column justify-content-center">
+                  <span className="fs-4 text-muted lh-1">
+                    {yearlyDaysBooked}
+                  </span>
+                  <span
+                    className="fst-italic lh-1"
+                    style={{ fontSize: '10pt' }}
+                  >
+                    NIGHTS
+                  </span>
+                </div>
+              </div>
+              {/* <div className='d-flex align-items-center justify-content-between'>
+          <BiCalendarCheck />
+          <span>Bookings this year:</span>
+          <span>{yearlyBookings} with {yearlyDaysBooked} days booked</span>
+        </div> */}
+            </div>
+            <Row>
+              <Col>
+                <Bar
+                  style={{ width: '0' }}
+                  options={{
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        position: 'top',
+                      },
+                    },
+                  }}
+                  data={{
+                    labels: [
+                      'January',
+                      'February',
+                      'March',
+                      'April',
+                      'May',
+                      'June',
+                      'July',
+                      'August',
+                      'September',
+                      'October',
+                      'November',
+                      'December',
+                    ],
+                    datasets: [
+                      {
+                        label: 'Monthly bookings',
+                        data: monthlyBookings,
+                        backgroundColor: 'rgba(100, 235, 100, 0.5)',
+                      },
+                    ],
+                  }}
+                />
+              </Col>
+              <Col>
+                <Bar
+                  style={{ width: '0' }}
+                  options={{
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        position: 'top',
+                      },
+                    },
+                  }}
+                  data={{
+                    labels: [
+                      'January',
+                      'February',
+                      'March',
+                      'April',
+                      'May',
+                      'June',
+                      'July',
+                      'August',
+                      'September',
+                      'October',
+                      'November',
+                      'December',
+                    ],
+                    datasets: [
+                      {
+                        label: 'Monthly profits ($)',
+                        data: monthlyProfits,
+                        backgroundColor: 'rgba(235, 235, 100, 0.5)',
+                      },
+                    ],
+                  }}
+                />
+              </Col>
+            </Row>
             <hr />
           </>
         )}
-
-        {/* Yearly profits and stats */}
-        <h5>Performance in {new Date().getFullYear()}</h5>
-        <hr />
 
         {/* <h5>Reviews</h5> */}
       </Container>

@@ -20,6 +20,7 @@ import MakeBookingForm from '../components/bookings/MakeBookingForm';
 import { getListing } from '../services/listings';
 import { getBookings } from '../services/bookings';
 import AmenityList from '../components/AmenityList';
+import { currencyFormatter } from '../helpers';
 
 const Listing = ({ token, setToken, email, setAppEmail }) => {
   Listing.propTypes = {
@@ -232,7 +233,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
             {pricePerNight
               ? (
               <div className="fst-italic mb-2">
-                <u>${pricePerNight.toFixed(2)} per night</u>
+                <u>{currencyFormatter.format(pricePerNight)} per night</u>
               </div>
                 )
               : (
@@ -348,7 +349,9 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                             })}`}</td>
 
                             <td className="text-end">
-                              <u>${booking.totalPrice.toFixed(2)}</u>
+                              <u>
+                                {currencyFormatter.format(booking.totalPrice)}
+                              </u>
                             </td>
                           </tr>
                         );

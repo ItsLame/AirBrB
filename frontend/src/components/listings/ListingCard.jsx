@@ -8,6 +8,7 @@ import Badge from 'react-bootstrap/Badge';
 import { useNavigate } from 'react-router-dom';
 
 import { StarRating } from '../StyledComponents';
+import { currencyFormatter } from '../../helpers';
 
 const ListingCard = ({
   listingId,
@@ -121,7 +122,7 @@ const ListingCard = ({
 
         <Card.Text className="mt-auto mb-0 fst-italic d-flex w-100">
           <span className="flex-grow-1">
-            <u>${pricePerNight.toFixed(2)} per night</u>
+            <u>{currencyFormatter.format(pricePerNight)} per night</u>
           </span>
           <span className="d-flex gap-2">
             <span>

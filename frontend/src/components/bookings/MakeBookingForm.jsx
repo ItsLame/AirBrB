@@ -10,7 +10,12 @@ import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 
 import { createBooking } from '../../services/bookings';
-import { formatDate, addOneDay, minusOneDay } from '../../helpers';
+import {
+  formatDate,
+  addOneDay,
+  minusOneDay,
+  currencyFormatter,
+} from '../../helpers';
 // import NotFound from '../../pages/NotFound';
 
 const MakeBookingForm = ({
@@ -96,12 +101,13 @@ const MakeBookingForm = ({
         <Modal.Body>
           <h5>Select an availability that suits you</h5>
           <h6 className={`text-muted ${totalPrice ? 'mb-1' : 'mb-3'}`}>
-            Price per night: ${pricePerNight.toFixed(2)}
+            Price per night: {currencyFormatter.format(pricePerNight)}
           </h6>
           {!!totalPrice && (
             <h6 className="text-primary mb-3">
               <u>
-                Total price: ${totalPrice.toFixed(2)} (for {numNights} night
+                Total price: {currencyFormatter.format(totalPrice)} (for{' '}
+                {numNights} night
                 {numNights === 1 ? '' : 's'})
               </u>
             </h6>

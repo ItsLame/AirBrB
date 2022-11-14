@@ -48,3 +48,9 @@ export const formatDate = (date) => {
 export const getTodayDate = () => {
   return formatDate(new Date());
 };
+
+// currency formatter
+export const currencyFormatter = new Intl.NumberFormat('en-AU', {
+  style: 'currency',
+  currency: 'AUD',
+});

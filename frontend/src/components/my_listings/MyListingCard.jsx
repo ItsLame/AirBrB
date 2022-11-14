@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 
 import { StarRating } from '../StyledComponents';
 import { deleteListing } from '../../services/listings';
+import { currencyFormatter } from '../../helpers';
 
 const MyListingCard = ({
   listingId,
@@ -139,7 +140,7 @@ const MyListingCard = ({
           <span>{propertyType}</span>
           {/* Price per night */}
           <span className="fw-normal fst-italic">
-            —${pricePerNight.toFixed(2)} per night
+            —{currencyFormatter.format(pricePerNight)} per night
           </span>
         </Card.Subtitle>
 
