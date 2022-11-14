@@ -84,24 +84,37 @@ const ListingCard = ({
         <div className="d-flex flex-wrap gap-1 mb-1">
           {owner === email && <Badge bg="dark">Mine</Badge>}
 
-          {bookings.map((booking, idx) => {
-            let status = booking.status;
-            status = status.charAt(0).toUpperCase() + status.slice(1);
-            return (
-              <Badge
-                key={idx}
-                bg={
-                  status === 'Pending'
-                    ? 'primary'
-                    : status === 'Declined'
-                      ? 'danger'
-                      : 'success'
-                }
-              >
-                {status}
-              </Badge>
-            );
-          })}
+          {bookings
+            .sort((a, b) => {
+              const statusMap = {
+                accepted: 1,
+                pending: 2,
+                declined: 3,
+              };
+              if (statusMap[a.status] < statusMap[b.status]) {
+                return -1;
+              }
+              if (statusMap[a.status] > statusMap[b.status]) return 1;
+              return 0;
+            })
+            .map((booking, idx) => {
+              let status = booking.status;
+              status = status.charAt(0).toUpperCase() + status.slice(1);
+              return (
+                <Badge
+                  key={idx}
+                  bg={
+                    status === 'Pending'
+                      ? 'primary'
+                      : status === 'Declined'
+                        ? 'danger'
+                        : 'success'
+                  }
+                >
+                  {status}
+                </Badge>
+              );
+            })}
         </div>
 
         <Container className="d-flex gap-1 p-0 mb-2 align-items-start">
