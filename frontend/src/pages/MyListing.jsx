@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
+import Table from 'react-bootstrap/Table';
 
 import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
@@ -55,8 +56,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
       .then((response) =>
         setBookings(
           response.data.bookings.filter(
-            (booking) =>
-              booking.owner === email && booking.listingId === listingId
+            (booking) => booking.listingId === listingId
           )
         )
       )
@@ -96,7 +96,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
         setPublished(listing.published);
         setPostedOn(listing.postedOn);
 
-        console.log(bookings, availability, postedOn);
+        console.log(bookings, postedOn);
 
         if (listing.owner !== email) {
           setNotFound(true);
@@ -370,14 +370,116 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
         </Row>
         <hr />
 
+        {/* Only show availabilities, booking requests, booking history and reviews if published */}
         {published && (
           <>
+            {/* Availabilities */}
             <h5>Availabilities</h5>
+            <ul>
+              {availability.map((dateRange, idx) => {
+                return (
+                  <li key={idx}>
+                    {new Date(dateRange.start).toLocaleDateString('default', {
+                      weekday: 'short',
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                    })}{' '}
+                    —{' '}
+                    {new Date(dateRange.end).toLocaleDateString('default', {
+                      weekday: 'short',
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                    })}
+                  </li>
+                );
+              })}
+            </ul>
             <hr />
 
+            {/* Booking requests */}
             <h5>Booking requests</h5>
+            {bookings.length === 0
+              ? (
+              <p className="text-muted fst-italic">No booking requests yet!</p>
+                )
+              : (
+              <Table hover striped size="sm">
+                <thead>
+                  <tr>
+                    <th>From</th>
+                    <th>Nights</th>
+                    <th>Start date</th>
+                    <th>End date</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookings
+                    .filter((booking) => booking.status === 'pending')
+                    .sort((a, b) => {
+                      if (a.totalPrice > b.totalPrice) return -1;
+                      if (a.totalPrice < b.totalPrice) return 1;
+                      return 0;
+                    })
+                    .map((booking, idx) => {
+                      return (
+                        <tr
+                          key={idx}
+                          style={
+                            idx === bookings.length - 1
+                              ? { borderBottom: 'hidden ' }
+                              : {}
+                          }
+                        >
+                          <td>{booking.owner}</td>
+                          <td>
+                            {Math.round(
+                              (new Date(booking.dateRange.end) -
+                                new Date(booking.dateRange.start)) /
+                                (1000 * 60 * 60 * 24)
+                            )}
+                          </td>
+                          <td>
+                            {new Date(
+                              booking.dateRange.start
+                            ).toLocaleDateString()}
+                          </td>
+                          <td>
+                            {new Date(
+                              booking.dateRange.end
+                            ).toLocaleDateString()}
+                          </td>
+                          <td>${booking.totalPrice.toFixed(2)}</td>
+                          <td>
+                            <div className="d-flex flex-nowrap gap-1">
+                              <Button
+                                style={{ fontSize: '10pt', width: '60px' }}
+                                className="px-2 py-0"
+                                variant="success"
+                              >
+                                Accept
+                              </Button>
+                              <Button
+                                style={{ fontSize: '10pt', width: '60px' }}
+                                className="px-2 py-0"
+                                variant="danger"
+                              >
+                                Deny
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </Table>
+                )}
             <hr />
 
+            {/* Booking history */}
             <h5>Booking history</h5>
             <hr />
           </>
