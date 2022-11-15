@@ -139,18 +139,40 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                 .split(/[ ,;+]/g)
                 .map((titleCity) => titleCity.trim().toLowerCase());
 
+              // console.log(
+              //   newListings[1].props.children.props.title
+              //     .toLowerCase()
+              //     .split(/[ ,;+]/g)
+              // );
+
               titleCityList.some(
                 (titleCity) =>
                   (newListings = newListings.filter(
                     (x) =>
                       x.props.children.props.title
                         .toLowerCase()
+                        .split(/[ ,;+]/g)
                         .includes(titleCity) ||
                       x.props.children.props.city
                         .toLowerCase()
+                        .split(/[ ,;+]/g)
                         .includes(titleCity)
                   ))
               );
+              // titleCityList.some(
+              //   (titleCity) =>
+              //     (newListings = newListings.filter(
+              //       (x) =>
+              //         x.props.children.props.title
+              //           .toLowerCase()
+              //           .split(/[ ,;+]/g)
+              //           .includes(titleCity) ||
+              //         x.props.children.props.city
+              //           .toLowerCase()
+              //           .split(/[ ,;+]/g)
+              //           .includes(titleCity)
+              //     ))
+              // );
             }
 
             // filter bedrooms
