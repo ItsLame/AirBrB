@@ -32,10 +32,10 @@ const SearchForm = ({ show, closeAction }) => {
   const [endDate, setEndDate] = React.useState('');
   const [filterCount, setFilterCount] = React.useState(0);
   const [filterActive, setFilterActive] = React.useState([
-    false,
-    false,
-    false,
-    false,
+    false, // ratings
+    false, // bedrooms
+    false, // min max price
+    false, // start end date
   ]);
   const [searchParams, setSearchParams] = useSearchParams({});
 
@@ -66,7 +66,23 @@ const SearchForm = ({ show, closeAction }) => {
   };
 
   const handleSearch = () => {
-    setSearchParams({ hello: 'world' });
+    const temp = {};
+
+    filterActive[0] && (temp.ratings = ratingsToggle);
+    filterActive[1] && (temp.bedrooms = bedrooms);
+    // temp.push({ min_price: minPrice }, ...temp);
+    // temp.push({ ratings: ratingsToggle });
+    // temp.push({ ratings: ratingsToggle });
+
+    console.log(temp);
+    // temp = temp.map((x) => {
+    //   x;
+    // });
+    // console.log('map', temp);
+
+    setSearchParams(temp);
+    // setSearchParams({ hello: 'world', test: null });
+
     console.log(searchParams);
   };
 
