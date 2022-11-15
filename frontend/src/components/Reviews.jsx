@@ -6,7 +6,7 @@ import Table from 'react-bootstrap/Table';
 const Reviews = ({ reviews, avgRating, numReviews }) => {
   Reviews.propTypes = {
     reviews: PropTypes.array,
-    avgRating: PropTypes.number,
+    avgRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     numReviews: PropTypes.number,
   };
 
@@ -14,7 +14,7 @@ const Reviews = ({ reviews, avgRating, numReviews }) => {
     <>
       {reviews !== null && avgRating !== null && numReviews !== null && (
         <>
-          <h4>Reviews</h4>
+          <h5>Reviews</h5>
 
           {/* Reviews summary */}
           <div className="d-flex align-items-center gap-2 mb-2">

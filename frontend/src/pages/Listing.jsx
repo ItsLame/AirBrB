@@ -61,16 +61,18 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
   const [reviewFormShow, setReviewFormShow] = React.useState(false);
 
   React.useEffect(() => {
-    getBookings()
-      .then((response) =>
-        setBookings(
-          response.data.bookings.filter(
-            (booking) =>
-              booking.owner === email && booking.listingId === listingId
+    if (token) {
+      getBookings()
+        .then((response) =>
+          setBookings(
+            response.data.bookings.filter(
+              (booking) =>
+                booking.owner === email && booking.listingId === listingId
+            )
           )
         )
-      )
-      .catch((error) => console.error(error));
+        .catch((error) => console.error(error));
+    }
 
     getListing(listingId)
       .then((response) => {
