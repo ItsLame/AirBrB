@@ -23,7 +23,6 @@ const UploadJSONForm = ({ setMyListings }) => {
   };
 
   const handleValidate = (temp) => {
-    // const temp = jsonData;
     const mainKeysString =
       '["title","address","price","thumbnail","metadata","availability"]';
     const availabilityKeysString = '["start","end"]';
@@ -88,21 +87,6 @@ const UploadJSONForm = ({ setMyListings }) => {
     const latestDate = new Date().toISOString();
 
     jsonData.forEach((x) => {
-      // console.log('title', x.title);
-      // console.log('address', x.address);
-      // console.log('street', x.address.street);
-      // console.log('city', x.address.city);
-      // console.log('state', x.address.state);
-      // console.log('postcode', x.address.postcode);
-      // console.log('country', x.address.country);
-      // console.log('price', x.price);
-      // console.log('thumbnail', x.thumbnail);
-      // console.log('metadata', x.metadata);
-      // console.log('propertyType', x.metadata.propertyType);
-      // console.log('numBathrooms', x.metadata.numBathrooms);
-      // console.log('bedrooms', x.metadata.bedrooms);
-      // console.log('amenities', x.metadata.amenities);
-      // console.log('lastUpdatedAt', latestDate);
       createListing(x.title, x.address, x.price, x.thumbnail, {
         propertyType: x.metadata.propertyType,
         numBathrooms: x.metadata.numBathrooms,
@@ -128,10 +112,9 @@ const UploadJSONForm = ({ setMyListings }) => {
             },
             ...curr,
           ]);
+          toast.success(`Imported listing: ${x.title}!`);
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => toast.error(error.response.data.error));
     });
   };
 
@@ -150,7 +133,6 @@ const UploadJSONForm = ({ setMyListings }) => {
             fileToText(event.target.files[0])
               .then((result) => {
                 const temp = JSON.parse(result);
-                // setJsonData(temp);
                 handleValidate(temp);
               })
               .catch((error) => {
