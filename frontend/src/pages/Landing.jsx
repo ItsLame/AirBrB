@@ -121,85 +121,96 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                 : -1;
             });
 
-            // filter by search
-            const searchTitleCity = searchParams.get('title_city');
-            const searchGetBedrooms = searchParams.get('bedrooms');
-            const searchGetPrice = searchParams.get('price');
-            const searchGetDate = searchParams.get('date');
-            const searchGetRatings = searchParams.get('ratings');
+            if ([...searchParams].length) {
+              console.log('ENTER FILTER');
 
-            // search title/city
-            if (searchTitleCity) {
-              const titleCityList = searchTitleCity
-                .split(/[ ,;+]/g)
-                .map((titleCity) => titleCity.trim().toLowerCase());
+              // filter by search
+              const searchTitleCity = searchParams.get('title_city');
+              const searchGetBedrooms = parseInt(searchParams.get('bedrooms'));
+              const searchGetPrice = searchParams.get('price');
+              const searchGetDate = searchParams.get('date');
+              const searchGetRatings = searchParams.get('ratings');
 
-              newListings = newListings.filter((x) =>
-                [
-                  ...x.props.children.props.title
-                    .toLowerCase()
-                    .split(/[ ,;+]/g),
-                  ...x.props.children.props.city.toLowerCase().split(/[ ,;+]/g),
-                ].some((titleCity) => titleCityList.includes(titleCity))
-              );
+              // search title/city
+              if (searchTitleCity) {
+                const titleCityList = searchTitleCity
+                  .split(/[ ,;+]/g)
+                  .map((titleCity) => titleCity.trim().toLowerCase());
+
+                newListings = newListings.filter((x) =>
+                  [
+                    ...x.props.children.props.title
+                      .toLowerCase()
+                      .split(/[ ,;+]/g),
+                    ...x.props.children.props.city
+                      .toLowerCase()
+                      .split(/[ ,;+]/g),
+                  ].some((titleCity) => titleCityList.includes(titleCity))
+                );
+              }
+
+              // filter bedrooms
+              searchGetBedrooms && searchGetBedrooms === 8
+                ? (newListings = newListings.filter(
+                    (x) =>
+                      x.props.children.props.numBedrooms >= searchGetBedrooms
+                  ))
+                : (newListings = newListings.filter(
+                    (x) =>
+                      x.props.children.props.numBedrooms === searchGetBedrooms
+                  ));
+
+              // filter price range min/max
+              if (searchGetPrice) {
+                // filter price range min
+                searchGetPrice.split('to')[0] !== '0' &&
+                  (newListings = newListings.filter(
+                    (x) =>
+                      x.props.children.props.pricePerNight >=
+                      searchGetPrice.split('to')[0]
+                  ));
+
+                // filter price range max
+                searchGetPrice.split('to')[1] !== '0' &&
+                  (newListings = newListings.filter(
+                    (x) =>
+                      x.props.children.props.pricePerNight <=
+                      searchGetPrice.split('to')[1]
+                  ));
+              }
+
+              // filter date range min/max
+              if (searchGetDate) {
+                // filter date range min
+                searchGetDate.split('to')[0] !== '' &&
+                  (newListings = newListings.filter((x) =>
+                    x.props.children.props.availability.every(
+                      (y) => y.start >= searchGetDate.split('to')[0]
+                    )
+                  ));
+
+                // filter date range max
+                searchGetDate.split('to')[1] !== '' &&
+                  (newListings = newListings.filter((x) =>
+                    x.props.children.props.availability.every(
+                      (y) => y.end <= searchGetDate.split('to')[1]
+                    )
+                  ));
+              }
+
+              // sort by ratings highest/lowest
+              searchGetRatings && searchGetRatings === 'lowest'
+                ? (newListings = newListings.sort(
+                    (a, b) =>
+                      a.props.children.props.avgRating -
+                      b.props.children.props.avgRating
+                  ))
+                : (newListings = newListings.sort(
+                    (a, b) =>
+                      b.props.children.props.avgRating -
+                      a.props.children.props.avgRating
+                  ));
             }
-
-            // filter bedrooms
-            searchGetBedrooms &&
-              (newListings = newListings.filter(
-                (x) => x.props.children.props.numBedrooms >= searchGetBedrooms
-              ));
-
-            // filter price range min/max
-            if (searchGetPrice) {
-              // filter price range min
-              searchGetPrice.split('to')[0] !== '0' &&
-                (newListings = newListings.filter(
-                  (x) =>
-                    x.props.children.props.pricePerNight >=
-                    searchGetPrice.split('to')[0]
-                ));
-
-              // filter price range max
-              searchGetPrice.split('to')[1] !== '0' &&
-                (newListings = newListings.filter(
-                  (x) =>
-                    x.props.children.props.pricePerNight <=
-                    searchGetPrice.split('to')[1]
-                ));
-            }
-
-            // filter date range min/max
-            if (searchGetDate) {
-              // filter date range min
-              searchGetDate.split('to')[0] !== '' &&
-                (newListings = newListings.filter((x) =>
-                  x.props.children.props.availability.every(
-                    (y) => y.start >= searchGetDate.split('to')[0]
-                  )
-                ));
-
-              // filter date range max
-              searchGetDate.split('to')[1] !== '' &&
-                (newListings = newListings.filter((x) =>
-                  x.props.children.props.availability.every(
-                    (y) => y.end <= searchGetDate.split('to')[1]
-                  )
-                ));
-            }
-
-            // sort by ratings highest/lowest
-            searchGetRatings && searchGetRatings === 'lowest'
-              ? (newListings = newListings.sort(
-                  (a, b) =>
-                    a.props.children.props.avgRating -
-                    b.props.children.props.avgRating
-                ))
-              : (newListings = newListings.sort(
-                  (a, b) =>
-                    b.props.children.props.avgRating -
-                    a.props.children.props.avgRating
-                ));
 
             setIsListingsLoading(false);
             setListings(newListings);
@@ -213,6 +224,9 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
       });
   };
 
+  React.useEffect(() => {
+    setIsListingsLoading(true);
+  }, []);
   React.useEffect(render, [searchParams]);
   React.useEffect(render, [email]);
 
@@ -268,7 +282,8 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
           {/* If no listings */}
           {!isListingsLoading && listings.length === 0 && (
             <h5 className="text-muted w-100 fw-normal">
-              There are no bookable listings yet!
+              {/* There are no bookable listings yet! */}
+              No listings found!
             </h5>
           )}
 
