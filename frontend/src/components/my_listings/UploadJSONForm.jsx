@@ -73,7 +73,8 @@ const UploadJSONForm = ({ setMyListings }) => {
     if (allKeys.every((x) => x)) {
       toast.success('All keys are valid!');
       temp.forEach(
-        (x) => (x.thumbnail = require(`../../populate/${x.thumbnail}`))
+        (x) =>
+          (x.thumbnail = require(`../../../public/listings/${x.thumbnail}`))
       );
       setJsonData(temp);
       setUploadDisabled(false);

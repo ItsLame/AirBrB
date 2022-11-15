@@ -9,7 +9,7 @@
       "country": "BCountry"
     },
     "price": 33,
-    "thumbnail": "bottlehouse.jpeg",
+    "thumbnail": "thumbnails/bottlehouse.jpeg",
     "metadata": {
       "propertyType": "House",
       "numBathrooms": 1,
@@ -42,7 +42,7 @@
       "country": "DCountry"
     },
     "price": 55,
-    "thumbnail": "donuthouse.jpeg",
+    "thumbnail": "thumbnails/donuthouse.jpeg",
     "metadata": {
       "propertyType": "House",
       "numBathrooms": 1,

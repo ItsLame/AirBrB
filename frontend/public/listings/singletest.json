@@ -9,7 +9,7 @@
       "country": "BCountry"
     },
     "price": 33,
-    "thumbnail": "bottlehouse.jpeg",
+    "thumbnail": "thumbnails/bottlehouse.jpeg",
     "metadata": {
       "propertyType": "House",
       "numBathrooms": 1,
