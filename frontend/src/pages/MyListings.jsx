@@ -67,7 +67,11 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
                 id,
                 thumbnail: listing.thumbnail,
                 title: listing.title,
-                avgRating: 0, // TODO
+                avgRating: (listing.reviews.length === 0
+                  ? 0
+                  : listing.reviews.reduce((a, b) => a + b.rating, 0) /
+                    listing.reviews.length
+                ).toFixed(1),
                 propertyType: listing.metadata.propertyType,
                 pricePerNight: listing.price,
                 numBeds: listing.metadata.bedrooms.reduce((a, b) => a + b, 0),

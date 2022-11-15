@@ -396,12 +396,11 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
             )}
 
             {/* Amenities */}
-            {/* eslint-disable-next-line multiline-ternary */}
             {essentialsAmenities !== null &&
             featuresAmenities !== null &&
             locationAmenities !== null &&
-            // eslint-disable-next-line multiline-ternary
-            safetyAmenities !== null ? (
+            safetyAmenities !== null
+              ? (
               <>
                 <h5>What this place offers</h5>
 
@@ -470,7 +469,8 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                   </Button>
                 )}
               </>
-                ) : (
+                )
+              : (
               <>
                 <h5 className="placeholder-glow">
                   <span className="placeholder col-4"></span>

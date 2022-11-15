@@ -68,7 +68,11 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                       country={listing.address.country}
                       pricePerNight={listing.price}
                       numReviews={listing.reviews.length}
-                      avgRating={0} // TODO
+                      avgRating={(listing.reviews.length === 0
+                        ? 0
+                        : listing.reviews.reduce((a, b) => a + b.rating, 0) /
+                          listing.reviews.length
+                      ).toFixed(1)}
                       thumbnail={listing.thumbnail}
                       numBeds={listing.metadata.bedrooms.reduce(
                         (a, b) => a + b,
