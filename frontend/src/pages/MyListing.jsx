@@ -33,6 +33,7 @@ import {
 } from '../services/bookings';
 import AmenityList from '../components/AmenityList';
 import { currencyFormatter } from '../helpers';
+import Reviews from '../components/Reviews';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
@@ -64,6 +65,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
   const [safetyAmenities, setSafetyAmenities] = React.useState(null);
   const [avgRating, setAvgRating] = React.useState(null);
   const [numReviews, setNumReviews] = React.useState(null);
+  const [reviews, setReviews] = React.useState(null);
   const [showAllAmenitiesActive, setShowAllAmenitiesActive] =
     React.useState(false);
   const [notFound, setNotFound] = React.useState(false);
@@ -144,14 +146,25 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
         setFeaturesAmenities(listing.metadata.amenities.features);
         setLocationAmenities(listing.metadata.amenities.location);
         setSafetyAmenities(listing.metadata.amenities.safety);
-        setAvgRating(0); // TODO
-        setNumReviews(listing.reviews.length);
+        setReviews(listing.reviews);
         setThumbnail(listing.thumbnail);
         setPublished(listing.published);
         setPostedOn(listing.postedOn);
       })
       .catch((error) => console.error(error));
   }, []);
+
+  React.useEffect(() => {
+    if (reviews) {
+      setAvgRating(
+        (reviews.length === 0
+          ? 0
+          : reviews.reduce((a, b) => a + b.rating, 0) / reviews.length
+        ).toFixed(1)
+      );
+      setNumReviews(reviews.length);
+    }
+  }, [reviews]);
 
   if (notFound) {
     return <NotFound />;
@@ -276,11 +289,12 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
             <hr />
 
             {/* Amenities */}
+            {/* eslint-disable-next-line multiline-ternary */}
             {essentialsAmenities !== null &&
             featuresAmenities !== null &&
             locationAmenities !== null &&
-            safetyAmenities !== null
-              ? (
+            // eslint-disable-next-line multiline-ternary
+            safetyAmenities !== null ? (
               <>
                 <h5>Amenities</h5>
 
@@ -349,8 +363,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                   </Button>
                 )}
               </>
-                )
-              : (
+                ) : (
               <>
                 <h5 className="placeholder-glow">
                   <span className="placeholder col-4"></span>
@@ -831,7 +844,12 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
           </>
         )}
 
-        {/* <h5>Reviews</h5> */}
+        {/* Reviews */}
+        <Reviews
+          reviews={reviews}
+          avgRating={avgRating}
+          numReviews={numReviews}
+        />
       </Container>
     </>
   );
