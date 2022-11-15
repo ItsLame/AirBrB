@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Placeholder from 'react-bootstrap/Placeholder';
 import { HiPlusCircle } from 'react-icons/hi';
+import { VscJson } from 'react-icons/vsc';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -159,11 +160,10 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
           path="create"
           element={<CreateListingForm setMyListings={setMyListings} />}
         />
-        <Route path="upload" element={<UploadJSONForm />} />
-        {/* <Route
+        <Route
           path="upload"
-          element={<CreateListingForm setMyListings={setMyListings} />}
-        /> */}
+          element={<UploadJSONForm setMyListings={setMyListings} />}
+        />
         <Route
           path="edit/:listingId"
           element={
@@ -205,8 +205,8 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
             className="d-flex gap-2 align-items-center"
             onClick={() => navigate('upload')}
           >
-            <Card.Title>Upload JSON</Card.Title>
-            <HiPlusCircle size={30} />
+            <Card.Title>Upload a listing</Card.Title>
+            <VscJson size={30} />
           </Button>
         </div>
 

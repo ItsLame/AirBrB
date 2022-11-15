@@ -4,11 +4,16 @@ import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { fileToText } from '../../helpers';
 import { createListing } from '../../services/listings';
 
-const UploadJSONForm = () => {
+const UploadJSONForm = ({ setMyListings }) => {
+  UploadJSONForm.propTypes = {
+    setMyListings: PropTypes.func,
+  };
+
   const [jsonData, setJsonData] = React.useState([]);
   const [uploadDisabled, setUploadDisabled] = React.useState(true);
   const navigate = useNavigate();
@@ -104,7 +109,29 @@ const UploadJSONForm = () => {
         bedrooms: x.metadata.bedrooms,
         amenities: x.metadata.amenities,
         lastUpdatedAt: latestDate,
-      });
+      })
+        .then((response) => {
+          handleClose();
+          setMyListings((curr) => [
+            {
+              id: parseInt(response.data.listingId, 10),
+              thumbnail: x.thumbnail,
+              title: x.title,
+              avgRating: 0,
+              propertyType: x.propertyType,
+              pricePerNight: x.price,
+              numBeds: x.metadata.bedrooms.reduce((a, b) => a + b, 0),
+              numBathrooms: x.metadata.numBathrooms,
+              numReviews: 0,
+              lastUpdatedAt: x.latestDate,
+              published: false,
+            },
+            ...curr,
+          ]);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     });
   };
 
