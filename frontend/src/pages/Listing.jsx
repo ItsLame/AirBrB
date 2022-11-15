@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Table from 'react-bootstrap/Table';
 import { FaCalendarCheck } from 'react-icons/fa';
+import { BsFillStarFill } from 'react-icons/bs';
 
 import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
@@ -21,6 +22,7 @@ import { getListing } from '../services/listings';
 import { getBookings } from '../services/bookings';
 import AmenityList from '../components/AmenityList';
 import { currencyFormatter } from '../helpers';
+import LeaveReviewForm from '../components/listings/LeaveReviewForm';
 
 const Listing = ({ token, setToken, email, setAppEmail }) => {
   Listing.propTypes = {
@@ -51,10 +53,12 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
   const [safetyAmenities, setSafetyAmenities] = React.useState(null);
   const [avgRating, setAvgRating] = React.useState(null);
   const [numReviews, setNumReviews] = React.useState(null);
+  const [reviews, setReviews] = React.useState(null);
   const [showAllAmenitiesActive, setShowAllAmenitiesActive] =
     React.useState(false);
   const [notFound, setNotFound] = React.useState(false);
   const [bookings, setBookings] = React.useState([]);
+  const [reviewFormShow, setReviewFormShow] = React.useState(false);
 
   React.useEffect(() => {
     getBookings()
@@ -96,8 +100,14 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
         setFeaturesAmenities(listing.metadata.amenities.features);
         setLocationAmenities(listing.metadata.amenities.location);
         setSafetyAmenities(listing.metadata.amenities.safety);
-        setAvgRating(0); // TODO
+        setAvgRating(
+          listing.reviews.length === 0
+            ? 0
+            : listing.reviews.reduce((a, b) => a + b.rating, 0) /
+                listing.reviews.length
+        ); // TODO
         setNumReviews(listing.reviews.length);
+        setReviews(listing.reviews);
         setThumbnail(listing.thumbnail);
       })
       .catch((error) => console.error(error));
@@ -265,109 +275,128 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                 )}
             <hr />
 
-            {availability && bookings.length !== 0 && (
-              <>
-                <h5>Your booking requests</h5>
-                <Table hover striped size="sm">
-                  <tbody>
-                    {bookings
-                      .sort((a, b) => {
-                        const statusMap = {
-                          accepted: 1,
-                          pending: 2,
-                          declined: 3,
-                        };
-                        if (statusMap[a.status] < statusMap[b.status]) {
-                          return -1;
-                        }
-                        if (statusMap[a.status] > statusMap[b.status]) return 1;
-                        if (
-                          new Date(a.dateRange.start) <
-                          new Date(b.dateRange.start)
-                        ) {
-                          return -1;
-                        }
-                        if (
-                          new Date(a.dateRange.start) >
-                          new Date(b.dateRange.start)
-                        ) {
-                          return 1;
-                        }
-                        if (
-                          new Date(a.dateRange.end) < new Date(b.dateRange.end)
-                        ) {
-                          return -1;
-                        }
-                        if (
-                          new Date(a.dateRange.end) > new Date(b.dateRange.end)
-                        ) {
-                          return 1;
-                        }
-                        return 0;
-                      })
-                      .map((booking, idx) => {
-                        let status = booking.status;
-                        status =
-                          status.charAt(0).toUpperCase() + status.slice(1);
-                        return (
-                          <tr
-                            key={idx}
-                            style={
-                              idx === bookings.length - 1
-                                ? { borderBottom: 'hidden ' }
-                                : {}
-                            }
-                          >
-                            <td>
-                              <Badge
-                                bg={
-                                  status === 'Pending'
-                                    ? 'primary'
-                                    : status === 'Declined'
-                                      ? 'danger'
-                                      : 'success'
-                                }
-                              >
-                                {status}
-                              </Badge>
-                            </td>
+            {availability !== null &&
+              bookings !== null &&
+              bookings.length !== 0 && (
+                <>
+                  <h5>Your booking requests</h5>
+                  <Table hover striped size="sm">
+                    <tbody>
+                      {bookings
+                        .sort((a, b) => {
+                          const statusMap = {
+                            accepted: 1,
+                            pending: 2,
+                            declined: 3,
+                          };
+                          if (statusMap[a.status] < statusMap[b.status]) {
+                            return -1;
+                          }
+                          if (statusMap[a.status] > statusMap[b.status]) {
+                            return 1;
+                          }
+                          if (
+                            new Date(a.dateRange.start) <
+                            new Date(b.dateRange.start)
+                          ) {
+                            return -1;
+                          }
+                          if (
+                            new Date(a.dateRange.start) >
+                            new Date(b.dateRange.start)
+                          ) {
+                            return 1;
+                          }
+                          if (
+                            new Date(a.dateRange.end) <
+                            new Date(b.dateRange.end)
+                          ) {
+                            return -1;
+                          }
+                          if (
+                            new Date(a.dateRange.end) >
+                            new Date(b.dateRange.end)
+                          ) {
+                            return 1;
+                          }
+                          return 0;
+                        })
+                        .map((booking, idx) => {
+                          let status = booking.status;
+                          status =
+                            status.charAt(0).toUpperCase() + status.slice(1);
+                          return (
+                            <tr
+                              key={idx}
+                              style={
+                                idx === bookings.length - 1
+                                  ? { borderBottom: 'hidden ' }
+                                  : {}
+                              }
+                            >
+                              <td>
+                                <Badge
+                                  bg={
+                                    status === 'Pending'
+                                      ? 'primary'
+                                      : status === 'Declined'
+                                        ? 'danger'
+                                        : 'success'
+                                  }
+                                >
+                                  {status}
+                                </Badge>
+                              </td>
 
-                            <td className="text-center">{`${new Date(
-                              booking.dateRange.start
-                            ).toLocaleDateString('default', {
-                              weekday: 'short',
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                            })} — ${new Date(
-                              booking.dateRange.end
-                            ).toLocaleDateString('default', {
-                              weekday: 'short',
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                            })}`}</td>
+                              <td className="text-center">{`${new Date(
+                                booking.dateRange.start
+                              ).toLocaleDateString('default', {
+                                weekday: 'short',
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                              })} — ${new Date(
+                                booking.dateRange.end
+                              ).toLocaleDateString('default', {
+                                weekday: 'short',
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                              })}`}</td>
 
-                            <td className="text-end">
-                              <u>
-                                {currencyFormatter.format(booking.totalPrice)}
-                              </u>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </Table>
-                <hr />
-              </>
+                              <td className="text-end">
+                                <u>
+                                  {currencyFormatter.format(booking.totalPrice)}
+                                </u>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </Table>
+
+                  {/* Render leave a review button if at least one booking was accepted */}
+                  {bookings.some(
+                    (booking) => booking.status === 'accepted'
+                  ) && (
+                    <Button
+                      variant="outline-dark"
+                      onClick={() => setReviewFormShow(true)}
+                    >
+                      Leave a review for your visit!
+                    </Button>
+                  )}
+                  <hr />
+                </>
             )}
 
             {/* Amenities */}
+            {/* eslint-disable-next-line multiline-ternary */}
             {essentialsAmenities !== null &&
             featuresAmenities !== null &&
             locationAmenities !== null &&
-            safetyAmenities !== null
-              ? (
+            // eslint-disable-next-line multiline-ternary
+            safetyAmenities !== null ? (
               <>
                 <h5>What this place offers</h5>
 
@@ -436,8 +465,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                   </Button>
                 )}
               </>
-                )
-              : (
+                ) : (
               <>
                 <h5 className="placeholder-glow">
                   <span className="placeholder col-4"></span>
@@ -520,7 +548,27 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
         </Row>
         <hr />
 
-        {/* <h4>Reviews</h4> */}
+        {/* Reviews */}
+        {reviews !== null && avgRating !== null && numReviews !== null && (
+          <>
+            <h4>Reviews</h4>
+
+            {/* Reviews summary */}
+            <div className="d-flex align-items-center gap-2 mb-2">
+              <BsFillStarFill />
+              <span className="fs-5">{avgRating}</span>
+              <span className="fs-5">
+                ({numReviews} review{numReviews === 1 ? '' : 's'})
+              </span>
+            </div>
+          </>
+        )}
+
+        {/* Review modal */}
+        <LeaveReviewForm
+          reviewFormShow={reviewFormShow}
+          setReviewFormShow={setReviewFormShow}
+        />
       </Container>
     </>
   );

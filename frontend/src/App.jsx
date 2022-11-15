@@ -88,7 +88,7 @@ const App = () => {
         {/* Single my listing page */}
         {token && (
           <Route
-            path="my_listing/:listingId/*"
+            path="my_listing/:listingId"
             element={
               <MyListing
                 token={token}
