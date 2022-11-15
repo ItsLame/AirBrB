@@ -122,18 +122,21 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             // filter by search
             const searchGetBedrooms = searchParams.get('bedrooms');
             const searchGetPrice = searchParams.get('price');
-            // const searchGetRatings = searchParams.get('ratings');
-            console.log('- FILTER -');
-            console.log('bedrooms', searchParams.get('bedrooms'));
-            console.log('price', searchParams.get('price'));
-            console.log('date', searchParams.get('date'));
-            console.log('ratings', searchParams.get('ratings'));
 
+            // const searchGetRatings = searchParams.get('ratings');
+            // console.log('- FILTER -');
+            // console.log('bedrooms', searchParams.get('bedrooms'));
+            // console.log('price', searchParams.get('price'));
+            // console.log('date', searchParams.get('date'));
+            // console.log('ratings', searchParams.get('ratings'));
+
+            // filter bedrooms
             searchGetBedrooms &&
               (newListings = newListings.filter(
                 (x) => x.props.children.props.numBedrooms >= searchGetBedrooms
               ));
 
+            // filter price range min
             searchGetPrice &&
               searchGetPrice.split('to')[0] !== '0' &&
               (newListings = newListings.filter(
@@ -142,6 +145,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                   searchGetPrice.split('to')[0]
               ));
 
+            // filter price range max
             searchGetPrice &&
               searchGetPrice.split('to')[1] !== '0' &&
               (newListings = newListings.filter(
@@ -149,6 +153,10 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                   x.props.children.props.pricePerNight <=
                   searchGetPrice.split('to')[1]
               ));
+
+            // filter date range min
+            // filter date range max
+            // sort by ratings highest/lowest
 
             setIsListingsLoading(false);
             setListings(newListings);
@@ -234,6 +242,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
         show={show}
         closeAction={handleClose}
         setSearchParams={setSearchParams}
+        setIsLoading={setIsListingsLoading}
       />
       <Outlet />
     </>

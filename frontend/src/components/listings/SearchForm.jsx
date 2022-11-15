@@ -12,11 +12,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-const SearchForm = ({ show, closeAction, setSearchParams }) => {
+const SearchForm = ({ show, closeAction, setSearchParams, setIsLoading }) => {
   SearchForm.propTypes = {
     show: PropTypes.bool,
     closeAction: PropTypes.func,
     setSearchParams: PropTypes.func,
+    setIsLoading: PropTypes.func,
   };
 
   const [titleCity, setTitleCity] = React.useState('');
@@ -73,6 +74,7 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
     filterActive[3] && (temp.date = `${startDate}to${endDate}`);
 
     setSearchParams(temp);
+    setIsLoading(true);
     closeAction();
   };
 
