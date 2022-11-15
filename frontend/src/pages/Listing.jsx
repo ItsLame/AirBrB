@@ -566,6 +566,63 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                 ({numReviews} review{numReviews === 1 ? '' : 's'})
               </span>
             </div>
+
+            {/* Reviews */}
+            {reviews.length === 0
+              ? (
+              <p className="text-muted fst-italic">No reviews yet!</p>
+                )
+              : (
+              <Table striped hover size="md">
+                <tbody>
+                  {reviews
+                    .sort((a, b) => {
+                      if (new Date(a.postedOn) < new Date(b.postedOn)) return 1;
+                      if (new Date(a.postedOn) > new Date(b.postedOn)) {
+                        return -1;
+                      }
+                      return 0;
+                    })
+                    .map((review, idx) => {
+                      return (
+                        <tr key={idx}>
+                          <td className="lh-1 align-middle">
+                            <span className="fw-bold">{review.rater}</span>
+                            <br />
+                            <span
+                              className="text-muted fst-italic"
+                              style={{ fontSize: '10pt' }}
+                            >
+                              {new Date(review.postedOn).toLocaleDateString(
+                                'default',
+                                {
+                                  day: 'numeric',
+                                  year: 'numeric',
+                                  month: 'long',
+                                }
+                              )}
+                            </span>
+                          </td>
+
+                          <td
+                            className="align-middle"
+                            style={{ minWidth: '100px' }}
+                          >
+                            {[...Array(review.rating).keys()].map((i) => (
+                              <BsFillStarFill key={i} fill="black" />
+                            ))}
+                            {[...Array(5 - review.rating).keys()].map((i) => (
+                              <BsFillStarFill key={i} fill="darkgray" />
+                            ))}
+                          </td>
+
+                          <td className="align-middle">{review.comment}</td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </Table>
+                )}
           </>
         )}
 
