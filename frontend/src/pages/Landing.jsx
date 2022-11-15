@@ -122,8 +122,6 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             });
 
             if ([...searchParams].length) {
-              console.log('ENTER FILTER');
-
               // filter by search
               const searchTitleCity = searchParams.get('title_city');
               const searchGetBedrooms = parseInt(searchParams.get('bedrooms'));
