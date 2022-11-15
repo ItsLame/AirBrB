@@ -1,0 +1,64 @@
+[
+  {
+    "title": "Bottle House",
+    "address": {
+      "street": "BStreet",
+      "city": "BCity",
+      "state": "BState",
+      "postcode": "2020",
+      "country": "BCountry"
+    },
+    "price": 33,
+    "thumbnail": "bottlehouse.jpeg",
+    "metadata": {
+      "propertyType": "House",
+      "numBathrooms": 1,
+      "bedrooms": [1],
+      "amenities": {
+        "essentials": [],
+        "features": [],
+        "location": [],
+        "safety": []
+      }
+    },
+    "availability": [
+      {
+        "start": "2022-11-20",
+        "end": "2022-11-21"
+      },
+      {
+        "start": "2022-12-20",
+        "end": "2022-12-21"
+      }
+    ]
+  },
+  {
+    "title": "Donut House",
+    "address": {
+      "street": "DStreet",
+      "city": "DCity",
+      "state": "DState",
+      "postcode": "3030",
+      "country": "DCountry"
+    },
+    "price": 55,
+    "thumbnail": "donuthouse.jpeg",
+    "metadata": {
+      "propertyType": "House",
+      "numBathrooms": 1,
+      "bedrooms": [1],
+      "amenities": {
+        "essentials": [],
+        "features": [],
+        "location": [],
+        "safety": []
+      }
+    },
+    "availability": [
+      {
+        "start": "2022-11-21",
+        "end": "2022-11-30"
+      }
+    ]
+  }
+]
