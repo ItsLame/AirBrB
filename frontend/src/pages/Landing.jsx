@@ -128,12 +128,6 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             const searchGetDate = searchParams.get('date');
             const searchGetRatings = searchParams.get('ratings');
 
-            // console.log('- FILTER -');
-            // console.log('bedrooms', searchParams.get('bedrooms'));
-            // console.log('price', searchParams.get('price'));
-            // console.log('date', searchParams.get('date'));
-            // console.log('ratings', searchParams.get('ratings'));
-
             // search title/city
             if (searchTitleCity) {
               const titleCityList = searchTitleCity
@@ -156,41 +150,43 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                 (x) => x.props.children.props.numBedrooms >= searchGetBedrooms
               ));
 
-            // filter price range min
-            searchGetPrice &&
+            // filter price range min/max
+            if (searchGetPrice) {
+              // filter price range min
               searchGetPrice.split('to')[0] !== '0' &&
-              (newListings = newListings.filter(
-                (x) =>
-                  x.props.children.props.pricePerNight >=
-                  searchGetPrice.split('to')[0]
-              ));
+                (newListings = newListings.filter(
+                  (x) =>
+                    x.props.children.props.pricePerNight >=
+                    searchGetPrice.split('to')[0]
+                ));
 
-            // filter price range max
-            searchGetPrice &&
+              // filter price range max
               searchGetPrice.split('to')[1] !== '0' &&
-              (newListings = newListings.filter(
-                (x) =>
-                  x.props.children.props.pricePerNight <=
-                  searchGetPrice.split('to')[1]
-              ));
+                (newListings = newListings.filter(
+                  (x) =>
+                    x.props.children.props.pricePerNight <=
+                    searchGetPrice.split('to')[1]
+                ));
+            }
 
-            // filter date range min
-            searchGetDate &&
+            // filter date range min/max
+            if (searchGetDate) {
+              // filter date range min
               searchGetDate.split('to')[0] !== '' &&
-              (newListings = newListings.filter((x) =>
-                x.props.children.props.availability.every(
-                  (y) => y.start >= searchGetDate.split('to')[0]
-                )
-              ));
+                (newListings = newListings.filter((x) =>
+                  x.props.children.props.availability.every(
+                    (y) => y.start >= searchGetDate.split('to')[0]
+                  )
+                ));
 
-            // filter date range max
-            searchGetDate &&
+              // filter date range max
               searchGetDate.split('to')[1] !== '' &&
-              (newListings = newListings.filter((x) =>
-                x.props.children.props.availability.every(
-                  (y) => y.end <= searchGetDate.split('to')[1]
-                )
-              ));
+                (newListings = newListings.filter((x) =>
+                  x.props.children.props.availability.every(
+                    (y) => y.end <= searchGetDate.split('to')[1]
+                  )
+                ));
+            }
 
             // sort by ratings highest/lowest
             searchGetRatings && searchGetRatings === 'lowest'
