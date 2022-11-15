@@ -135,16 +135,20 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
 
             // search title/city
             if (searchTitleCity) {
-              console.log('check', searchTitleCity);
-
               const titleCityList = searchTitleCity
                 .split(/[,;+]/g)
                 .map((titleCity) => titleCity.trim().toLowerCase());
 
-              titleCityList.every(
-                (title) =>
-                  (newListings = newListings.filter((x) =>
-                    x.props.children.props.title.toLowerCase().includes(title)
+              titleCityList.some(
+                (titleCity) =>
+                  (newListings = newListings.filter(
+                    (x) =>
+                      x.props.children.props.title
+                        .toLowerCase()
+                        .includes(titleCity) ||
+                      x.props.children.props.city
+                        .toLowerCase()
+                        .includes(titleCity)
                   ))
               );
             }
