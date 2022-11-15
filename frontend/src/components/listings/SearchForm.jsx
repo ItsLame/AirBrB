@@ -91,6 +91,8 @@ const SearchForm = ({ show, closeAction, setSearchParams, setIsLoading }) => {
         <Modal.Title>Search Listings</Modal.Title>
       </Modal.Header>
 
+      {/* TODO: on submit, /search route */}
+      {/* FIXME: on submit */}
       <Modal.Body>
         <Container>
           {/* Search field and filter toggle */}
@@ -294,3 +296,6 @@ const SearchForm = ({ show, closeAction, setSearchParams, setIsLoading }) => {
 };
 
 export default SearchForm;
+
+/* <Button variant="primary" type="submit" onClick={handleSearch}> */
+/* <Button variant="primary" type="submit" onClick={handleSearch}> */
