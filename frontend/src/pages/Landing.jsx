@@ -126,21 +126,13 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             const searchGetPrice = searchParams.get('price');
             const searchGetDate = searchParams.get('date');
 
-            // console.log(
-            //   newListings[0].props.children.props.availability[0].end
-            // );
-            // console.log(
-            //   'listings date',
-            //   '2022-11-15'.isAfter(
-            //     newListings[0].props.children.props.availability.end
-            //   )
-            // );
-            // console.log('date', searchParams.get('date'));
-            // const searchGetRatings = searchParams.get('ratings');
             // console.log('- FILTER -');
             // console.log('bedrooms', searchParams.get('bedrooms'));
             // console.log('price', searchParams.get('price'));
+            // console.log('date', searchParams.get('date'));
             // console.log('ratings', searchParams.get('ratings'));
+
+            // TODO: search title/city
 
             // filter bedrooms
             searchGetBedrooms &&
@@ -200,10 +192,6 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
 
   React.useEffect(render, [searchParams]);
   React.useEffect(render, [email]);
-
-  // React.useEffect(() => {
-  //   console.log('TESTSTST');
-  // }, [show]);
 
   return (
     <>

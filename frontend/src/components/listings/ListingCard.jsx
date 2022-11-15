@@ -21,7 +21,6 @@ const ListingCard = ({
   numReviews,
   avgRating,
   thumbnail,
-  // numBedrooms,
   numBeds,
   numBathrooms,
   bookings,
@@ -39,7 +38,6 @@ const ListingCard = ({
     numReviews: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     avgRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     thumbnail: PropTypes.string,
-    // numBedrooms: PropTypes.number,
     numBeds: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     numBathrooms: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     bookings: PropTypes.array,
@@ -84,7 +82,7 @@ const ListingCard = ({
 
       <Card.Body className="d-flex flex-column align-items-start">
         <div className="d-flex flex-wrap gap-1 mb-1">
-          {owner === email && <Badge bg="dark">Mine</Badge>}
+          {owner === email && <Badge bg="secondary">Your Listing</Badge>}
 
           {bookings
             .sort((a, b) => {

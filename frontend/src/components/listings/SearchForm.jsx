@@ -102,12 +102,12 @@ const SearchForm = ({ show, closeAction, setSearchParams, setIsLoading }) => {
             <FloatingLabel
               className="flex-grow-1"
               controlId="number"
-              label="Title, City"
+              label="Title / City"
             >
               <Form.Control
                 type="text"
                 value={titleCity}
-                placeholder="Title, city"
+                placeholder="Title / City"
                 onInput={(event) => {
                   setTitleCity(event.target.value);
                   const searchValues = event.target.value.split(',', 2);
