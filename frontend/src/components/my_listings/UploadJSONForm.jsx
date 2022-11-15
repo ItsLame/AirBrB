@@ -8,11 +8,16 @@ import { useNavigate } from 'react-router-dom';
 import { fileToText } from '../../helpers';
 
 const UploadJSONForm = () => {
+  const [jsonData, setJsonData] = React.useState([]);
   const navigate = useNavigate();
 
   const handleClose = () => {
     navigate('/my_listings');
   };
+
+  React.useEffect(() => {
+    console.log(jsonData);
+  }, [jsonData]);
 
   return (
     <Modal show={true} onHide={handleClose}>
@@ -25,7 +30,10 @@ const UploadJSONForm = () => {
           className="mb-3"
           onChange={(event) => {
             fileToText(event.target.files[0])
-              .then((result) => console.log(result))
+              .then((result) => {
+                const temp = JSON.parse(result);
+                setJsonData(temp);
+              })
               .catch((error) => {
                 event.target.value = null;
                 toast.error(error.message);
