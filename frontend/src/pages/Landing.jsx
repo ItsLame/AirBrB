@@ -57,6 +57,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             responses.forEach(([response, id]) => {
               // prepend to list if listing is published
               const listing = response.data.listing;
+              // console.log('raw listings', listing);
               if (listing.published) {
                 newListings = [
                   <Col key={id}>
@@ -86,6 +87,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                           booking.owner === email &&
                           booking.listingId === id.toString()
                       )}
+                      availability={listing.availability}
                       owner={listing.owner}
                       email={email}
                     />
@@ -122,12 +124,22 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             // filter by search
             const searchGetBedrooms = searchParams.get('bedrooms');
             const searchGetPrice = searchParams.get('price');
+            const searchGetDate = searchParams.get('date');
 
+            // console.log(
+            //   newListings[0].props.children.props.availability[0].end
+            // );
+            // console.log(
+            //   'listings date',
+            //   '2022-11-15'.isAfter(
+            //     newListings[0].props.children.props.availability.end
+            //   )
+            // );
+            // console.log('date', searchParams.get('date'));
             // const searchGetRatings = searchParams.get('ratings');
             // console.log('- FILTER -');
             // console.log('bedrooms', searchParams.get('bedrooms'));
             // console.log('price', searchParams.get('price'));
-            // console.log('date', searchParams.get('date'));
             // console.log('ratings', searchParams.get('ratings'));
 
             // filter bedrooms
@@ -155,7 +167,23 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
               ));
 
             // filter date range min
+            searchGetDate &&
+              searchGetDate.split('to')[0] !== '' &&
+              (newListings = newListings.filter((x) =>
+                x.props.children.props.availability.every(
+                  (y) => y.start >= searchGetDate.split('to')[0]
+                )
+              ));
+
             // filter date range max
+            searchGetDate &&
+              searchGetDate.split('to')[1] !== '' &&
+              (newListings = newListings.filter((x) =>
+                x.props.children.props.availability.every(
+                  (y) => y.end <= searchGetDate.split('to')[1]
+                )
+              ));
+
             // sort by ratings highest/lowest
 
             setIsListingsLoading(false);
