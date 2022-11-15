@@ -21,9 +21,6 @@ const SearchForm = ({ show, closeAction, setSearchParams, setIsLoading }) => {
   };
 
   const [titleCity, setTitleCity] = React.useState('');
-  const [title, setTitle] = React.useState('');
-  const [city, setCity] = React.useState('');
-
   const [filterToggle, setFilterToggle] = React.useState(false);
   const [ratingsToggle, setRatingsToggle] = React.useState('');
   const [bedrooms, setBedrooms] = React.useState(0);
@@ -55,8 +52,8 @@ const SearchForm = ({ show, closeAction, setSearchParams, setIsLoading }) => {
 
   const handleClear = () => {
     setTitleCity('');
-    setTitle('');
-    setCity('');
+    // setTitle('');
+    // setCity('');
     setBedrooms(0);
     setStartDate('');
     setEndDate('');
@@ -68,6 +65,7 @@ const SearchForm = ({ show, closeAction, setSearchParams, setIsLoading }) => {
   const handleSearch = () => {
     const temp = {};
 
+    titleCity.trim() !== '' && (temp.title_city = titleCity);
     filterActive[0] && (temp.ratings = ratingsToggle);
     filterActive[1] && (temp.bedrooms = bedrooms);
     filterActive[2] && (temp.price = `${minPrice}to${maxPrice}`);
@@ -110,15 +108,15 @@ const SearchForm = ({ show, closeAction, setSearchParams, setIsLoading }) => {
                 placeholder="Title / City"
                 onInput={(event) => {
                   setTitleCity(event.target.value);
-                  const searchValues = event.target.value.split(',', 2);
-                  searchValues[0]
-                    ? setTitle(searchValues[0].trim())
-                    : setTitle('');
-                  searchValues[1]
-                    ? setCity(searchValues[1].trim())
-                    : setCity('');
+                  // const searchValues = event.target.value.split(',', 2);
+                  // searchValues[0]
+                  //   ? setTitle(searchValues[0].trim())
+                  //   : setTitle('');
+                  // searchValues[1]
+                  //   ? setCity(searchValues[1].trim())
+                  //   : setCity('');
 
-                  console.log(`title:'${title}'\tcity:'${city}'`);
+                  // console.log(`title:'${title}'\tcity:'${city}'`);
                 }}
                 autoFocus
               />

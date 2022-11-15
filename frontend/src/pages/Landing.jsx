@@ -250,7 +250,6 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
           )}
 
           {listings}
-          {/* {console.log('listings', listings)} */}
         </Row>
       </Container>
 
