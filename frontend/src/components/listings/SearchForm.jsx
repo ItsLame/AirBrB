@@ -249,11 +249,11 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
                 {/* Highest rating button */}
                 <Button
                   variant="outline-dark"
-                  active={ratingsToggle === 'Highest'}
+                  active={ratingsToggle === 'highest'}
                   onClick={() => {
-                    ratingsToggle === 'Highest'
+                    ratingsToggle === 'highest'
                       ? setRatingsToggle('')
-                      : setRatingsToggle('Highest');
+                      : setRatingsToggle('highest');
                   }}
                 >
                   Highest
@@ -261,11 +261,11 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
                 {/* Lowest rating button */}
                 <Button
                   variant="outline-dark"
-                  active={ratingsToggle === 'Lowest'}
+                  active={ratingsToggle === 'lowest'}
                   onClick={() => {
-                    ratingsToggle === 'Lowest'
+                    ratingsToggle === 'lowest'
                       ? setRatingsToggle('')
-                      : setRatingsToggle('Lowest');
+                      : setRatingsToggle('lowest');
                   }}
                 >
                   Lowest

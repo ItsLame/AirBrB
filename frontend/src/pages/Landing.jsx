@@ -120,20 +120,35 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             });
 
             // filter by search
+            const searchGetBedrooms = searchParams.get('bedrooms');
+            const searchGetPrice = searchParams.get('price');
+            // const searchGetRatings = searchParams.get('ratings');
             console.log('- FILTER -');
             console.log('bedrooms', searchParams.get('bedrooms'));
-            console.log(newListings);
-            searchParams.get('bedrooms') &&
-              (newListings = newListings.filter(
-                (x) =>
-                  x.props.children.props.numBedrooms >=
-                  searchParams.get('bedrooms')
-              ));
             console.log('price', searchParams.get('price'));
             console.log('date', searchParams.get('date'));
             console.log('ratings', searchParams.get('ratings'));
 
-            // newListings = newListings.filter()
+            searchGetBedrooms &&
+              (newListings = newListings.filter(
+                (x) => x.props.children.props.numBedrooms >= searchGetBedrooms
+              ));
+
+            searchGetPrice &&
+              searchGetPrice.split('to')[0] !== '0' &&
+              (newListings = newListings.filter(
+                (x) =>
+                  x.props.children.props.pricePerNight >=
+                  searchGetPrice.split('to')[0]
+              ));
+
+            searchGetPrice &&
+              searchGetPrice.split('to')[1] !== '0' &&
+              (newListings = newListings.filter(
+                (x) =>
+                  x.props.children.props.pricePerNight <=
+                  searchGetPrice.split('to')[1]
+              ));
 
             setIsListingsLoading(false);
             setListings(newListings);
