@@ -272,7 +272,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             </h5>
           )}
 
-          {listings}
+          {!isListingsLoading && listings}
         </Row>
       </Container>
 
