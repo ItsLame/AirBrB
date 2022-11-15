@@ -122,6 +122,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             });
 
             // filter by search
+            const searchTitleCity = searchParams.get('title_city');
             const searchGetBedrooms = searchParams.get('bedrooms');
             const searchGetPrice = searchParams.get('price');
             const searchGetDate = searchParams.get('date');
@@ -132,7 +133,21 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             // console.log('date', searchParams.get('date'));
             // console.log('ratings', searchParams.get('ratings'));
 
-            // TODO: search title/city
+            // search title/city
+            if (searchTitleCity) {
+              console.log('check', searchTitleCity);
+
+              const titleCityList = searchTitleCity
+                .split(/[,;+]/g)
+                .map((titleCity) => titleCity.trim().toLowerCase());
+
+              titleCityList.every(
+                (title) =>
+                  (newListings = newListings.filter((x) =>
+                    x.props.children.props.title.toLowerCase().includes(title)
+                  ))
+              );
+            }
 
             // filter bedrooms
             searchGetBedrooms &&
