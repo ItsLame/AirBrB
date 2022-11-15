@@ -31,7 +31,6 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
   const handleShow = () => setShow(true);
 
   const render = async () => {
-    console.log(searchParams.get('bedrooms'));
     // get bookings if logged in
     let bookings = [];
     if (token) {
@@ -76,6 +75,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                           listing.reviews.length
                       ).toFixed(1)}
                       thumbnail={listing.thumbnail}
+                      numBedrooms={listing.metadata.bedrooms.length}
                       numBeds={listing.metadata.bedrooms.reduce(
                         (a, b) => a + b,
                         0
@@ -120,6 +120,20 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             });
 
             // filter by search
+            console.log('- FILTER -');
+            console.log('bedrooms', searchParams.get('bedrooms'));
+            console.log(newListings);
+            searchParams.get('bedrooms') &&
+              (newListings = newListings.filter(
+                (x) =>
+                  x.props.children.props.numBedrooms >=
+                  searchParams.get('bedrooms')
+              ));
+            console.log('price', searchParams.get('price'));
+            console.log('date', searchParams.get('date'));
+            console.log('ratings', searchParams.get('ratings'));
+
+            // newListings = newListings.filter()
 
             setIsListingsLoading(false);
             setListings(newListings);
@@ -133,7 +147,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
       });
   };
 
-  React.useEffect(render, [show]);
+  React.useEffect(render, [searchParams]);
   React.useEffect(render, [email]);
 
   // React.useEffect(() => {
@@ -204,7 +218,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
       <SearchForm
         show={show}
         closeAction={handleClose}
-        searchParams={setSearchParams}
+        setSearchParams={setSearchParams}
       />
       <Outlet />
     </>

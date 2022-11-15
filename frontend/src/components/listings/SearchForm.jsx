@@ -73,6 +73,7 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
     filterActive[3] && (temp.date = `${startDate}to${endDate}`);
 
     setSearchParams(temp);
+    closeAction();
   };
 
   return (
