@@ -6,14 +6,12 @@ import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 
 import { fileToText } from '../../helpers';
-// import { fileToDataUrl } from '../../helpers';
 import { createListing } from '../../services/listings';
 
 const UploadJSONForm = () => {
   const [jsonData, setJsonData] = React.useState([]);
   const [validateDisabled, setValidateDisabled] = React.useState(true);
   const [uploadDisabled, setUploadDisabled] = React.useState(true);
-  // const [uploadDisabled] = React.useState(true);
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -61,6 +59,10 @@ const UploadJSONForm = () => {
         amenitiesKeysString
     );
 
+    temp.forEach(
+      (x) => (x.thumbnail = require(`../../populate/${x.thumbnail}`))
+    );
+
     const allKeys = [
       ...mainKeys,
       ...availabilityKeys,
@@ -79,8 +81,8 @@ const UploadJSONForm = () => {
   };
 
   const handleUpload = () => {
-    // jsonData.
     const latestDate = new Date().toISOString();
+
     jsonData.forEach((x) => {
       // console.log('title', x.title);
       // console.log('address', x.address);
