@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import ReactPlayer from 'react-player/youtube';
 
 import { fileToText } from '../../helpers';
 import { createListing } from '../../services/listings';
@@ -72,10 +73,13 @@ const UploadJSONForm = ({ setMyListings }) => {
 
     if (allKeys.every((x) => x)) {
       toast.success('All keys are valid!');
-      temp.forEach(
-        (x) =>
-          (x.thumbnail = require(`../../../public/listings/${x.thumbnail}`))
+
+      temp.forEach((x) =>
+        x.thumbnail.split('.')[1] === 'youtube'
+          ? console.log('youtube')
+          : (x.thumbnail = require(`../../../public/listings/${x.thumbnail}`))
       );
+
       setJsonData(temp);
       setUploadDisabled(false);
     } else {
@@ -125,6 +129,10 @@ const UploadJSONForm = ({ setMyListings }) => {
         <Modal.Title>Upload listings</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <ReactPlayer
+          url="https://www.youtube.com/watch?v=L-Qd7FrkMwY"
+          width="100%"
+        />
         Choose a JSON file to import...
         <Form.Control
           type="file"

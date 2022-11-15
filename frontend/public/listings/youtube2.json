@@ -1,0 +1,35 @@
+[
+  {
+    "title": "Youtube Hotel Copycat",
+    "address": {
+      "street": "YStreet",
+      "city": "YCity",
+      "state": "YState",
+      "postcode": "2020",
+      "country": "YCountry"
+    },
+    "price": 33,
+    "thumbnail": "https://www.youtube.com/watch?v=bAt07xq43BQ",
+    "metadata": {
+      "propertyType": "Hotel",
+      "numBathrooms": 1,
+      "bedrooms": [1],
+      "amenities": {
+        "essentials": [],
+        "features": [],
+        "location": [],
+        "safety": []
+      }
+    },
+    "availability": [
+      {
+        "start": "2022-11-20",
+        "end": "2022-11-21"
+      },
+      {
+        "start": "2022-12-20",
+        "end": "2022-12-21"
+      }
+    ]
+  }
+]

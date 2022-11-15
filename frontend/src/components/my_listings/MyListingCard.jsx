@@ -10,6 +10,7 @@ import { FaToilet } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import ReactPlayer from 'react-player/youtube';
 
 import { StarRating } from '../StyledComponents';
 import { deleteListing, unpublishListing } from '../../services/listings';
@@ -141,15 +142,21 @@ const MyListingCard = ({
       style={{ cursor: 'pointer', transition: 'all 0.1s ease-in' }}
     >
       {/* Listing thumbnail */}
-      <Card.Img
-        variant="top"
-        src={thumbnail}
-        alt={`Thumbnail for listing ${title}`}
-        style={{
-          height: '200px',
-          objectFit: 'cover',
-        }}
-      />
+      {thumbnail.split('.')[1] === 'youtube'
+        ? (
+        <ReactPlayer url={thumbnail} width="100%" height="100%" />
+          )
+        : (
+        <Card.Img
+          variant="top"
+          src={thumbnail}
+          alt={`Thumbnail for listing ${title}`}
+          style={{
+            height: '200px',
+            objectFit: 'cover',
+          }}
+        />
+          )}
 
       <Card.Body className="d-flex flex-column align-items-start">
         <Badge bg={published ? 'success' : 'danger'} className="mb-1">
