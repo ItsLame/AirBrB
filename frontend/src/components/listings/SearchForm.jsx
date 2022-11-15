@@ -70,18 +70,10 @@ const SearchForm = ({ show, closeAction }) => {
 
     filterActive[0] && (temp.ratings = ratingsToggle);
     filterActive[1] && (temp.bedrooms = bedrooms);
-    // temp.push({ min_price: minPrice }, ...temp);
-    // temp.push({ ratings: ratingsToggle });
-    // temp.push({ ratings: ratingsToggle });
-
-    console.log(temp);
-    // temp = temp.map((x) => {
-    //   x;
-    // });
-    // console.log('map', temp);
+    filterActive[2] && (temp.price = `${minPrice}to${maxPrice}`);
+    filterActive[3] && (temp.date = `${startDate}to${endDate}`);
 
     setSearchParams(temp);
-    // setSearchParams({ hello: 'world', test: null });
 
     console.log(searchParams);
   };
