@@ -51,22 +51,27 @@ const UploadJSONForm = () => {
             const temp = jsonData;
             const mainKeysString =
               '["title","address","price","thumbnail","metadata","availability"]';
-            // const availabilityKeysString = '["start","end"]';
+            const availabilityKeysString = '["start","end"]';
             const addressKeysString =
               '["street","city","state","postcode","country"]';
             const metadataKeysString =
               '["propertyType","numBathrooms","bedrooms","amenities"]';
-            // const amenitiesKeysString = '["essentials","features","location","safety"]'
+            const amenitiesKeysString =
+              '["essentials","features","location","safety"]';
 
             const mainKeys = temp.map(
               (x) => JSON.stringify(Object.keys(x)) === mainKeysString
             );
 
-            // const availabilityKeys = temp.map(
-            //   (x) =>
-            //     JSON.stringify(Object.keys(x.availability)) ===
-            //     availabilityKeysString
-            // );
+            let availabilityKeys;
+            temp
+              .map((x) => x.availability)
+              .forEach((x) => {
+                availabilityKeys = x.map(
+                  (y) =>
+                    JSON.stringify(Object.keys(y)) === availabilityKeysString
+                );
+              });
 
             const addressKeys = temp.map(
               (x) =>
@@ -78,11 +83,19 @@ const UploadJSONForm = () => {
                 JSON.stringify(Object.keys(x.metadata)) === metadataKeysString
             );
 
-            console.log('mainK', mainKeys);
-            console.log('addressK', addressKeys);
-            console.log('metadataK', metadataKeys);
+            const amenitiesKeys = temp.map(
+              (x) =>
+                JSON.stringify(Object.keys(x.metadata.amenities)) ===
+                amenitiesKeysString
+            );
 
-            const allKeys = [...mainKeys, ...addressKeys, ...metadataKeys];
+            const allKeys = [
+              ...mainKeys,
+              ...availabilityKeys,
+              ...addressKeys,
+              ...metadataKeys,
+              ...amenitiesKeys,
+            ];
 
             if (allKeys.every((x) => x)) {
               toast.success('All keys are valid!');
