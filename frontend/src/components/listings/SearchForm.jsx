@@ -288,26 +288,18 @@ const SearchForm = ({ show, closeAction }) => {
         >
           Clear All
         </Button>
-        {/* <Button variant="primary" type="submit">
-          Search {filterCount}
-        </Button> */}
         {/* Search / search with filter button */}
-        {/* {filterCount > 0 ? (
-          // <Button variant="primary" type="submit" onSubmit={handleSearch}>
+        {filterCount > 0
+          ? (
           <Button variant="primary" type="submit" onClick={handleSearch}>
             Search with {filterCount} filter{filterCount > 1 && 's'}
           </Button>
-        ) : (
-          // <Button variant="primary" type="submit" onSubmit={handleSearch}>
+            )
+          : (
           <Button variant="primary" type="submit" onClick={handleSearch}>
             Search
           </Button>
-        )} */}
-        {/* <Button variant="primary" type="submit" onSubmit={handleSearch}> */}
-        <Button variant="primary" type="submit" onClick={handleSearch}>
-          Search
-        </Button>
-        {console.log(filterCount)}
+            )}
       </Modal.Footer>
     </Modal>
   );
