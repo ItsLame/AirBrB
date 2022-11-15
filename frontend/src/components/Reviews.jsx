@@ -44,12 +44,12 @@ const Reviews = ({ reviews, avgRating, numReviews }) => {
                   .map((review, idx) => {
                     return (
                       <tr key={idx}>
-                        <td className="lh-1 align-middle">
+                        <td className="lh-1 align-middle" style={{ width: 0 }}>
                           <span className="fw-bold">{review.rater}</span>
                           <br />
                           <span
                             className="text-muted fst-italic"
-                            style={{ fontSize: '10pt' }}
+                            style={{ fontSize: '10pt', whiteSpace: 'nowrap' }}
                           >
                             {new Date(review.postedOn).toLocaleDateString(
                               'default',
@@ -64,7 +64,7 @@ const Reviews = ({ reviews, avgRating, numReviews }) => {
 
                         <td
                           className="align-middle"
-                          style={{ minWidth: '100px' }}
+                          style={{ minWidth: '100px', width: 0 }}
                         >
                           {[...Array(review.rating).keys()].map((i) => (
                             <BsFillStarFill key={i} fill="black" />
