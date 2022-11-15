@@ -20,7 +20,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { BiCalendarCheck } from 'react-icons/bi';
 import { GiReceiveMoney } from 'react-icons/gi';
-import { BsCalendarDay } from 'react-icons/bs';
+import { BsFillMoonStarsFill } from 'react-icons/bs';
 
 import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
@@ -722,43 +722,37 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
 
             {/* Yearly profits and stats */}
             <h5 className="mt-4">Performance in {new Date().getFullYear()}</h5>
-            <div className="ms-2 d-flex gap-3 mb-3 w-100 flex-wrap">
+            <div className="ms-2 mt-3 d-flex gap-2 flex-column mb-3">
               <div className="d-flex align-items-center gap-2">
-                <GiReceiveMoney size={45} />
+                <span className="vr"></span>
+                <GiReceiveMoney fill="#666" size={30} />
                 <div className="d-flex flex-column justify-content-center">
-                  <span className="fs-4 text-muted lh-1">
+                  <span className="fs-5 text-muted lh-1">
                     {currencyFormatter.format(yearlyProfit)}
                   </span>
-                  <span
-                    className="fst-italic lh-1"
-                    style={{ fontSize: '10pt' }}
-                  >
+                  <span className="fst-italic lh-1" style={{ fontSize: '9pt' }}>
                     IN PROFIT
                   </span>
                 </div>
               </div>
               <div className="d-flex align-items-center gap-2">
-                <BiCalendarCheck size={45} />
+                <span className="vr"></span>
+                <BiCalendarCheck fill="#666" size={30} />
                 <div className="d-flex flex-column justify-content-center">
-                  <span className="fs-4 text-muted lh-1">{yearlyBookings}</span>
-                  <span
-                    className="fst-italic lh-1"
-                    style={{ fontSize: '10pt' }}
-                  >
+                  <span className="fs-5 text-muted lh-1">{yearlyBookings}</span>
+                  <span className="fst-italic lh-1" style={{ fontSize: '9pt' }}>
                     BOOKINGS
                   </span>
                 </div>
               </div>
               <div className="d-flex align-items-center gap-2">
-                <BsCalendarDay size={40} />
+                <span className="vr"></span>
+                <BsFillMoonStarsFill fill="#666" size={24} className="ms-1" />
                 <div className="d-flex flex-column justify-content-center">
-                  <span className="fs-4 text-muted lh-1">
+                  <span className="fs-5 text-muted lh-1">
                     {yearlyDaysBooked}
                   </span>
-                  <span
-                    className="fst-italic lh-1"
-                    style={{ fontSize: '10pt' }}
-                  >
+                  <span className="fst-italic lh-1" style={{ fontSize: '9pt' }}>
                     NIGHTS
                   </span>
                 </div>
