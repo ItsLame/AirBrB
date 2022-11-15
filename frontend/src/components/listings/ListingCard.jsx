@@ -6,6 +6,7 @@ import { IoMdBed } from 'react-icons/io';
 import { FaToilet } from 'react-icons/fa';
 import Badge from 'react-bootstrap/Badge';
 import { useNavigate } from 'react-router-dom';
+import ReactPlayer from 'react-player/youtube';
 
 import { StarRating } from '../StyledComponents';
 import { currencyFormatter } from '../../helpers';
@@ -70,15 +71,21 @@ const ListingCard = ({
       }}
       style={{ cursor: 'pointer', transition: 'all 0.1s ease-in' }}
     >
-      <Card.Img
-        variant="top"
-        src={thumbnail}
-        alt={`Thumbnail for listing ${title}`}
-        style={{
-          height: '200px',
-          objectFit: 'cover',
-        }}
-      />
+      {thumbnail.split('.')[1] === 'youtube'
+        ? (
+        <ReactPlayer url={thumbnail} width="100%" height="100%" />
+          )
+        : (
+        <Card.Img
+          variant="top"
+          src={thumbnail}
+          alt={`Thumbnail for listing ${title}`}
+          style={{
+            height: '200px',
+            objectFit: 'cover',
+          }}
+        />
+          )}
 
       <Card.Body className="d-flex flex-column align-items-start">
         <div className="d-flex flex-wrap gap-1 mb-1">
