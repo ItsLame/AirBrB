@@ -63,14 +63,18 @@ const UploadJSONForm = () => {
               (x) => JSON.stringify(Object.keys(x)) === mainKeysString
             );
 
-            let availabilityKeys;
+            let availabilityKeys = [];
             temp
-              .map((x) => x.availability)
-              .forEach((x) => {
-                availabilityKeys = x.map(
+              .map((x) =>
+                x.availability.map(
                   (y) =>
                     JSON.stringify(Object.keys(y)) === availabilityKeysString
-                );
+                )
+              )
+              .forEach((x) => {
+                x.forEach((y) => {
+                  availabilityKeys = [...availabilityKeys, y];
+                });
               });
 
             const addressKeys = temp.map(
