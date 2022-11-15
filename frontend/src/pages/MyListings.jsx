@@ -23,6 +23,7 @@ import MyListingCard from '../components/my_listings/MyListingCard';
 import CreateListingForm from '../components/my_listings/CreateListingForm';
 import PublishListingForm from '../components/my_listings/PublishListingForm';
 import EditListingForm from '../components/my_listings/EditListingForm';
+import UploadJSONForm from '../components/my_listings/UploadJSONForm';
 import { getListing, getListings } from '../services/listings';
 import { getBookings } from '../services/bookings';
 import { currencyFormatter } from '../helpers';
@@ -158,6 +159,11 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
           path="create"
           element={<CreateListingForm setMyListings={setMyListings} />}
         />
+        <Route path="upload" element={<UploadJSONForm />} />
+        {/* <Route
+          path="upload"
+          element={<CreateListingForm setMyListings={setMyListings} />}
+        /> */}
         <Route
           path="edit/:listingId"
           element={
@@ -171,7 +177,6 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
           }
         />
       </Routes>
-
       {/* Navbar */}
       <Navbar
         token={token}
@@ -182,9 +187,8 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
 
       {/* Main content */}
       <Container className="my-5">
+        <h1>My listings</h1>
         <div className="d-flex gap-3 mb-4 align-items-center">
-          <h1>My listings</h1>
-
           {/* Add listing button */}
           <Button
             variant="outline-dark"
@@ -192,6 +196,16 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
             onClick={() => navigate('create')}
           >
             <Card.Title>Add a listing</Card.Title>
+            <HiPlusCircle size={30} />
+          </Button>
+
+          {/* Add a listing (JSON) */}
+          <Button
+            variant="outline-dark"
+            className="d-flex gap-2 align-items-center"
+            onClick={() => navigate('upload')}
+          >
+            <Card.Title>Upload JSON</Card.Title>
             <HiPlusCircle size={30} />
           </Button>
         </div>

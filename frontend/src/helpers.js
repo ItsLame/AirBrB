@@ -29,6 +29,22 @@ export const fileToDataUrl = (file) => {
   return dataUrlPromise;
 };
 
+export const fileToText = (file) => {
+  const validFileTypes = ['application/json'];
+  const valid = validFileTypes.find((type) => type === file.type);
+
+  const reader = new FileReader();
+  const dataTextPromise = new Promise((resolve, reject) => {
+    if (!valid) {
+      reject(new Error('provided file is not a json.'));
+    }
+    reader.onerror = reject;
+    reader.onload = () => resolve(reader.result);
+  });
+  reader.readAsText(file);
+  return dataTextPromise;
+};
+
 // add one day to a Date object
 export const addOneDay = (date) => {
   return new Date(date.setDate(date.getDate() + 1));
