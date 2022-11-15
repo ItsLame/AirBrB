@@ -9,6 +9,9 @@ import { fileToText } from '../../helpers';
 
 const UploadJSONForm = () => {
   const [jsonData, setJsonData] = React.useState([]);
+  const [validateDisabled, setValidateDisabled] = React.useState(true);
+  // const [uploadDisabled, setUploadDisabled] = React.useState(true);
+  const [uploadDisabled] = React.useState(true);
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -33,6 +36,7 @@ const UploadJSONForm = () => {
               .then((result) => {
                 const temp = JSON.parse(result);
                 setJsonData(temp);
+                setValidateDisabled(false);
               })
               .catch((error) => {
                 event.target.value = null;
@@ -40,12 +44,16 @@ const UploadJSONForm = () => {
               });
           }}
         ></Form.Control>
-        <Button variant="success" onClick={handleClose}>
+        <Button
+          variant="success"
+          disabled={validateDisabled}
+          onClick={handleClose}
+        >
           Validate
         </Button>
       </Modal.Body>
       <Modal.Footer>
-        <Button disabled={true}>Upload</Button>
+        <Button disabled={uploadDisabled}>Upload</Button>
       </Modal.Footer>
     </Modal>
   );
