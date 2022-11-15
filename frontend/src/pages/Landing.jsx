@@ -136,7 +136,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             // search title/city
             if (searchTitleCity) {
               const titleCityList = searchTitleCity
-                .split(/[,;+]/g)
+                .split(/[ ,;+]/g)
                 .map((titleCity) => titleCity.trim().toLowerCase());
 
               titleCityList.some(
