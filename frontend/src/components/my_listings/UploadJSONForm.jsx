@@ -10,7 +10,6 @@ import { createListing } from '../../services/listings';
 
 const UploadJSONForm = () => {
   const [jsonData, setJsonData] = React.useState([]);
-  const [validateDisabled, setValidateDisabled] = React.useState(true);
   const [uploadDisabled, setUploadDisabled] = React.useState(true);
   const navigate = useNavigate();
 
@@ -125,22 +124,14 @@ const UploadJSONForm = () => {
               .then((result) => {
                 const temp = JSON.parse(result);
                 setJsonData(temp);
-                setValidateDisabled(false);
+                handleValidate();
               })
               .catch((error) => {
                 event.target.value = null;
                 toast.error(error.message);
-                setValidateDisabled(true);
               });
           }}
         ></Form.Control>
-        <Button
-          variant="success"
-          disabled={validateDisabled}
-          onClick={handleValidate}
-        >
-          Validate
-        </Button>
       </Modal.Body>
       <Modal.Footer>
         <Button disabled={uploadDisabled} onClick={handleUpload}>
