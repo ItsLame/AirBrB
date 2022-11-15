@@ -73,7 +73,7 @@ const ListingCard = ({
     >
       {thumbnail.split('.')[1] === 'youtube'
         ? (
-        <ReactPlayer url={thumbnail} width="100%" height="100%" />
+        <ReactPlayer url={thumbnail} width="100%" height="200px" />
           )
         : (
         <Card.Img
