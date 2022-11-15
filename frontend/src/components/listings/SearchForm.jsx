@@ -11,12 +11,12 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { useSearchParams } from 'react-router-dom';
 
-const SearchForm = ({ show, closeAction }) => {
+const SearchForm = ({ show, closeAction, setSearchParams }) => {
   SearchForm.propTypes = {
     show: PropTypes.bool,
     closeAction: PropTypes.func,
+    setSearchParams: PropTypes.func,
   };
 
   const [titleCity, setTitleCity] = React.useState('');
@@ -37,7 +37,6 @@ const SearchForm = ({ show, closeAction }) => {
     false, // min max price
     false, // start end date
   ]);
-  const [searchParams, setSearchParams] = useSearchParams({});
 
   React.useEffect(() => {
     const tempFilterActive = filterActive;
@@ -74,8 +73,6 @@ const SearchForm = ({ show, closeAction }) => {
     filterActive[3] && (temp.date = `${startDate}to${endDate}`);
 
     setSearchParams(temp);
-
-    console.log(searchParams);
   };
 
   return (

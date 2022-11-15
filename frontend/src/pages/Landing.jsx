@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import Placeholder from 'react-bootstrap/Placeholder';
@@ -25,11 +25,13 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
   const [listings, setListings] = React.useState([]);
   const [isListingsLoading, setIsListingsLoading] = React.useState(true);
   const [show, setShow] = React.useState(false);
+  const [searchParams, setSearchParams] = useSearchParams({});
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const render = async () => {
+    console.log(searchParams.get('bedrooms'));
     // get bookings if logged in
     let bookings = [];
     if (token) {
@@ -117,6 +119,8 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                 : -1;
             });
 
+            // filter by search
+
             setIsListingsLoading(false);
             setListings(newListings);
           })
@@ -129,8 +133,12 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
       });
   };
 
-  React.useEffect(render, []);
+  React.useEffect(render, [show]);
   React.useEffect(render, [email]);
+
+  // React.useEffect(() => {
+  //   console.log('TESTSTST');
+  // }, [show]);
 
   return (
     <>
@@ -193,7 +201,11 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
         </Row>
       </Container>
 
-      <SearchForm show={show} closeAction={handleClose} />
+      <SearchForm
+        show={show}
+        closeAction={handleClose}
+        searchParams={setSearchParams}
+      />
       <Outlet />
     </>
   );
