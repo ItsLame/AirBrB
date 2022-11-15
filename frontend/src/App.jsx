@@ -47,7 +47,7 @@ const App = () => {
       <Routes>
         {/* Landing page */}
         <Route
-          path="/"
+          path="/*"
           element={
             <Landing
               token={token}

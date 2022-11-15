@@ -11,12 +11,12 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
+import { useSearchParams } from 'react-router-dom';
 
-const SearchForm = ({ show, closeAction, searchElement }) => {
+const SearchForm = ({ show, closeAction }) => {
   SearchForm.propTypes = {
     show: PropTypes.bool,
     closeAction: PropTypes.func,
-    searchElement: PropTypes.element,
   };
 
   const [titleCity, setTitleCity] = React.useState('');
@@ -37,6 +37,7 @@ const SearchForm = ({ show, closeAction, searchElement }) => {
     false,
     false,
   ]);
+  const [searchParams, setSearchParams] = useSearchParams({});
 
   React.useEffect(() => {
     const tempFilterActive = filterActive;
@@ -62,6 +63,11 @@ const SearchForm = ({ show, closeAction, searchElement }) => {
     setMinPrice(0);
     setMaxPrice(0);
     setRatingsToggle('');
+  };
+
+  const handleSearch = () => {
+    setSearchParams({ hello: 'world' });
+    console.log(searchParams);
   };
 
   return (
@@ -278,17 +284,22 @@ const SearchForm = ({ show, closeAction, searchElement }) => {
           Search {filterCount}
         </Button> */}
         {/* Search / search with filter button */}
-        {filterCount > 0
-          ? (
-          <Button variant="primary" type="submit">
+        {/* {filterCount > 0 ? (
+          // <Button variant="primary" type="submit" onSubmit={handleSearch}>
+          <Button variant="primary" type="submit" onClick={handleSearch}>
             Search with {filterCount} filter{filterCount > 1 && 's'}
           </Button>
-            )
-          : (
-          <Button variant="primary" type="submit">
+        ) : (
+          // <Button variant="primary" type="submit" onSubmit={handleSearch}>
+          <Button variant="primary" type="submit" onClick={handleSearch}>
             Search
           </Button>
-            )}
+        )} */}
+        {/* <Button variant="primary" type="submit" onSubmit={handleSearch}> */}
+        <Button variant="primary" type="submit" onClick={handleSearch}>
+          Search
+        </Button>
+        {console.log(filterCount)}
       </Modal.Footer>
     </Modal>
   );
