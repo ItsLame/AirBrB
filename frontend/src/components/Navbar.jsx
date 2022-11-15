@@ -74,7 +74,9 @@ const Navbar = ({ token, setToken, middleElement, email, setAppEmail }) => {
               {token
                 ? (
                 <>
-                  <NavDropdown.ItemText className='text-muted'>{email}</NavDropdown.ItemText>
+                  <NavDropdown.ItemText className="text-muted">
+                    {email}
+                  </NavDropdown.ItemText>
                   <NavDropdown.Divider />
                   <NavDropdown.Item
                     onClick={() => {

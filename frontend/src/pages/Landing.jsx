@@ -148,15 +148,16 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
               }
 
               // filter bedrooms
-              searchGetBedrooms && searchGetBedrooms === 8
-                ? (newListings = newListings.filter(
-                    (x) =>
-                      x.props.children.props.numBedrooms >= searchGetBedrooms
-                  ))
-                : (newListings = newListings.filter(
-                    (x) =>
-                      x.props.children.props.numBedrooms === searchGetBedrooms
-                  ));
+              searchGetBedrooms &&
+                (searchGetBedrooms === 8
+                  ? (newListings = newListings.filter(
+                      (x) =>
+                        x.props.children.props.numBedrooms >= searchGetBedrooms
+                    ))
+                  : (newListings = newListings.filter(
+                      (x) =>
+                        x.props.children.props.numBedrooms === searchGetBedrooms
+                    )));
 
               // filter price range min/max
               if (searchGetPrice) {

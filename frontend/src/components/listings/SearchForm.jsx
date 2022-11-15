@@ -52,8 +52,6 @@ const SearchForm = ({ show, closeAction, setSearchParams, setIsLoading }) => {
 
   const handleClear = () => {
     setTitleCity('');
-    // setTitle('');
-    // setCity('');
     setBedrooms(0);
     setStartDate('');
     setEndDate('');
@@ -73,6 +71,7 @@ const SearchForm = ({ show, closeAction, setSearchParams, setIsLoading }) => {
 
     setSearchParams(temp);
     setIsLoading(true);
+    // temp.title_city ?? setIsLoading(false);
     closeAction();
   };
 
@@ -108,15 +107,6 @@ const SearchForm = ({ show, closeAction, setSearchParams, setIsLoading }) => {
                 placeholder="Title / City"
                 onInput={(event) => {
                   setTitleCity(event.target.value);
-                  // const searchValues = event.target.value.split(',', 2);
-                  // searchValues[0]
-                  //   ? setTitle(searchValues[0].trim())
-                  //   : setTitle('');
-                  // searchValues[1]
-                  //   ? setCity(searchValues[1].trim())
-                  //   : setCity('');
-
-                  // console.log(`title:'${title}'\tcity:'${city}'`);
                 }}
                 autoFocus
               />
