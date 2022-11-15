@@ -22,8 +22,8 @@ const UploadJSONForm = ({ setMyListings }) => {
     navigate('..');
   };
 
-  const handleValidate = () => {
-    const temp = jsonData;
+  const handleValidate = (temp) => {
+    // const temp = jsonData;
     const mainKeysString =
       '["title","address","price","thumbnail","metadata","availability"]';
     const availabilityKeysString = '["start","end"]';
@@ -63,10 +63,6 @@ const UploadJSONForm = ({ setMyListings }) => {
         amenitiesKeysString
     );
 
-    temp.forEach(
-      (x) => (x.thumbnail = require(`../../populate/${x.thumbnail}`))
-    );
-
     const allKeys = [
       ...mainKeys,
       ...availabilityKeys,
@@ -77,6 +73,10 @@ const UploadJSONForm = ({ setMyListings }) => {
 
     if (allKeys.every((x) => x)) {
       toast.success('All keys are valid!');
+      temp.forEach(
+        (x) => (x.thumbnail = require(`../../populate/${x.thumbnail}`))
+      );
+      setJsonData(temp);
       setUploadDisabled(false);
     } else {
       toast.error('Some invalid keys, please check your JSON file');
@@ -150,8 +150,8 @@ const UploadJSONForm = ({ setMyListings }) => {
             fileToText(event.target.files[0])
               .then((result) => {
                 const temp = JSON.parse(result);
-                setJsonData(temp);
-                handleValidate();
+                // setJsonData(temp);
+                handleValidate(temp);
               })
               .catch((error) => {
                 event.target.value = null;
