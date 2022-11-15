@@ -100,18 +100,23 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
         setFeaturesAmenities(listing.metadata.amenities.features);
         setLocationAmenities(listing.metadata.amenities.location);
         setSafetyAmenities(listing.metadata.amenities.safety);
-        setAvgRating(
-          listing.reviews.length === 0
-            ? 0
-            : listing.reviews.reduce((a, b) => a + b.rating, 0) /
-                listing.reviews.length
-        ); // TODO
-        setNumReviews(listing.reviews.length);
         setReviews(listing.reviews);
         setThumbnail(listing.thumbnail);
       })
       .catch((error) => console.error(error));
   }, []);
+
+  React.useEffect(() => {
+    if (reviews) {
+      setAvgRating(
+        (reviews.length === 0
+          ? 0
+          : reviews.reduce((a, b) => a + b.rating, 0) / reviews.length
+        ).toFixed(1)
+      );
+      setNumReviews(reviews.length);
+    }
+  }, [reviews]);
 
   if (notFound) {
     return <NotFound />;
@@ -566,8 +571,12 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
 
         {/* Review modal */}
         <LeaveReviewForm
+          rater={email}
+          listingId={listingId}
+          bookings={bookings}
           reviewFormShow={reviewFormShow}
           setReviewFormShow={setReviewFormShow}
+          setReviews={setReviews}
         />
       </Container>
     </>
