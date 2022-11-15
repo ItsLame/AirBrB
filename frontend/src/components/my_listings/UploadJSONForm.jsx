@@ -10,8 +10,8 @@ import { fileToText } from '../../helpers';
 const UploadJSONForm = () => {
   const [jsonData, setJsonData] = React.useState([]);
   const [validateDisabled, setValidateDisabled] = React.useState(true);
-  // const [uploadDisabled, setUploadDisabled] = React.useState(true);
-  const [uploadDisabled] = React.useState(true);
+  const [uploadDisabled, setUploadDisabled] = React.useState(true);
+  // const [uploadDisabled] = React.useState(true);
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -84,9 +84,13 @@ const UploadJSONForm = () => {
 
             const allKeys = [...mainKeys, ...addressKeys, ...metadataKeys];
 
-            allKeys.every((x) => x)
-              ? toast.success('All keys are valid!')
-              : toast.error('Some invalid keys, please check your JSON file');
+            if (allKeys.every((x) => x)) {
+              toast.success('All keys are valid!');
+              setUploadDisabled(false);
+            } else {
+              toast.error('Some invalid keys, please check your JSON file');
+              setUploadDisabled(true);
+            }
           }}
         >
           Validate
