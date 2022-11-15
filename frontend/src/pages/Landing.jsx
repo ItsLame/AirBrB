@@ -126,6 +126,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             const searchGetBedrooms = searchParams.get('bedrooms');
             const searchGetPrice = searchParams.get('price');
             const searchGetDate = searchParams.get('date');
+            const searchGetRatings = searchParams.get('ratings');
 
             // console.log('- FILTER -');
             // console.log('bedrooms', searchParams.get('bedrooms'));
@@ -192,6 +193,17 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
               ));
 
             // sort by ratings highest/lowest
+            searchGetRatings && searchGetRatings === 'lowest'
+              ? (newListings = newListings.sort(
+                  (a, b) =>
+                    a.props.children.props.avgRating -
+                    b.props.children.props.avgRating
+                ))
+              : (newListings = newListings.sort(
+                  (a, b) =>
+                    b.props.children.props.avgRating -
+                    a.props.children.props.avgRating
+                ));
 
             setIsListingsLoading(false);
             setListings(newListings);
