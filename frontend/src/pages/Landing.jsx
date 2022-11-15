@@ -116,7 +116,10 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
               if (numAcceptedA < numAcceptedB) return 1;
               if (numPendingA > numPendingB) return -1;
               if (numPendingA < numPendingB) return 1;
-              return a.props.children.props.title > b.props.children.props.title
+
+              // note: had to lowercase it, if not it will sort the capitalised letter first (i.e., A, B, a, b)
+              return a.props.children.props.title.toLowerCase() >
+                b.props.children.props.title.toLowerCase()
                 ? 1
                 : -1;
             });
