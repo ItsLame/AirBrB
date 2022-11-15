@@ -21,6 +21,7 @@ import { Bar } from 'react-chartjs-2';
 import { BiCalendarCheck } from 'react-icons/bi';
 import { GiReceiveMoney } from 'react-icons/gi';
 import { BsFillMoonStarsFill } from 'react-icons/bs';
+import ReactPlayer from 'react-player/youtube';
 
 import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
@@ -417,7 +418,12 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                 interval={null}
               >
                 <Carousel.Item>
-                  <img
+                {thumbnail.split('.')[1] === 'youtube'
+                  ? (
+                  <ReactPlayer url={thumbnail} width="100%" height="395px" controls={true} />
+                    )
+                  : (
+                    <img
                     style={{
                       height: '400px',
                       objectFit: 'cover',
@@ -427,6 +433,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                     src={thumbnail}
                     alt={`Thumbnail for listing ${title}`}
                   />
+                    )}
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
