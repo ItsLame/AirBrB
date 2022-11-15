@@ -205,7 +205,7 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
             className="d-flex gap-2 align-items-center"
             onClick={() => navigate('upload')}
           >
-            <Card.Title>Upload a listing</Card.Title>
+            <Card.Title>Upload listings</Card.Title>
             <VscJson size={30} />
           </Button>
         </div>

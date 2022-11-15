@@ -102,7 +102,7 @@ const UploadJSONForm = ({ setMyListings }) => {
               thumbnail: x.thumbnail,
               title: x.title,
               avgRating: 0,
-              propertyType: x.propertyType,
+              propertyType: x.metadata.propertyType,
               pricePerNight: x.price,
               numBeds: x.metadata.bedrooms.reduce((a, b) => a + b, 0),
               numBathrooms: x.metadata.numBathrooms,
@@ -120,9 +120,11 @@ const UploadJSONForm = ({ setMyListings }) => {
 
   return (
     <Modal show={true} onHide={handleClose} centered>
-      <Modal.Header closeButton>Upload listings</Modal.Header>
+      <Modal.Header closeButton>
+        <Modal.Title>Upload listings</Modal.Title>
+      </Modal.Header>
       <Modal.Body>
-        Upload a JSON file
+        Choose a JSON file to import...
         <Form.Control
           type="file"
           accept=".json"
