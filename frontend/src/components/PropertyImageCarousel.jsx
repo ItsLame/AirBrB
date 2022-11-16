@@ -14,7 +14,7 @@ const PropertyImageCarousel = ({ title, thumbnail, propertyImages }) => {
     <Carousel
       className="w-100"
       style={{
-        border: '3px solid black',
+        // border: '3px solid black',
         borderRadius: '2%',
         overflow: 'hidden',
         height: '400px',
@@ -44,18 +44,20 @@ const PropertyImageCarousel = ({ title, thumbnail, propertyImages }) => {
           />
             )}
       </Carousel.Item>
-      <Carousel.Item>
-        <img
-          style={{
-            height: '400px',
-            objectFit: 'cover',
-            objectPosition: '50% 50%',
-          }}
-          className="d-block w-100"
-          src="https://oranahouse.com/images/home-slider/home-slider_30e7ad12d64c376438cf3fe17ac0e1fd.jpg"
-          alt={`Thumbnail for listing ${title}`}
-        />
-      </Carousel.Item>
+      {propertyImages.map((img, idx) => (
+        <Carousel.Item key={idx}>
+          <img
+            style={{
+              height: '400px',
+              objectFit: 'cover',
+              objectPosition: '50% 50%',
+            }}
+            className="d-block w-100"
+            src={img}
+            alt={`Property image ${idx + 1} for listing ${title}`}
+          />
+        </Carousel.Item>
+      ))}
     </Carousel>
   );
 };
