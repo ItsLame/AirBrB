@@ -24,7 +24,7 @@ const UploadJSONForm = ({ setMyListings }) => {
 
   const handleValidate = (temp) => {
     const mainKeysString =
-      '["title","address","price","thumbnail","metadata","availability"]';
+      '["title","address","price","thumbnail","metadata"]';
     const addressKeysString = '["street","city","state","postcode","country"]';
     const metadataKeysString =
       '["propertyType","numBathrooms","bedrooms","amenities"]';
@@ -54,6 +54,8 @@ const UploadJSONForm = ({ setMyListings }) => {
       ...metadataKeys,
       ...amenitiesKeys,
     ];
+
+    // console.log('keys', allKeys)
 
     if (allKeys.every((x) => x)) {
       toast.success('All keys are valid!');
