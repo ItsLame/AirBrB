@@ -14,14 +14,12 @@ export const StyledStar = styled(BsFillStarFill)`
 `;
 
 export const StyledStarRating = styled(Card.Text)`
-  color: #ffc107;
-
   & {
     transition: all 100ms ease-in-out;
   }
 
   &:hover {
-    color: #d39e00;
+    color: #ffc107;
     cursor: pointer;
   }
 `;

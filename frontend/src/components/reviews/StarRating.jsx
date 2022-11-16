@@ -64,8 +64,10 @@ const StarRating = ({ reviews, avgRating, numReviews }) => {
                   className="d-flex gap-1 align-items-center fs-6 fw-bold"
                   style={{ color: '#ffc107' }}
                 >
-                  <BsFillStarFill />
-                  {avgRating} ({numReviews} reviews)
+                  <BsFillStarFill size={10} />
+                  <span>
+                    {avgRating} ({numReviews} reviews)
+                  </span>
                 </div>
 
                 <hr className="my-0" />
@@ -85,7 +87,7 @@ const StarRating = ({ reviews, avgRating, numReviews }) => {
                   <BsFillStarFill fill="darkgray" />
                   <BsFillStarFill fill="darkgray" />
                   <BsFillStarFill fill="darkgray" />
-                  <span>
+                  <span className="mt-1 ms-2">
                     {reviews.filter((review) => review.rating === 1).length} (
                     {numReviews === 0
                       ? '0%'
@@ -113,7 +115,7 @@ const StarRating = ({ reviews, avgRating, numReviews }) => {
                   <BsFillStarFill fill="darkgray" />
                   <BsFillStarFill fill="darkgray" />
                   <BsFillStarFill fill="darkgray" />
-                  <span>
+                  <span className="mt-1 ms-2">
                     {reviews.filter((review) => review.rating === 2).length} (
                     {numReviews === 0
                       ? '0%'
@@ -141,7 +143,7 @@ const StarRating = ({ reviews, avgRating, numReviews }) => {
                   <BsFillStarFill />
                   <BsFillStarFill fill="darkgray" />
                   <BsFillStarFill fill="darkgray" />
-                  <span>
+                  <span className="mt-1 ms-2">
                     {reviews.filter((review) => review.rating === 3).length} (
                     {numReviews === 0
                       ? '0%'
@@ -169,7 +171,7 @@ const StarRating = ({ reviews, avgRating, numReviews }) => {
                   <BsFillStarFill />
                   <BsFillStarFill />
                   <BsFillStarFill fill="darkgray" />
-                  <span>
+                  <span className="mt-1 ms-2">
                     {reviews.filter((review) => review.rating === 4).length} (
                     {numReviews === 0
                       ? '0%'
@@ -197,7 +199,7 @@ const StarRating = ({ reviews, avgRating, numReviews }) => {
                   <BsFillStarFill />
                   <BsFillStarFill />
                   <BsFillStarFill />
-                  <span>
+                  <span className="mt-1 ms-2">
                     {reviews.filter((review) => review.rating === 5).length} (
                     {numReviews === 0
                       ? '0%'
