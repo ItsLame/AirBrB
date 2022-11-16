@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ReactPlayer from 'react-player/youtube';
 
-import { StarRating } from '../StyledComponents';
+import StarRating from '../StarRating';
 import { deleteListing, unpublishListing } from '../../services/listings';
 import { currencyFormatter } from '../../helpers';
 

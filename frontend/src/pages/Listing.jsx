@@ -15,7 +15,7 @@ import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
 import LoginForm from '../components/auth/LoginForm';
 import RegisterForm from '../components/auth/RegisterForm';
-import { StarRating } from '../components/StyledComponents';
+import StarRating from '../components/StarRating';
 import MakeBookingForm from '../components/bookings/MakeBookingForm';
 import { getListing } from '../services/listings';
 import { getBookings } from '../services/bookings';

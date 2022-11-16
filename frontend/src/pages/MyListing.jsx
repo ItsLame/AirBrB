@@ -25,7 +25,7 @@ import ReactPlayer from 'react-player/youtube';
 
 import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
-import { StarRating } from '../components/StyledComponents';
+import StarRating from '../components/StarRating';
 import { getListing } from '../services/listings';
 import {
   acceptBooking,
