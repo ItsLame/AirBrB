@@ -19,6 +19,7 @@ const ListingCard = ({
   state,
   country,
   pricePerNight,
+  reviews,
   numReviews,
   avgRating,
   thumbnail,
@@ -36,6 +37,7 @@ const ListingCard = ({
     state: PropTypes.string,
     country: PropTypes.string,
     pricePerNight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    reviews: PropTypes.array,
     numReviews: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     avgRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     thumbnail: PropTypes.string,
@@ -155,7 +157,11 @@ const ListingCard = ({
           >
             {title}
           </Card.Title>
-          <StarRating avgRating={avgRating} numReviews={numReviews} />
+          <StarRating
+            reviews={reviews}
+            avgRating={avgRating}
+            numReviews={numReviews}
+          />
         </Container>
 
         <Card.Subtitle className="d-flex flex-column mb-2 text-muted">

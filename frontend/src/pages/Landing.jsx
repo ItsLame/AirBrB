@@ -69,6 +69,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                       state={listing.address.state}
                       country={listing.address.country}
                       pricePerNight={listing.price}
+                      reviews={listing.reviews}
                       numReviews={listing.reviews.length}
                       avgRating={(listing.reviews.length === 0
                         ? 0

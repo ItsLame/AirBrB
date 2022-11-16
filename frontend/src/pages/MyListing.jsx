@@ -255,13 +255,18 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                 )}
 
             {/* Reviews, beds, bathrooms */}
-            {avgRating !== null &&
+            {reviews !== null &&
+            avgRating !== null &&
             numReviews !== null &&
             bedrooms !== null &&
             numBathrooms !== null
               ? (
               <div className="d-flex align-items-start gap-1">
-                <StarRating avgRating={avgRating} numReviews={numReviews} />
+                <StarRating
+                  reviews={reviews}
+                  avgRating={avgRating}
+                  numReviews={numReviews}
+                />
                 <span>
                   — {bedrooms.length} bedroom{bedrooms.length === 1 ? '' : 's'},{' '}
                   {bedrooms.reduce((a, b) => a + b, 0)} bed

@@ -26,6 +26,7 @@ const MyListingCard = ({
   numBeds,
   numBathrooms,
   numReviews,
+  reviews,
   lastUpdatedAt,
   published,
   setMyListings,
@@ -40,6 +41,7 @@ const MyListingCard = ({
     numBeds: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     numBathrooms: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     numReviews: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    reviews: PropTypes.array,
     lastUpdatedAt: PropTypes.string,
     published: PropTypes.bool,
     setMyListings: PropTypes.func,
@@ -194,7 +196,11 @@ const MyListingCard = ({
             {title}
           </Card.Title>
           {/* Average review */}
-          <StarRating avgRating={avgRating} numReviews={numReviews} />
+          <StarRating
+            reviews={reviews}
+            avgRating={avgRating}
+            numReviews={numReviews}
+          />
         </Container>
 
         <Card.Subtitle className="mb-2">

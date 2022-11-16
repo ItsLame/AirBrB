@@ -79,6 +79,7 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
                 numBeds: listing.metadata.bedrooms.reduce((a, b) => a + b, 0),
                 numBathrooms: listing.metadata.numBathrooms,
                 numReviews: listing.reviews.length,
+                reviews: listing.reviews,
                 lastUpdatedAt: listing.metadata.lastUpdatedAt,
                 published: listing.published,
               });
@@ -273,6 +274,7 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
                 numBeds={listing.numBeds}
                 numBathrooms={listing.numBathrooms}
                 numReviews={listing.numReviews}
+                reviews={listing.reviews}
                 lastUpdatedAt={listing.lastUpdatedAt}
                 published={listing.published}
                 setMyListings={setMyListings}
