@@ -112,7 +112,6 @@ const MyListingFormModalBody = ({
   return (
     <>
       {/* Thumbnail preview */}
-      {/* {console.log(thumbnail.split('=')[1].length)} */}
       <div className="mb-3 text-center">
         {thumbnail
           ? (
@@ -145,7 +144,7 @@ const MyListingFormModalBody = ({
             <img
               src={thumbnail}
               alt="Listing thumbnail preview"
-              className="w-100 h-100"
+              className="w-50 h-100"
             />
                   )
             )
@@ -174,29 +173,35 @@ const MyListingFormModalBody = ({
 
       {/* Thumbnail field */}
       <h4 className="mt-4">Thumbnail</h4>
-      {/* <Form.Group controlId="thumbnail"> */}
       <Form.Group>
-        {/* <Form.Label>Thumbnail</Form.Label> */}
-        {/* Thumbnail: image toggle button */}
         <ButtonGroup className="mb-2">
+          {/* Thumbnail: image toggle button */}
           <Button
             variant="outline-dark"
             className="d-flex align-items-center"
             active={thumbnailToggle[0] === 'thumbnailImage'}
-            onClick={() => thumbnailToggle[1]('thumbnailImage')}
+            onClick={() => {
+              setThumbnail('');
+              thumbnailToggle[1]('thumbnailImage');
+            }}
           >
             Image
           </Button>
+
           {/* Thumbnail: youtube toggle button */}
           <Button
             variant="outline-dark"
             className="d-flex align-items-center"
             active={thumbnailToggle[0] === 'thumbnailYouTube'}
-            onClick={() => thumbnailToggle[1]('thumbnailYouTube')}
+            onClick={() => {
+              setThumbnail('');
+              thumbnailToggle[1]('thumbnailYouTube');
+            }}
           >
             YouTube
           </Button>
         </ButtonGroup>
+
         {/* Thumbnail: upload image / youtube link field */}
         {thumbnailToggle[0] === 'thumbnailImage'
           ? (
@@ -215,22 +220,20 @@ const MyListingFormModalBody = ({
           />
             )
           : (
-          <InputGroup
-            hasValidation={true}
-            className="mb-3"
-            onBlur={(event) =>
-              setThumbnail(`www.youtube.com/watch?v=${event.target.value}`)
-            }
-          >
+          <InputGroup hasValidation={true} className="mb-3">
             <InputGroup.Text id="youtube-url-text">
               youtube.com/watch?v=
             </InputGroup.Text>
             <Form.Control
               id="youtube-url"
               aria-describedby="youtube-url-text"
-              required={thumbnailRequired}
+              value={thumbnail.split('=')[1]}
+              onChange={(event) =>
+                setThumbnail(`www.youtube.com/watch?v=${event.target.value}`)
+              }
+              required={true}
               isInvalid={
-                thumbnail !== '' && thumbnail.split('=')[1].length < 11
+                thumbnail !== '' && thumbnail.split('=')[1].length !== 11
               }
             />
             <Form.Control.Feedback type="invalid">

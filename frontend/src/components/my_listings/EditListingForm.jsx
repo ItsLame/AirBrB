@@ -112,7 +112,7 @@ const EditListingForm = ({ email, setMyListings }) => {
             return [
               {
                 id: oldListing.id,
-                thumbnail,
+                thumbnail: thumbnail === '' ? oldListing.thumbnail : thumbnail,
                 title,
                 avgRating: oldListing.avgRating,
                 propertyType: activePropertyTypeBtn,

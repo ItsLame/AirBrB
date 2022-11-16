@@ -253,7 +253,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                 )}
 
             {/* Price per night */}
-            {pricePerNight
+            {pricePerNight !== null
               ? (
               <div className="fst-italic mb-2">
                 {currencyFormatter.format(pricePerNight)} per night
@@ -266,7 +266,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                 )}
 
             {/* Book now button */}
-            {availability
+            {availability !== null
               ? (
                   owner !== email && (
                 <Button

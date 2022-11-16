@@ -282,7 +282,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                 )}
 
             {/* Price per night */}
-            {pricePerNight
+            {pricePerNight !== null
               ? (
               <div className="fst-italic mb-2">
                 {currencyFormatter.format(pricePerNight)} per night
@@ -765,7 +765,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
               </div>
               <div className="d-flex align-items-center gap-2">
                 <span className="vr"></span>
-                <BsFillMoonStarsFill fill="#666" size={24} className="ms-1" />
+                <BsFillMoonStarsFill fill="#666" size={20} className="ms-1 me-1" />
                 <div className="d-flex flex-column justify-content-center">
                   <span className="fs-5 text-muted lh-1">
                     {yearlyDaysBooked}
