@@ -11,6 +11,7 @@ import { FaHouseUser } from 'react-icons/fa';
 import { BsBuilding } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import ReactPlayer from 'react-player/youtube';
 
 import { fileToDataUrl } from '../../helpers';
 import PlusMinusField from './PlusMinusField';
@@ -111,15 +112,20 @@ const MyListingFormModalBody = ({
   return (
     <>
       {/* Thumbnail preview */}
-      {thumbnail && (
-        <div className="mb-3 text-center">
-          <img
-            src={thumbnail}
-            alt="Listing thumbnail preview"
-            className="w-50 h-100"
-          />
-        </div>
-      )}
+      {thumbnail &&
+        (thumbnail.split('.')[1] === 'youtube'
+          ? (
+          <ReactPlayer url={thumbnail} width="100%" height="200px" />
+            )
+          : (
+          <div className="mb-3 text-center">
+            <img
+              src={thumbnail}
+              alt="Listing thumbnail preview"
+              className="w-50 h-100"
+            />
+          </div>
+            ))}
 
       {/* Title field */}
       <FloatingLabel className="mb-2" controlId="title" label="Title">
