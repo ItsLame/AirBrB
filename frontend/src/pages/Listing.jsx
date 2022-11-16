@@ -1,8 +1,13 @@
 import React from 'react';
-import { useParams, useSearchParams, Route, Routes, useNavigate } from 'react-router-dom';
+import {
+  useParams,
+  useSearchParams,
+  Route,
+  Routes,
+  useNavigate,
+} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
-import Carousel from 'react-bootstrap/Carousel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
@@ -23,6 +28,7 @@ import AmenityList from '../components/AmenityList';
 import { currencyFormatter } from '../helpers';
 import LeaveReviewForm from '../components/listings/LeaveReviewForm';
 import Reviews from '../components/reviews/Reviews';
+import PropertyImageCarousel from '../components/PropertyImageCarousel';
 
 const Listing = ({ token, setToken, email, setAppEmail }) => {
   Listing.propTypes = {
@@ -61,6 +67,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
   const [notFound, setNotFound] = React.useState(false);
   const [bookings, setBookings] = React.useState([]);
   const [reviewFormShow, setReviewFormShow] = React.useState(false);
+  const [propertyImages, setPropertyImages] = React.useState(null);
 
   React.useEffect(() => {
     if (token) {
@@ -106,6 +113,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
         setSafetyAmenities(listing.metadata.amenities.safety);
         setReviews(listing.reviews);
         setThumbnail(listing.thumbnail);
+        setPropertyImages(listing.metadata.propertyImages);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -256,30 +264,31 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
 
             {/* Price per night or Price per stay */}
             {searchGetDays
-              ? (pricePerNight !== null
-                  ? (
-                  <div className="fst-italic mb-2">
-                    {currencyFormatter.format(pricePerNight * searchGetDays)} per stay
-                  </div>
-                    )
-                  : (
-                  <div className="placeholder-glow mb-2">
-                    <span className="placeholder col-3"></span>
-                  </div>
-                    )
+              ? (
+                  pricePerNight !== null
+                    ? (
+                <div className="fst-italic mb-2">
+                  {currencyFormatter.format(pricePerNight * searchGetDays)} per
+                  stay
+                </div>
+                      )
+                    : (
+                <div className="placeholder-glow mb-2">
+                  <span className="placeholder col-3"></span>
+                </div>
+                      )
                 )
-              : (pricePerNight !== null
-                  ? (
-                  <div className="fst-italic mb-2">
-                    {currencyFormatter.format(pricePerNight)} per night
-                  </div>
-                    )
-                  : (
-                  <div className="placeholder-glow mb-2">
-                    <span className="placeholder col-3"></span>
-                  </div>
-                    ))
-              }
+              : pricePerNight !== null
+                ? (
+              <div className="fst-italic mb-2">
+                {currencyFormatter.format(pricePerNight)} per night
+              </div>
+                  )
+                : (
+              <div className="placeholder-glow mb-2">
+                <span className="placeholder col-3"></span>
+              </div>
+                  )}
 
             {/* Book now button */}
             {availability !== null
@@ -528,50 +537,20 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                 )}
           </Col>
 
-          {/* TODO: Property image carousel */}
+          {/* Property image carousel */}
           <Col>
-            {!thumbnail
+            {title === null || thumbnail === null || propertyImages === null
               ? (
               <div style={{ height: '400px' }} className="placeholder-glow">
                 <span className="placeholder w-100 h-100"></span>
               </div>
                 )
               : (
-              <Carousel
-                className="w-100"
-                style={{
-                  border: '3px solid black',
-                  borderRadius: '2%',
-                  overflow: 'hidden',
-                  height: '400px',
-                }}
-                interval={null}
-              >
-                <Carousel.Item>
-                  <img
-                    style={{
-                      height: '400px',
-                      objectFit: 'cover',
-                      objectPosition: '50% 50%',
-                    }}
-                    className="d-block w-100"
-                    src={thumbnail}
-                    alt={`Thumbnail for listing ${title}`}
-                  />
-                </Carousel.Item>
-                <Carousel.Item>
-                  <img
-                    style={{
-                      height: '400px',
-                      objectFit: 'cover',
-                      objectPosition: '50% 50%',
-                    }}
-                    className="d-block w-100"
-                    src="https://oranahouse.com/images/home-slider/home-slider_30e7ad12d64c376438cf3fe17ac0e1fd.jpg"
-                    alt={`Thumbnail for listing ${title}`}
-                  />
-                </Carousel.Item>
-              </Carousel>
+              <PropertyImageCarousel
+                title={title}
+                thumbnail={thumbnail}
+                propertyImages={propertyImages}
+              />
                 )}
           </Col>
         </Row>

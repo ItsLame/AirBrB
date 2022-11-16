@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
-import Carousel from 'react-bootstrap/Carousel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -21,7 +20,6 @@ import { Bar } from 'react-chartjs-2';
 import { BiCalendarCheck } from 'react-icons/bi';
 import { GiReceiveMoney } from 'react-icons/gi';
 import { BsFillMoonStarsFill } from 'react-icons/bs';
-import ReactPlayer from 'react-player/youtube';
 
 import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
@@ -35,6 +33,7 @@ import {
 import AmenityList from '../components/AmenityList';
 import { currencyFormatter } from '../helpers';
 import Reviews from '../components/reviews/Reviews';
+import PropertyImageCarousel from '../components/PropertyImageCarousel';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
@@ -80,6 +79,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
   const [yearlyBookings, setYearlyBookings] = React.useState(0);
   const [yearlyProfit, setYearlyProfit] = React.useState(0);
   const [yearlyDaysBooked, setYearlyDaysBooked] = React.useState(0);
+  const [propertyImages, setPropertyImages] = React.useState(null);
 
   React.useEffect(() => {
     const newMonthlyBookings = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -153,6 +153,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
         setThumbnail(listing.thumbnail);
         setPublished(listing.published);
         setPostedOn(listing.postedOn);
+        setPropertyImages(listing.metadata.propertyImages);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -285,30 +286,31 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
 
             {/* Price per night or Price per stay */}
             {searchGetDays
-              ? (pricePerNight !== null
-                  ? (
-                  <div className="fst-italic mb-2">
-                    {currencyFormatter.format(pricePerNight * searchGetDays)} per stay
-                  </div>
-                    )
-                  : (
-                  <div className="placeholder-glow mb-2">
-                    <span className="placeholder col-3"></span>
-                  </div>
-                    )
+              ? (
+                  pricePerNight !== null
+                    ? (
+                <div className="fst-italic mb-2">
+                  {currencyFormatter.format(pricePerNight * searchGetDays)} per
+                  stay
+                </div>
+                      )
+                    : (
+                <div className="placeholder-glow mb-2">
+                  <span className="placeholder col-3"></span>
+                </div>
+                      )
                 )
-              : (pricePerNight !== null
-                  ? (
-                  <div className="fst-italic mb-2">
-                    {currencyFormatter.format(pricePerNight)} per night
-                  </div>
-                    )
-                  : (
-                  <div className="placeholder-glow mb-2">
-                    <span className="placeholder col-3"></span>
-                  </div>
-                    ))
-              }
+              : pricePerNight !== null
+                ? (
+              <div className="fst-italic mb-2">
+                {currencyFormatter.format(pricePerNight)} per night
+              </div>
+                  )
+                : (
+              <div className="placeholder-glow mb-2">
+                <span className="placeholder col-3"></span>
+              </div>
+                  )}
             <hr />
 
             {/* Amenities */}
@@ -420,61 +422,20 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                 )}
           </Col>
 
-          {/* TODO: Property image carousel */}
+          {/* Property image carousel */}
           <Col>
-            {!thumbnail
+            {title === null || thumbnail === null || propertyImages === null
               ? (
               <div style={{ height: '400px' }} className="placeholder-glow">
                 <span className="placeholder w-100 h-100"></span>
               </div>
                 )
               : (
-              <Carousel
-                className="w-100"
-                style={{
-                  border: '3px solid black',
-                  borderRadius: '2%',
-                  overflow: 'hidden',
-                  height: '400px',
-                }}
-                interval={null}
-              >
-                <Carousel.Item>
-                  {thumbnail.split('.')[1] === 'youtube'
-                    ? (
-                    <ReactPlayer
-                      url={thumbnail}
-                      width="100%"
-                      height="395px"
-                      controls={true}
-                    />
-                      )
-                    : (
-                    <img
-                      style={{
-                        height: '400px',
-                        objectFit: 'cover',
-                        objectPosition: '50% 50%',
-                      }}
-                      className="d-block w-100"
-                      src={thumbnail}
-                      alt={`Thumbnail for listing ${title}`}
-                    />
-                      )}
-                </Carousel.Item>
-                <Carousel.Item>
-                  <img
-                    style={{
-                      height: '400px',
-                      objectFit: 'cover',
-                      objectPosition: '50% 50%',
-                    }}
-                    className="d-block w-100"
-                    src="https://oranahouse.com/images/home-slider/home-slider_30e7ad12d64c376438cf3fe17ac0e1fd.jpg"
-                    alt={`Thumbnail for listing ${title}`}
-                  />
-                </Carousel.Item>
-              </Carousel>
+              <PropertyImageCarousel
+                title={title}
+                thumbnail={thumbnail}
+                propertyImages={propertyImages}
+              />
                 )}
           </Col>
         </Row>
@@ -781,7 +742,11 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
               </div>
               <div className="d-flex align-items-center gap-2">
                 <span className="vr"></span>
-                <BsFillMoonStarsFill fill="#666" size={20} className="ms-1 me-1" />
+                <BsFillMoonStarsFill
+                  fill="#666"
+                  size={20}
+                  className="ms-1 me-1"
+                />
                 <div className="d-flex flex-column justify-content-center">
                   <span className="fs-5 text-muted lh-1">
                     {yearlyDaysBooked}
