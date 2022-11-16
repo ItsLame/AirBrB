@@ -37,6 +37,7 @@ const CreateListingForm = ({ setMyListings }) => {
   });
   const [showMoreAmenitiesActive, setShowMoreAmenitiesActive] =
     React.useState(false);
+  const [propertyImages, setPropertyImages] = React.useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -61,6 +62,7 @@ const CreateListingForm = ({ setMyListings }) => {
           bedrooms,
           amenities,
           lastUpdatedAt,
+          propertyImages,
         }
       )
         .then((response) => {
@@ -133,6 +135,8 @@ const CreateListingForm = ({ setMyListings }) => {
             showMoreAmenitiesActive={showMoreAmenitiesActive}
             setShowMoreAmenitiesActive={setShowMoreAmenitiesActive}
             thumbnailRequired={true}
+            propertyImages={propertyImages}
+            setPropertyImages={setPropertyImages}
           />
         </Modal.Body>
 

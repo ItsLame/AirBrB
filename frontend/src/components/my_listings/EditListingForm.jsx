@@ -39,6 +39,7 @@ const EditListingForm = ({ email, setMyListings }) => {
   });
   const [showMoreAmenitiesActive, setShowMoreAmenitiesActive] =
     React.useState(false);
+  const [propertyImages, setPropertyImages] = React.useState([]);
   const navigate = useNavigate();
   const { listingId } = useParams();
   const [notFound, setNotFound] = React.useState(false);
@@ -66,6 +67,7 @@ const EditListingForm = ({ email, setMyListings }) => {
         setNumBathrooms(listing.metadata.numBathrooms);
         setBedrooms(listing.metadata.bedrooms);
         setAmenities(listing.metadata.amenities);
+        setPropertyImages(listing.metadata.propertyImages);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -93,6 +95,7 @@ const EditListingForm = ({ email, setMyListings }) => {
           bedrooms,
           amenities,
           lastUpdatedAt,
+          propertyImages,
         }
       )
         .then((_) => {
@@ -182,6 +185,8 @@ const EditListingForm = ({ email, setMyListings }) => {
             showMoreAmenitiesActive={showMoreAmenitiesActive}
             setShowMoreAmenitiesActive={setShowMoreAmenitiesActive}
             thumbnailRequired={false}
+            propertyImages={propertyImages}
+            setPropertyImages={setPropertyImages}
           />
 
           {/* <Form.Group controlId="thumbnail">

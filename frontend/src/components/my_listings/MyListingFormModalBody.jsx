@@ -12,6 +12,7 @@ import { BsBuilding } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ReactPlayer from 'react-player/youtube';
+import { AiOutlineClose } from 'react-icons/ai';
 
 import { fileToDataUrl } from '../../helpers';
 import PlusMinusField from './PlusMinusField';
@@ -45,6 +46,8 @@ const MyListingFormModalBody = ({
   showMoreAmenitiesActive,
   setShowMoreAmenitiesActive,
   thumbnailRequired,
+  propertyImages,
+  setPropertyImages,
 }) => {
   MyListingFormModalBody.propTypes = {
     title: PropTypes.string,
@@ -75,7 +78,20 @@ const MyListingFormModalBody = ({
     showMoreAmenitiesActive: PropTypes.bool,
     setShowMoreAmenitiesActive: PropTypes.func,
     thumbnailRequired: PropTypes.bool,
+    propertyImages: PropTypes.array,
+    setPropertyImages: PropTypes.func,
   };
+
+  // for some reason if you enter a file then remove it, the file moves to the next input if the next input has no file
+  // so the form will think the next input is valid even tho propertyImages is not
+  // so we have to do some imperative changes here to prevent the form being submitted when invalid
+  React.useEffect(() => {
+    document.querySelectorAll('.property-images').forEach((el, i) => {
+      if (propertyImages[i] === '') {
+        el.value = null;
+      }
+    });
+  }, [propertyImages]);
 
   // Amenity checkbox component
   const AmenityCheck = ({ type, amenity }) => {
@@ -123,9 +139,6 @@ const MyListingFormModalBody = ({
                 url={thumbnail}
                 onError={() => {
                   toast.error('YouTube video does not exist!');
-                }}
-                onBuffer={() => {
-                  console.log('test');
                 }}
                 width="100%"
                 height="300px"
@@ -232,10 +245,8 @@ const MyListingFormModalBody = ({
               onChange={(event) =>
                 setThumbnail(`www.youtube.com/watch?v=${event.target.value}`)
               }
-              required={true}
-              isInvalid={
-                thumbnail !== '' && thumbnail.split('=')[1].length !== 11
-              }
+              required
+              pattern={'[0-9A-Za-z_-]{11}'}
             />
             <Form.Control.Feedback type="invalid">
               Invalid YouTube Link (must be 11 characters)
@@ -539,6 +550,73 @@ const MyListingFormModalBody = ({
         onClick={() => setShowMoreAmenitiesActive(!showMoreAmenitiesActive)}
       >
         Show {showMoreAmenitiesActive ? 'less' : 'more'}
+      </Button>
+
+      <h4 className="mt-3">Property images</h4>
+      <div className="d-flex flex-column align-items-center w-100 gap-2">
+        {propertyImages.map((img, idx) => {
+          return (
+            <div key={idx} className="w-100">
+              <div className="w-100 text-center mb-2">
+                {img !== '' && (
+                  <img
+                    className="w-50 h-100"
+                    src={img}
+                    alt={`Property image ${idx + 1}`}
+                  />
+                )}
+              </div>
+
+              <div className="d-flex gap-2 align-items-center">
+                <Form.Control
+                  className="property-images"
+                  type="file"
+                  accept="image/jpeg, image/jpg, image/png"
+                  onChange={(e) => {
+                    fileToDataUrl(e.target.files[0])
+                      .then((result) =>
+                        setPropertyImages((curr) => {
+                          const copy = [...curr];
+                          copy[idx] = result;
+                          return copy;
+                        })
+                      )
+                      .catch((error) => {
+                        e.target.value = null;
+                        setPropertyImages((curr) => {
+                          const copy = [...curr];
+                          copy[idx] = '';
+                          return copy;
+                        });
+                        toast.error(error.message);
+                      });
+                  }}
+                  required={img === ''}
+                />
+
+                <Button
+                  variant="outline-dark"
+                  className="rounded-circle d-flex align-items-center justify-content-center p-1"
+                  style={{ width: '30px', height: '30px' }}
+                  onClick={() => {
+                    setPropertyImages((curr) =>
+                      curr.filter((_, i) => i !== idx)
+                    );
+                  }}
+                >
+                  <AiOutlineClose />
+                </Button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <Button
+        variant="dark"
+        className="mt-2"
+        onClick={() => setPropertyImages((curr) => [...curr, ''])}
+      >
+        Add image
       </Button>
     </>
   );
