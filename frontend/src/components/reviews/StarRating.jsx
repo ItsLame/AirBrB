@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { BsFillStarFill } from 'react-icons/bs';
 
-import { StyledStarRating } from './StyledComponents';
+import { StyledStarRating } from '../StyledComponents';
 
 const StarRating = ({ avgRating, numReviews }) => {
   StarRating.propTypes = {

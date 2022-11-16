@@ -8,7 +8,7 @@ import Badge from 'react-bootstrap/Badge';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player/youtube';
 
-import StarRating from '../StarRating';
+import StarRating from '../reviews/StarRating';
 import { currencyFormatter } from '../../helpers';
 
 const ListingCard = ({

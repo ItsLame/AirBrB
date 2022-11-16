@@ -15,14 +15,14 @@ import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
 import LoginForm from '../components/auth/LoginForm';
 import RegisterForm from '../components/auth/RegisterForm';
-import StarRating from '../components/StarRating';
+import StarRating from '../components/reviews/StarRating';
 import MakeBookingForm from '../components/bookings/MakeBookingForm';
 import { getListing } from '../services/listings';
 import { getBookings } from '../services/bookings';
 import AmenityList from '../components/AmenityList';
 import { currencyFormatter } from '../helpers';
 import LeaveReviewForm from '../components/listings/LeaveReviewForm';
-import Reviews from '../components/Reviews';
+import Reviews from '../components/reviews/Reviews';
 
 const Listing = ({ token, setToken, email, setAppEmail }) => {
   Listing.propTypes = {

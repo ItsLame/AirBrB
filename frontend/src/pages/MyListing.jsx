@@ -25,7 +25,7 @@ import ReactPlayer from 'react-player/youtube';
 
 import NotFound from '../pages/NotFound';
 import Navbar from '../components/Navbar';
-import StarRating from '../components/StarRating';
+import StarRating from '../components/reviews/StarRating';
 import { getListing } from '../services/listings';
 import {
   acceptBooking,
@@ -34,7 +34,7 @@ import {
 } from '../services/bookings';
 import AmenityList from '../components/AmenityList';
 import { currencyFormatter } from '../helpers';
-import Reviews from '../components/Reviews';
+import Reviews from '../components/reviews/Reviews';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
