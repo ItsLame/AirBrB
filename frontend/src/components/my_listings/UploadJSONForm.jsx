@@ -25,7 +25,6 @@ const UploadJSONForm = ({ setMyListings }) => {
   const handleValidate = (temp) => {
     const mainKeysString =
       '["title","address","price","thumbnail","metadata","availability"]';
-    const availabilityKeysString = '["start","end"]';
     const addressKeysString = '["street","city","state","postcode","country"]';
     const metadataKeysString =
       '["propertyType","numBathrooms","bedrooms","amenities"]';
@@ -34,19 +33,6 @@ const UploadJSONForm = ({ setMyListings }) => {
     const mainKeys = temp.map(
       (x) => JSON.stringify(Object.keys(x)) === mainKeysString
     );
-
-    let availabilityKeys = [];
-    temp
-      .map((x) =>
-        x.availability.map(
-          (y) => JSON.stringify(Object.keys(y)) === availabilityKeysString
-        )
-      )
-      .forEach((x) => {
-        x.forEach((y) => {
-          availabilityKeys = [...availabilityKeys, y];
-        });
-      });
 
     const addressKeys = temp.map(
       (x) => JSON.stringify(Object.keys(x.address)) === addressKeysString
@@ -64,7 +50,6 @@ const UploadJSONForm = ({ setMyListings }) => {
 
     const allKeys = [
       ...mainKeys,
-      ...availabilityKeys,
       ...addressKeys,
       ...metadataKeys,
       ...amenitiesKeys,
