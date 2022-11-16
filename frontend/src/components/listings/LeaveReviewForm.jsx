@@ -56,6 +56,7 @@ const LeaveReviewForm = ({
         .then(() => {
           onHide();
           setReviews((curr) => [...curr, review]);
+          toast.success('Review posted!');
         })
         .catch((error) => console.error(error));
     }
