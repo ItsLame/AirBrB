@@ -85,7 +85,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                       pricePerNight={listing.price}
                       pricePerStay={listing.price * stayMultiplier}
                       stayDays={stayMultiplier}
-                      searchByDate={!!searchGetDate}
+                      searchByDate={stayMultiplier > 1}
                       reviews={listing.reviews}
                       numReviews={listing.reviews.length}
                       avgRating={(listing.reviews.length === 0
