@@ -28,6 +28,12 @@ const Navbar = ({ token, setToken, middleElement, email, setAppEmail }) => {
         <BSNavbar.Brand
           style={{ cursor: 'pointer' }}
           onClick={() => navigate('/')}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              navigate('/');
+            }
+          }}
+          tabIndex={0}
         >
           <svg
             height="30"

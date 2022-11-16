@@ -54,20 +54,32 @@ const ListingCard = ({
     );
   };
 
+  const handleFocus = (e) => {
+    e.currentTarget.classList.add('bg-dark');
+    e.currentTarget.classList.add('text-light');
+    e.currentTarget.classList.remove('border-dark');
+  };
+
+  const handleBlur = (e) => {
+    e.currentTarget.classList.remove('bg-dark');
+    e.currentTarget.classList.remove('text-light');
+    e.currentTarget.classList.add('border-dark');
+  };
+
   return (
     <Card
+      tabIndex={0}
       border="dark"
       className="h-100 overflow-auto"
       onClick={handleClick}
-      onMouseOver={(e) => {
-        e.currentTarget.classList.add('bg-dark');
-        e.currentTarget.classList.add('text-light');
-        e.currentTarget.classList.remove('border-dark');
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.classList.remove('bg-dark');
-        e.currentTarget.classList.remove('text-light');
-        e.currentTarget.classList.add('border-dark');
+      onMouseOver={handleFocus}
+      onFocus={handleFocus}
+      onMouseLeave={handleBlur}
+      onBlur={handleBlur}
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') {
+          handleClick();
+        }
       }}
       style={{ cursor: 'pointer', transition: 'all 0.1s ease-in' }}
     >
@@ -89,7 +101,7 @@ const ListingCard = ({
 
       <Card.Body className="d-flex flex-column align-items-start">
         <div className="d-flex flex-wrap gap-1 mb-1">
-          {owner === email && <Badge bg="secondary">Your Listing</Badge>}
+          {owner === email && <Badge bg="secondary">Your listing</Badge>}
 
           {bookings
             .sort((a, b) => {
