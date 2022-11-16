@@ -207,6 +207,7 @@ const MyListingFormModalBody = ({
           ? (
           <Form.Control
             type="file"
+            accept="image/jpeg, image/jpg, image/png"
             onChange={(e) => {
               fileToDataUrl(e.target.files[0])
                 .then((result) => setThumbnail(result))

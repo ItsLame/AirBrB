@@ -1,25 +1,36 @@
-[
-  {
-    "title": "Youtube Hotel",
-    "address": {
-      "street": "YStreet",
-      "city": "YCity",
-      "state": "YState",
-      "postcode": "2020",
-      "country": "YCountry"
-    },
-    "price": 33,
-    "thumbnail": "https://www.youtube.com/watch?v=bAt07xq43BQ",
-    "metadata": {
-      "propertyType": "Hotel",
-      "numBathrooms": 1,
-      "bedrooms": [1],
-      "amenities": {
-        "essentials": [],
-        "features": [],
-        "location": [],
-        "safety": []
-      }
+{
+  "title": "Youtube Hotel",
+  "address": {
+    "street": "YStreet",
+    "city": "YCity",
+    "state": "YState",
+    "postcode": "2020",
+    "country": "YCountry"
+  },
+  "price": 33,
+  "thumbnail": "https://www.youtube.com/watch?v=bAt07xq43BQ",
+  "metadata": {
+    "propertyType": "Hotel",
+    "numBathrooms": 1,
+    "bedrooms": [1],
+    "amenities": {
+      "essentials": [
+        "Wi-Fi",
+        "Washing machine",
+        "Air conditioning",
+        "Heating",
+        "TV",
+        "Iron"
+      ],
+      "features": [
+        "Pool",
+        "Free parking on premises",
+        "Gym",
+        "Breakfast",
+        "Smoking allowed"
+      ],
+      "location": ["Beachfront", "Waterfront"],
+      "safety": ["Smoke alarm", "Carbon monoxide alarm"]
     }
   }
-]
+}

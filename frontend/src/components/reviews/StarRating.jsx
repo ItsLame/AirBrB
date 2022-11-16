@@ -221,7 +221,9 @@ const StarRating = ({ reviews, avgRating, numReviews }) => {
           tabIndex={0}
           className="d-flex gap-1 align-items-center text-decoration-underline mb-0 flex-nowrap fw-bold"
           onMouseEnter={handleOpen}
+          onFocus={handleOpen}
           onMouseLeave={handleClose}
+          onBlur={handleClose}
           onClick={(e) => e.stopPropagation()}
         >
           <BsFillStarFill size={10} />
