@@ -17,6 +17,8 @@ const CreateListingForm = ({ setMyListings }) => {
   const [validated, setValidated] = React.useState(false);
   const [title, setTitle] = React.useState('');
   const [thumbnail, setThumbnail] = React.useState('');
+  const [thumbnailToggle, setThumbnailToggle] =
+    React.useState('thumbnailImage');
   const [street, setStreet] = React.useState('');
   const [city, setCity] = React.useState('');
   const [state, setState] = React.useState('');
@@ -107,6 +109,7 @@ const CreateListingForm = ({ setMyListings }) => {
             setTitle={setTitle}
             thumbnail={thumbnail}
             setThumbnail={setThumbnail}
+            thumbnailToggle={[thumbnailToggle, setThumbnailToggle]}
             street={street}
             setStreet={setStreet}
             city={city}

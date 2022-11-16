@@ -116,7 +116,6 @@ const SearchForm = ({ show, closeAction, setSearchParams, setIsLoading }) => {
             {/* filter toggle button */}
             <Button
               variant="outline-dark"
-              // type="submit"
               className="d-flex align-items-center"
               active={filterToggle}
               onClick={() => setFilterToggle(!filterToggle)}

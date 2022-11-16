@@ -10,6 +10,7 @@ import { HiOutlineOfficeBuilding, HiOutlineHome } from 'react-icons/hi';
 import { FaHouseUser } from 'react-icons/fa';
 import { BsBuilding } from 'react-icons/bs';
 import { toast } from 'react-toastify';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 import { fileToDataUrl } from '../../helpers';
 import PlusMinusField from './PlusMinusField';
@@ -19,6 +20,7 @@ const MyListingFormModalBody = ({
   setTitle,
   thumbnail,
   setThumbnail,
+  thumbnailToggle,
   street,
   setStreet,
   city,
@@ -48,6 +50,7 @@ const MyListingFormModalBody = ({
     setTitle: PropTypes.func,
     thumbnail: PropTypes.string,
     setThumbnail: PropTypes.func,
+    thumbnailToggle: PropTypes.array,
     street: PropTypes.string,
     setStreet: PropTypes.func,
     city: PropTypes.string,
@@ -132,21 +135,55 @@ const MyListingFormModalBody = ({
       </FloatingLabel>
 
       {/* Thumbnail field */}
-      <Form.Group controlId="thumbnail">
-        <Form.Label>Thumbnail</Form.Label>
-        <Form.Control
-          type="file"
-          onChange={(e) => {
-            fileToDataUrl(e.target.files[0])
-              .then((result) => setThumbnail(result))
-              .catch((error) => {
-                e.target.value = null;
-                setThumbnail('');
-                toast.error(error.message);
-              });
-          }}
-          required={thumbnailRequired}
-        />
+      <h4 className="mt-4">Thumbnail</h4>
+      {/* <Form.Group controlId="thumbnail"> */}
+      <Form.Group>
+        {/* <Form.Label>Thumbnail</Form.Label> */}
+        {/* Thumbnail: image toggle button */}
+        <ButtonGroup className="mb-2">
+          <Button
+            variant="outline-dark"
+            className="d-flex align-items-center"
+            active={thumbnailToggle[0] === 'thumbnailImage'}
+            onClick={() => thumbnailToggle[1]('thumbnailImage')}
+          >
+            Image
+          </Button>
+          {/* Thumbnail: youtube toggle button */}
+          <Button
+            variant="outline-dark"
+            className="d-flex align-items-center"
+            active={thumbnailToggle[0] === 'thumbnailYouTube'}
+            onClick={() => thumbnailToggle[1]('thumbnailYouTube')}
+          >
+            YouTube
+          </Button>
+        </ButtonGroup>
+        {/* Thumbnail: upload image / youtube link field */}
+        {thumbnailToggle[0] === 'thumbnailImage'
+          ? (
+          <Form.Control
+            type="file"
+            onChange={(e) => {
+              fileToDataUrl(e.target.files[0])
+                .then((result) => setThumbnail(result))
+                .catch((error) => {
+                  e.target.value = null;
+                  setThumbnail('');
+                  toast.error(error.message);
+                });
+            }}
+            required={thumbnailRequired}
+          />
+            )
+          : (
+          <InputGroup className="mb-3">
+            <InputGroup.Text id="basic-addon3">
+              https://youtube.com/v?=
+            </InputGroup.Text>
+            <Form.Control id="basic-url" aria-describedby="basic-addon3" />
+          </InputGroup>
+            )}
       </Form.Group>
 
       <h4 className="mt-4">Location</h4>
