@@ -20,6 +20,7 @@ const ListingCard = ({
   country,
   pricePerNight,
   pricePerStay,
+  stayDays,
   searchByDate,
   reviews,
   numReviews,
@@ -40,6 +41,7 @@ const ListingCard = ({
     country: PropTypes.string,
     pricePerNight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     pricePerStay: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    stayDays: PropTypes.number,
     searchByDate: PropTypes.bool,
     reviews: PropTypes.array,
     numReviews: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -56,7 +58,13 @@ const ListingCard = ({
 
   const handleClick = () => {
     navigate(
-      owner === email ? `/my_listing/${listingId}` : `/listing/${listingId}`
+      searchByDate
+        ? owner === email
+          ? `/my_listing/${listingId}/?days=${stayDays}`
+          : `/listing/${listingId}/?days=${stayDays}`
+        : owner === email
+          ? `/my_listing/${listingId}`
+          : `/listing/${listingId}`
     );
   };
 

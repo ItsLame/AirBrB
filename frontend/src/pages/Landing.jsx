@@ -84,6 +84,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                       country={listing.address.country}
                       pricePerNight={listing.price}
                       pricePerStay={listing.price * stayMultiplier}
+                      stayDays={stayMultiplier}
                       searchByDate={!!searchGetDate}
                       reviews={listing.reviews}
                       numReviews={listing.reviews.length}

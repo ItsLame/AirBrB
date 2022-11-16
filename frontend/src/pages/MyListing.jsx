@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
 import Carousel from 'react-bootstrap/Carousel';
@@ -47,6 +47,8 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
   };
 
   const { listingId } = useParams();
+  const [searchParams] = useSearchParams({});
+  const searchGetDays = searchParams.get('days');
   const [title, setTitle] = React.useState(null);
   const [street, setStreet] = React.useState(null);
   const [state, setState] = React.useState(null);
@@ -281,18 +283,32 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
               </div>
                 )}
 
-            {/* Price per night */}
-            {pricePerNight !== null
-              ? (
-              <div className="fst-italic mb-2">
-                {currencyFormatter.format(pricePerNight)} per night
-              </div>
+            {/* Price per night or Price per stay */}
+            {searchGetDays
+              ? (pricePerNight !== null
+                  ? (
+                  <div className="fst-italic mb-2">
+                    {currencyFormatter.format(pricePerNight * searchGetDays)} per stay
+                  </div>
+                    )
+                  : (
+                  <div className="placeholder-glow mb-2">
+                    <span className="placeholder col-3"></span>
+                  </div>
+                    )
                 )
-              : (
-              <div className="placeholder-glow mb-2">
-                <span className="placeholder col-3"></span>
-              </div>
-                )}
+              : (pricePerNight !== null
+                  ? (
+                  <div className="fst-italic mb-2">
+                    {currencyFormatter.format(pricePerNight)} per night
+                  </div>
+                    )
+                  : (
+                  <div className="placeholder-glow mb-2">
+                    <span className="placeholder col-3"></span>
+                  </div>
+                    ))
+              }
             <hr />
 
             {/* Amenities */}
