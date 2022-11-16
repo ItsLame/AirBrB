@@ -140,7 +140,7 @@ const MyListingCard = ({
     <Card
       tabIndex={0}
       border="dark"
-      className="h-100 overflow-auto"
+      className="h-100 overflow-auto position-relative"
       onClick={handleClick}
       onMouseOver={handleFocus}
       onFocus={handleFocus}
@@ -153,6 +153,13 @@ const MyListingCard = ({
       }}
       style={{ cursor: 'pointer', transition: 'all 0.1s ease-in' }}
     >
+      <Badge
+        bg={published ? 'success' : 'danger'}
+        className="position-absolute top-0 left-0 ms-2 mt-2"
+      >
+        {published ? 'P' : 'Not p'}ublished
+      </Badge>
+
       {/* Listing thumbnail */}
       {thumbnail.split('.')[1] === 'youtube'
         ? (
@@ -171,10 +178,6 @@ const MyListingCard = ({
           )}
 
       <Card.Body className="d-flex flex-column align-items-start">
-        <Badge bg={published ? 'success' : 'danger'} className="mb-1">
-          {published ? 'P' : 'Not p'}ublished
-        </Badge>
-
         <Container className="d-flex gap-1 p-0 mb-2 align-items-start">
           {/* Listing title */}
           <Card.Title

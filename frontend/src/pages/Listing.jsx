@@ -234,9 +234,10 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
               <div className="d-flex align-items-start gap-1">
                 <StarRating avgRating={avgRating} numReviews={numReviews} />
                 <span>
-                  — {bedrooms.length} bedrooms,{' '}
-                  {bedrooms.reduce((a, b) => a + b, 0)} beds, {numBathrooms}{' '}
-                  bathrooms
+                  — {bedrooms.length} bedroom{bedrooms.length === 1 ? '' : 's'},{' '}
+                  {bedrooms.reduce((a, b) => a + b, 0)} bed
+                  {bedrooms.reduce((a, b) => a + b, 0) === 1 ? '' : 's'},{' '}
+                  {numBathrooms} bathroom{numBathrooms === 1 ? '' : 's'}
                 </span>
               </div>
                 )
@@ -250,7 +251,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
             {pricePerNight
               ? (
               <div className="fst-italic mb-2">
-                <u>{currencyFormatter.format(pricePerNight)} per night</u>
+                {currencyFormatter.format(pricePerNight)} per night
               </div>
                 )
               : (

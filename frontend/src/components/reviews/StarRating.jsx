@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { BsFillStarFill } from 'react-icons/bs';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
+import { RiArrowDropDownLine } from 'react-icons/ri';
 
 import { StyledStarRating } from '../StyledComponents';
 
@@ -14,10 +15,10 @@ const StarRating = ({ avgRating, numReviews }) => {
 
   return (
     <OverlayTrigger
-      placement="right"
+      placement="bottom"
       overlay={
         <Popover id={`star-rating-${avgRating}-popover`}>
-          <Popover.Header as="h3">Hi</Popover.Header>
+          <Popover.Header as="h3">Reviews</Popover.Header>
           <Popover.Body>
             <strong>Holy guacamole!</strong> Check this info.
           </Popover.Body>
@@ -26,7 +27,7 @@ const StarRating = ({ avgRating, numReviews }) => {
     >
       <StyledStarRating
         tabIndex={0}
-        className="d-flex gap-1 align-items-center text-decoration-underline mb-0 flex-nowrap"
+        className="d-flex gap-1 align-items-center text-decoration-underline mb-0 flex-nowrap fw-bold"
         onClick={(event) => {
           // event.stopPropagation();
         }}
@@ -34,6 +35,7 @@ const StarRating = ({ avgRating, numReviews }) => {
         <BsFillStarFill size={10} />
         <span>{avgRating}</span>
         <span>({numReviews})</span>
+        <RiArrowDropDownLine size={25} style={{ marginLeft: '-7px', marginRight: '-7px' }} />
       </StyledStarRating>
     </OverlayTrigger>
   );

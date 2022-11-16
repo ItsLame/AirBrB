@@ -70,7 +70,7 @@ const ListingCard = ({
     <Card
       tabIndex={0}
       border="dark"
-      className="h-100 overflow-auto"
+      className="h-100 overflow-auto position-relative"
       onClick={handleClick}
       onMouseOver={handleFocus}
       onFocus={handleFocus}
@@ -83,6 +83,47 @@ const ListingCard = ({
       }}
       style={{ cursor: 'pointer', transition: 'all 0.1s ease-in' }}
     >
+      <div className="d-flex flex-wrap gap-1 position-absolute top-0 left-0 ms-2 mt-2">
+        {owner === email && <Badge bg="secondary">Your listing</Badge>}
+
+        {(() => {
+          const numAccepted = bookings.filter(
+            (booking) => booking.status === 'accepted'
+          ).length;
+          if (numAccepted !== 0) {
+            return (
+              <Badge bg="success">
+                Accepted{numAccepted > 1 && ` (${numAccepted})`}
+              </Badge>
+            );
+          }
+        })()}
+        {(() => {
+          const numPending = bookings.filter(
+            (booking) => booking.status === 'pending'
+          ).length;
+          if (numPending !== 0) {
+            return (
+              <Badge bg="primary">
+                Pending{numPending > 1 && ` (${numPending})`}
+              </Badge>
+            );
+          }
+        })()}
+        {(() => {
+          const numDeclined = bookings.filter(
+            (booking) => booking.status === 'declined'
+          ).length;
+          if (numDeclined !== 0) {
+            return (
+              <Badge bg="danger">
+                Declined{numDeclined > 1 && ` (${numDeclined})`}
+              </Badge>
+            );
+          }
+        })()}
+      </div>
+
       {thumbnail.split('.')[1] === 'youtube'
         ? (
         <ReactPlayer url={thumbnail} width="100%" height="200px" />
@@ -100,42 +141,6 @@ const ListingCard = ({
           )}
 
       <Card.Body className="d-flex flex-column align-items-start">
-        <div className="d-flex flex-wrap gap-1 mb-1">
-          {owner === email && <Badge bg="secondary">Your listing</Badge>}
-
-          {bookings
-            .sort((a, b) => {
-              const statusMap = {
-                accepted: 1,
-                pending: 2,
-                declined: 3,
-              };
-              if (statusMap[a.status] < statusMap[b.status]) {
-                return -1;
-              }
-              if (statusMap[a.status] > statusMap[b.status]) return 1;
-              return 0;
-            })
-            .map((booking, idx) => {
-              let status = booking.status;
-              status = status.charAt(0).toUpperCase() + status.slice(1);
-              return (
-                <Badge
-                  key={idx}
-                  bg={
-                    status === 'Pending'
-                      ? 'primary'
-                      : status === 'Declined'
-                        ? 'danger'
-                        : 'success'
-                  }
-                >
-                  {status}
-                </Badge>
-              );
-            })}
-        </div>
-
         <Container className="d-flex gap-1 p-0 mb-2 align-items-start">
           <Card.Title
             className="flex-grow-1 m-0"
@@ -160,8 +165,8 @@ const ListingCard = ({
           <span>{street}</span>
         </Card.Subtitle>
 
-        <Card.Text className="mt-auto mb-0 fst-italic d-flex w-100">
-          <span className="flex-grow-1">
+        <Card.Text className="mt-auto mb-0 d-flex w-100">
+          <span className="flex-grow-1 fst-italic">
             <u>{currencyFormatter.format(pricePerNight)} per night</u>
           </span>
           <span className="d-flex gap-2">
