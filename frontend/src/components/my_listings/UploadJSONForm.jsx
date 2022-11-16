@@ -15,6 +15,7 @@ const UploadJSONForm = ({ setMyListings }) => {
     setMyListings: PropTypes.func,
   };
 
+  const [fileInput, setFileInput] = React.useState('');
   const [jsonData, setJsonData] = React.useState({});
   const navigate = useNavigate();
 
@@ -131,18 +132,23 @@ const UploadJSONForm = ({ setMyListings }) => {
   const handleValidate = (json) => {
     const valid = jsonSchemaValidator(json);
     if (valid) {
-      toast.success('JSON schema is valid! Ready to upload');
-      setJsonData(json);
+      const img = new Image();
+      img.src = json.thumbnail;
+
+      // check thumbnail
+      if (!img.complete || !img.naturalWidth) {
+        toast.error('Thumbnail is not a valid image');
+        setJsonData({});
+        setFileInput('');
+      } else {
+        toast.success('JSON schema is valid! Ready to upload');
+        setJsonData(json);
+      }
     } else {
       toast.error(ajv.errorsText(jsonSchemaValidator.errors));
       setJsonData({});
+      setFileInput('');
     }
-
-    // json.forEach((x) =>
-    //   x.thumbnail.split('.')[1] === 'youtube'
-    //     ? console.log('youtube')
-    //     : (x.thumbnail = require(`../../../public/listings/${x.thumbnail}`))
-    // );
   };
 
   const handleUpload = (e) => {
@@ -193,7 +199,7 @@ const UploadJSONForm = ({ setMyListings }) => {
   };
 
   return (
-    <Modal show={true} onHide={handleClose} centered>
+    <Modal show={true} onHide={handleClose} centered size="lg">
       <Form onSubmit={handleUpload}>
         <Modal.Header closeButton>
           <Modal.Title>Upload a listing</Modal.Title>
@@ -204,6 +210,25 @@ const UploadJSONForm = ({ setMyListings }) => {
           <p className="text-muted fst-italic">
             Must have the following format
           </p>
+
+          <Form.Control
+            type="file"
+            accept=".json"
+            className="mb-3"
+            value={fileInput}
+            onChange={(event) => {
+              setFileInput(event.target.value);
+              fileToText(event.target.files[0])
+                .then((result) => {
+                  const json = JSON.parse(result);
+                  handleValidate(json);
+                })
+                .catch((error) => {
+                  event.target.value = null;
+                  toast.error(error.message);
+                });
+            }}
+          ></Form.Control>
 
           <pre
             className="pre-scrollable p-3"
@@ -240,23 +265,6 @@ const UploadJSONForm = ({ setMyListings }) => {
               )}
             </code>
           </pre>
-
-          <Form.Control
-            type="file"
-            accept=".json"
-            className="mb-3"
-            onChange={(event) => {
-              fileToText(event.target.files[0])
-                .then((result) => {
-                  const json = JSON.parse(result);
-                  handleValidate(json);
-                })
-                .catch((error) => {
-                  event.target.value = null;
-                  toast.error(error.message);
-                });
-            }}
-          ></Form.Control>
         </Modal.Body>
 
         <Modal.Footer>
