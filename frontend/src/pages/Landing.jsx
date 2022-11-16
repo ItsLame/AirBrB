@@ -33,6 +33,17 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
   const render = async () => {
     // get date search params
     const searchGetDate = searchParams.get('date');
+    let stayMultiplier = 1;
+
+    // if date params exist, set multiplier
+    searchGetDate &&
+      (searchGetDate.split('to')[0] === '' ||
+      searchGetDate.split('to')[1] === ''
+        ? (stayMultiplier = 1)
+        : (stayMultiplier =
+            (new Date(searchGetDate.split('to')[1]) -
+              new Date(searchGetDate.split('to')[0])) /
+            (1000 * 60 * 60 * 24)));
 
     // get bookings if logged in
     let bookings = [];
@@ -72,7 +83,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                       state={listing.address.state}
                       country={listing.address.country}
                       pricePerNight={listing.price}
-                      pricePerStay={listing.price}
+                      pricePerStay={listing.price * stayMultiplier}
                       searchByDate={!!searchGetDate}
                       reviews={listing.reviews}
                       numReviews={listing.reviews.length}

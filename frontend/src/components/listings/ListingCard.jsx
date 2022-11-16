@@ -40,7 +40,7 @@ const ListingCard = ({
     country: PropTypes.string,
     pricePerNight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     pricePerStay: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    searchByDate: PropTypes.boolean,
+    searchByDate: PropTypes.bool,
     reviews: PropTypes.array,
     numReviews: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     avgRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
