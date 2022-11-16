@@ -19,6 +19,8 @@ const ListingCard = ({
   state,
   country,
   pricePerNight,
+  pricePerStay,
+  searchByDate,
   reviews,
   numReviews,
   avgRating,
@@ -37,6 +39,8 @@ const ListingCard = ({
     state: PropTypes.string,
     country: PropTypes.string,
     pricePerNight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    pricePerStay: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    searchByDate: PropTypes.boolean,
     reviews: PropTypes.array,
     numReviews: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     avgRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -173,7 +177,13 @@ const ListingCard = ({
 
         <Card.Text className="mt-auto mb-0 d-flex w-100">
           <span className="flex-grow-1 fst-italic">
-            <u>{currencyFormatter.format(pricePerNight)} per night</u>
+            {searchByDate
+              ? (
+              <u>{currencyFormatter.format(pricePerStay)} per stay</u>
+                )
+              : (
+              <u>{currencyFormatter.format(pricePerNight)} per night</u>
+                )}
           </span>
           <span className="d-flex gap-2">
             <span>

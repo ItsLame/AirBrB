@@ -31,6 +31,9 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
   const handleShow = () => setShow(true);
 
   const render = async () => {
+    // get date search params
+    const searchGetDate = searchParams.get('date');
+
     // get bookings if logged in
     let bookings = [];
     if (token) {
@@ -69,6 +72,8 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                       state={listing.address.state}
                       country={listing.address.country}
                       pricePerNight={listing.price}
+                      pricePerStay={listing.price}
+                      searchByDate={!!searchGetDate}
                       reviews={listing.reviews}
                       numReviews={listing.reviews.length}
                       avgRating={(listing.reviews.length === 0
@@ -130,7 +135,6 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
               const searchTitleCity = searchParams.get('title_city');
               const searchGetBedrooms = parseInt(searchParams.get('bedrooms'));
               const searchGetPrice = searchParams.get('price');
-              const searchGetDate = searchParams.get('date');
               const searchGetRatings = searchParams.get('ratings');
 
               // search title/city
