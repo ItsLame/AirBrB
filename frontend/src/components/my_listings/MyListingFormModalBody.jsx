@@ -112,20 +112,30 @@ const MyListingFormModalBody = ({
   return (
     <>
       {/* Thumbnail preview */}
-      {thumbnail &&
-        (thumbnail.split('.')[1] === 'youtube'
+      <div className="mb-3 text-center">
+        {thumbnail
           ? (
-          <ReactPlayer url={thumbnail} width="100%" height="200px" />
-            )
-          : (
-          <div className="mb-3 text-center">
+              thumbnail.split('.')[1] === 'youtube'
+                ? (
+            <ReactPlayer url={thumbnail} width="100%" height="300px" />
+                  )
+                : (
             <img
               src={thumbnail}
               alt="Listing thumbnail preview"
-              className="w-50 h-100"
+              className="w-100 h-100"
             />
+                  )
+            )
+          : (
+          <div
+            className="d-flex border border-secondary text-secondary align-items-center justify-content-center"
+            style={{ height: '300px' }}
+          >
+            Thumbnail Preview
           </div>
-            ))}
+            )}
+      </div>
 
       {/* Title field */}
       <FloatingLabel className="mb-2" controlId="title" label="Title">
