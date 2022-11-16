@@ -193,9 +193,14 @@ const MyListingFormModalBody = ({
           />
             )
           : (
-          <InputGroup className="mb-3">
+          <InputGroup
+            className="mb-3"
+            onBlur={(event) =>
+              setThumbnail(`www.youtube.com/watch?v=${event.target.value}`)
+            }
+          >
             <InputGroup.Text id="basic-addon3">
-              https://youtube.com/v?=
+              youtube.com/watch?v=
             </InputGroup.Text>
             <Form.Control id="basic-url" aria-describedby="basic-addon3" />
           </InputGroup>
