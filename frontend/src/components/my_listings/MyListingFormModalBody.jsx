@@ -117,7 +117,14 @@ const MyListingFormModalBody = ({
           ? (
               thumbnail.split('.')[1] === 'youtube'
                 ? (
-            <ReactPlayer url={thumbnail} width="100%" height="300px" />
+            <ReactPlayer
+              url={thumbnail}
+              onError={() => {
+                toast.error('YouTube video does not exist!');
+              }}
+              width="100%"
+              height="300px"
+            />
                   )
                 : (
             <img
