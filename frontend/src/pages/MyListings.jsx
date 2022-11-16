@@ -189,7 +189,7 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
       {/* Main content */}
       <Container className="my-5">
         <h1>My listings</h1>
-        <div className="d-flex gap-3 mb-4 align-items-center">
+        <div className="d-flex flex-wrap gap-3 mb-4 mt-3 align-items-center">
           {/* Add listing button */}
           <Button
             variant="dark"

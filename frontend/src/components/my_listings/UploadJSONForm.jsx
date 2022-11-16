@@ -111,6 +111,7 @@ const UploadJSONForm = ({ setMyListings }) => {
               numBeds: x.metadata.bedrooms.reduce((a, b) => a + b, 0),
               numBathrooms: x.metadata.numBathrooms,
               numReviews: 0,
+              reviews: [],
               lastUpdatedAt: x.latestDate,
               published: false,
             },

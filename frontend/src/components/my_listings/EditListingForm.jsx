@@ -118,6 +118,7 @@ const EditListingForm = ({ email, setMyListings }) => {
                 numBeds: bedrooms.reduce((a, b) => a + b, 0),
                 numBathrooms,
                 numReviews: oldListing.numReviews,
+                reviews: oldListing.reviews,
                 lastUpdatedAt,
                 published: oldListing.published,
               },

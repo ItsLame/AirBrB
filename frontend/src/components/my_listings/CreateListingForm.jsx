@@ -74,6 +74,7 @@ const CreateListingForm = ({ setMyListings }) => {
               numBeds: bedrooms.reduce((a, b) => a + b, 0),
               numBathrooms,
               numReviews: 0,
+              reviews: [],
               lastUpdatedAt,
               published: false,
             },
