@@ -216,6 +216,7 @@ const MyListingFormModalBody = ({
             )
           : (
           <InputGroup
+            hasValidation={true}
             className="mb-3"
             onBlur={(event) =>
               setThumbnail(`www.youtube.com/watch?v=${event.target.value}`)
@@ -228,7 +229,13 @@ const MyListingFormModalBody = ({
               id="youtube-url"
               aria-describedby="youtube-url-text"
               required={thumbnailRequired}
+              isInvalid={
+                thumbnail !== '' && thumbnail.split('=')[1].length < 11
+              }
             />
+            <Form.Control.Feedback type="invalid">
+              Invalid YouTube Link (must be 11 characters)
+            </Form.Control.Feedback>
           </InputGroup>
             )}
       </Form.Group>
