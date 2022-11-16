@@ -191,7 +191,7 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
         <div className="d-flex gap-3 mb-4 align-items-center">
           {/* Add listing button */}
           <Button
-            variant="outline-dark"
+            variant="dark"
             className="d-flex gap-2 align-items-center"
             onClick={() => navigate('create')}
           >
