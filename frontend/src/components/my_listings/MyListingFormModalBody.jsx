@@ -112,19 +112,34 @@ const MyListingFormModalBody = ({
   return (
     <>
       {/* Thumbnail preview */}
+      {/* {console.log(thumbnail.split('=')[1].length)} */}
       <div className="mb-3 text-center">
         {thumbnail
           ? (
               thumbnail.split('.')[1] === 'youtube'
                 ? (
-            <ReactPlayer
-              url={thumbnail}
-              onError={() => {
-                toast.error('YouTube video does not exist!');
-              }}
-              width="100%"
-              height="300px"
-            />
+                    ReactPlayer.canPlay(thumbnail)
+                      ? (
+              <ReactPlayer
+                url={thumbnail}
+                onError={() => {
+                  toast.error('YouTube video does not exist!');
+                }}
+                onBuffer={() => {
+                  console.log('test');
+                }}
+                width="100%"
+                height="300px"
+              />
+                        )
+                      : (
+              <div
+                className="d-flex border border-secondary text-secondary align-items-center justify-content-center"
+                style={{ height: '300px' }}
+              >
+                Thumbnail Preview
+              </div>
+                        )
                   )
                 : (
             <img
@@ -206,10 +221,14 @@ const MyListingFormModalBody = ({
               setThumbnail(`www.youtube.com/watch?v=${event.target.value}`)
             }
           >
-            <InputGroup.Text id="basic-addon3">
+            <InputGroup.Text id="youtube-url-text">
               youtube.com/watch?v=
             </InputGroup.Text>
-            <Form.Control id="basic-url" aria-describedby="basic-addon3" />
+            <Form.Control
+              id="youtube-url"
+              aria-describedby="youtube-url-text"
+              required={thumbnailRequired}
+            />
           </InputGroup>
             )}
       </Form.Group>
@@ -437,7 +456,7 @@ const MyListingFormModalBody = ({
       {/* Amenities field */}
       <h5>Amenities</h5>
       {/* Essentials amenities */}
-      <h6>Essentials</h6>
+      <h6 className="text-secondary">Essentials</h6>
       <Row className="mb-3">
         <Col>
           <AmenityCheck type="essentials" amenity="Wi-Fi" />
@@ -458,7 +477,7 @@ const MyListingFormModalBody = ({
       {showMoreAmenitiesActive && (
         <>
           {/* Features amenities */}
-          <h6>Features</h6>
+          <h6 className="text-secondary">Features</h6>
           <Row className="mb-3">
             <Col>
               <AmenityCheck type="features" amenity="Pool" />
@@ -480,7 +499,7 @@ const MyListingFormModalBody = ({
           </Row>
 
           {/* Location amenities */}
-          <h6>Location</h6>
+          <h6 className="text-secondary">Location</h6>
           <Row className="mb-3">
             <Col>
               <AmenityCheck type="location" amenity="Beachfront" />
@@ -491,7 +510,7 @@ const MyListingFormModalBody = ({
           </Row>
 
           {/* Safety amenities */}
-          <h6>Safety</h6>
+          <h6 className="text-secondary">Safety</h6>
           <Row className="mb-3">
             <Col>
               <AmenityCheck type="safety" amenity="Smoke alarm" />
