@@ -23,7 +23,7 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
   const [titleCity, setTitleCity] = React.useState('');
   const [filterToggle, setFilterToggle] = React.useState(false);
   const [ratingsToggle, setRatingsToggle] = React.useState('');
-  // const [bedrooms, setBedrooms] = React.useState(0);
+
   const [minBedrooms, setMinBedrooms] = React.useState('');
   const [maxBedrooms, setMaxBedrooms] = React.useState('');
   const [minPrice, setMinPrice] = React.useState('');
@@ -45,7 +45,6 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
     const tempFilterActive = filterActive;
 
     tempFilterActive[0] = ratingsToggle !== '';
-    // tempFilterActive[1] = bedrooms !== 0;
     tempFilterActive[1] = minBedrooms !== '';
     tempFilterActive[2] = maxBedrooms !== '';
     tempFilterActive[3] = minPrice !== '';
@@ -57,7 +56,6 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
 
     setFilterActive(tempFilterActive);
     setFilterCount(fCount);
-    // }, [bedrooms, minPrice, maxPrice, ratingsToggle, startDate, endDate]);
   }, [
     minBedrooms,
     maxBedrooms,
