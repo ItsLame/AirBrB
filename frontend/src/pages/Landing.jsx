@@ -34,7 +34,9 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
     // get search params
     const searchTitleCity = searchParams.get('titleCity');
     const searchRatings = searchParams.get('ratings');
-    const searchBedrooms = searchParams.get('bedrooms');
+    // const searchBedrooms = searchParams.get('bedrooms');
+    const searchMinBedrooms = searchParams.get('minBedrooms');
+    const searchMaxBedrooms = searchParams.get('maxBedrooms');
     const searchMinPrice = searchParams.get('minPrice');
     const searchMaxPrice = searchParams.get('maxPrice');
     const searchStartDate = searchParams.get('startDate');
@@ -86,16 +88,36 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                 }
 
                 // filter bedrooms
-                if (searchBedrooms) {
-                  const requiredBedrooms = parseInt(searchBedrooms, 10);
-                  const numBedrooms = l.metadata.bedrooms.length;
+                // if (searchBedrooms) {
+                //   const requiredBedrooms = parseInt(searchBedrooms, 10);
+                //   const numBedrooms = l.metadata.bedrooms.length;
+                //   if (requiredBedrooms !== 0) {
+                //     if (requiredBedrooms === 8 && numBedrooms < 8) {
+                //       shouldStay = false;
+                //     } else if (
+                //       requiredBedrooms !== 8 &&
+                //       numBedrooms !== requiredBedrooms
+                //     ) {
+                //       shouldStay = false;
+                //     }
+                //   }
+                // }
+
+                // filter min bedrooms
+                if (searchMinBedrooms) {
+                  const requiredBedrooms = parseInt(searchMinBedrooms, 10);
                   if (requiredBedrooms !== 0) {
-                    if (requiredBedrooms === 8 && numBedrooms < 8) {
+                    if (l.metadata.bedrooms.length < requiredBedrooms) {
                       shouldStay = false;
-                    } else if (
-                      requiredBedrooms !== 8 &&
-                      numBedrooms !== requiredBedrooms
-                    ) {
+                    }
+                  }
+                }
+
+                // filter max bedrooms
+                if (searchMaxBedrooms) {
+                  const requiredBedrooms = parseInt(searchMaxBedrooms, 10);
+                  if (requiredBedrooms !== 0) {
+                    if (l.metadata.bedrooms.length > requiredBedrooms) {
                       shouldStay = false;
                     }
                   }

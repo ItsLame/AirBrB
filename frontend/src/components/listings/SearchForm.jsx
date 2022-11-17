@@ -6,11 +6,12 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Collapse from 'react-bootstrap/Collapse';
 import { BsSliders } from 'react-icons/bs';
-import FormRange from 'react-bootstrap/esm/FormRange';
+// import FormRange from 'react-bootstrap/esm/FormRange';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
+
 import { addOneDay, formatDate } from '../../helpers';
 
 const SearchForm = ({ show, closeAction, setSearchParams }) => {
@@ -23,7 +24,9 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
   const [titleCity, setTitleCity] = React.useState('');
   const [filterToggle, setFilterToggle] = React.useState(false);
   const [ratingsToggle, setRatingsToggle] = React.useState('');
-  const [bedrooms, setBedrooms] = React.useState(0);
+  // const [bedrooms, setBedrooms] = React.useState(0);
+  const [minBedrooms, setMinBedrooms] = React.useState('');
+  const [maxBedrooms, setMaxBedrooms] = React.useState('');
   const [minPrice, setMinPrice] = React.useState('');
   const [maxPrice, setMaxPrice] = React.useState('');
   const [startDate, setStartDate] = React.useState('');
@@ -31,7 +34,8 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
   const [filterCount, setFilterCount] = React.useState(0);
   const [filterActive, setFilterActive] = React.useState([
     false, // ratings
-    false, // bedrooms
+    false, // min bedrooms
+    false, // max bedrooms
     false, // min price
     false, // max price
     false, // start date
@@ -42,21 +46,34 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
     const tempFilterActive = filterActive;
 
     tempFilterActive[0] = ratingsToggle !== '';
-    tempFilterActive[1] = bedrooms !== 0;
-    tempFilterActive[2] = minPrice !== '';
-    tempFilterActive[3] = maxPrice !== '';
-    tempFilterActive[4] = startDate !== '';
-    tempFilterActive[5] = endDate !== '';
+    // tempFilterActive[1] = bedrooms !== 0;
+    tempFilterActive[1] = minBedrooms !== '';
+    tempFilterActive[2] = maxBedrooms !== '';
+    tempFilterActive[3] = minPrice !== '';
+    tempFilterActive[4] = maxPrice !== '';
+    tempFilterActive[5] = startDate !== '';
+    tempFilterActive[6] = endDate !== '';
 
     const fCount = tempFilterActive.filter((x) => x).length;
 
     setFilterActive(tempFilterActive);
     setFilterCount(fCount);
-  }, [bedrooms, minPrice, maxPrice, ratingsToggle, startDate, endDate]);
+    // }, [bedrooms, minPrice, maxPrice, ratingsToggle, startDate, endDate]);
+  }, [
+    minBedrooms,
+    maxBedrooms,
+    minPrice,
+    maxPrice,
+    ratingsToggle,
+    startDate,
+    endDate,
+  ]);
 
   const handleClear = () => {
     setTitleCity('');
-    setBedrooms(0);
+    // setBedrooms(0);
+    setMinBedrooms('');
+    setMaxBedrooms('');
     setStartDate('');
     setEndDate('');
     setMinPrice('');
@@ -71,11 +88,13 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
 
     titleCity.trim() !== '' && (temp.titleCity = titleCity);
     filterActive[0] && (temp.ratings = ratingsToggle);
-    filterActive[1] && (temp.bedrooms = bedrooms);
-    filterActive[2] && (temp.minPrice = minPrice);
-    filterActive[3] && (temp.maxPrice = maxPrice);
-    filterActive[4] && (temp.startDate = startDate);
-    filterActive[5] && (temp.endDate = endDate);
+    // filterActive[1] && (temp.bedrooms = bedrooms);
+    filterActive[1] && (temp.minBedrooms = minBedrooms);
+    filterActive[2] && (temp.maxBedrooms = maxBedrooms);
+    filterActive[3] && (temp.minPrice = minPrice);
+    filterActive[4] && (temp.maxPrice = maxPrice);
+    filterActive[5] && (temp.startDate = startDate);
+    filterActive[6] && (temp.endDate = endDate);
 
     setSearchParams(temp);
     closeAction();
@@ -136,7 +155,7 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
 
                 {/* Number of bedrooms */}
                 <h5 className="text-secondary">Number of bedrooms</h5>
-                <Container className="d-flex p-0 gap-3">
+                {/* <Container className="d-flex p-0 gap-3">
                   {bedrooms === 8 ? '8+' : bedrooms === 0 ? 'Any' : bedrooms}
                   <FormRange
                     variant="dark"
@@ -148,7 +167,57 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
                     }}
                     className="mb-3"
                   />
-                </Container>
+                </Container> */}
+                <Row xs={1} sm={2} className="g-3 h-100 mb-3">
+                  {/* Minimum bedrooms field */}
+                  <Col>
+                    <InputGroup>
+                      <FloatingLabel
+                        controlId="number"
+                        label="Minimum bedrooms"
+                      >
+                        <Form.Control
+                          type="number"
+                          placeholder="Minimum bedrooms"
+                          min="0"
+                          step="1"
+                          value={minBedrooms}
+                          onChange={(event) => {
+                            setMinBedrooms(
+                              isNaN(event.target.valueAsNumber)
+                                ? ''
+                                : event.target.valueAsNumber
+                            );
+                          }}
+                        />
+                      </FloatingLabel>
+                    </InputGroup>
+                  </Col>
+                  {/* Maximum bedrooms field */}
+                  <Col>
+                    <InputGroup>
+                      <FloatingLabel
+                        controlId="number"
+                        label="Maximum bedrooms"
+                      >
+                        <Form.Control
+                          type="number"
+                          placeholder="Maximum bedrooms"
+                          min={minBedrooms || '0'}
+                          step="1"
+                          value={maxBedrooms}
+                          onChange={(event) => {
+                            setMaxBedrooms(
+                              isNaN(event.target.valueAsNumber)
+                                ? ''
+                                : event.target.valueAsNumber
+                            );
+                          }}
+                        />
+                      </FloatingLabel>
+                    </InputGroup>
+                  </Col>
+                </Row>
 
                 {/* Date range */}
                 <h5 className="text-secondary">Availability</h5>
