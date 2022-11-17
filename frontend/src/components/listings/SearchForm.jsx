@@ -219,7 +219,7 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
                         <Form.Control
                           type="number"
                           placeholder="01/01/2022"
-                          min="0"
+                          min={minPrice || '0'}
                           step="1"
                           value={maxPrice}
                           onChange={(event) => {
