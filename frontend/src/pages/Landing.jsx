@@ -41,7 +41,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
     const searchEndDate = searchParams.get('endDate');
 
     // if date params exist, set multiplier
-    let stayMultiplier = 1;
+    let stayMultiplier = 0;
     searchStartDate &&
       searchEndDate &&
       (stayMultiplier =
@@ -170,7 +170,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                           pricePerNight={l.price}
                           pricePerStay={l.price * stayMultiplier}
                           stayDays={stayMultiplier}
-                          searchByDate={stayMultiplier > 1}
+                          searchByDate={stayMultiplier > 0}
                           reviews={l.reviews}
                           numReviews={l.reviews.length}
                           avgRating={(l.reviews.length === 0
