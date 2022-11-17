@@ -41,7 +41,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
   const navigate = useNavigate();
   const { listingId } = useParams();
   const [searchParams] = useSearchParams({});
-  const searchGetDays = searchParams.get('days');
+  const searchGetDays = searchParams.get('nights');
   const [title, setTitle] = React.useState(null);
   const [street, setStreet] = React.useState(null);
   const [state, setState] = React.useState(null);
@@ -267,9 +267,9 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
               ? (
                   pricePerNight !== null
                     ? (
-                <div className="fst-italic mb-2">
-                  {currencyFormatter.format(pricePerNight * searchGetDays)} per
-                  stay
+                <div className="fst-italic fw-bold mb-2">
+                  {currencyFormatter.format(pricePerNight * searchGetDays)} for
+                  a {searchGetDays}-night stay
                 </div>
                       )
                     : (

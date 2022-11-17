@@ -60,8 +60,8 @@ const ListingCard = ({
     navigate(
       searchByDate
         ? owner === email
-          ? `/my_listing/${listingId}/?days=${stayDays}`
-          : `/listing/${listingId}/?days=${stayDays}`
+          ? `/my_listing/${listingId}/?nights=${stayDays}`
+          : `/listing/${listingId}/?nights=${stayDays}`
         : owner === email
           ? `/my_listing/${listingId}`
           : `/listing/${listingId}`
@@ -187,7 +187,12 @@ const ListingCard = ({
           <span className="flex-grow-1 fst-italic">
             {searchByDate
               ? (
-              <u>{currencyFormatter.format(pricePerStay)} per stay</u>
+              <b>
+                <u>
+                  {currencyFormatter.format(pricePerStay)} for {stayDays} night
+                  {stayDays !== 1 && 's'}
+                </u>
+              </b>
                 )
               : (
               <u>{currencyFormatter.format(pricePerNight)} per night</u>
