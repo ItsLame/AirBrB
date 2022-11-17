@@ -556,6 +556,35 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
         </Row>
         <hr />
 
+        {/* Availabilities */}
+        {availability !== null && (
+          <>
+            <h5>Availabilities</h5>
+            <ul>
+              {availability.map((dateRange, idx) => {
+                return (
+                  <li key={idx}>
+                    {new Date(dateRange.start).toLocaleDateString('default', {
+                      weekday: 'short',
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                    })}{' '}
+                    —{' '}
+                    {new Date(dateRange.end).toLocaleDateString('default', {
+                      weekday: 'short',
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                    })}
+                  </li>
+                );
+              })}
+            </ul>
+            <hr />
+          </>
+        )}
+
         {/* Reviews */}
         <Reviews
           reviews={reviews}
