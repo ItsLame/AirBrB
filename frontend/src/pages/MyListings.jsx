@@ -41,7 +41,7 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
 
   const navigate = useNavigate();
   const [myListings, setMyListings] = React.useState([]);
-  const [isListingsLoading, setIsListingsLoading] = React.useState(true);
+  const [numListingsLoading, setNumListingsLoading] = React.useState(4);
   const [bookings, setBookings] = React.useState([]);
   const [monthsProfit, setMonthsProfit] = React.useState([]);
 
@@ -49,54 +49,53 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
   React.useEffect(() => {
     getListings()
       .then((response) => {
-        const promises = [];
+        setNumListingsLoading(
+          response.data.listings.filter((listing) => listing.owner === email)
+            .length
+        );
+        setMyListings([]);
+
         response.data.listings.forEach((listing) => {
           // check if logged in user owns this listing
           if (listing.owner === email) {
-            promises.push(
-              getListing(listing.id).then((response) => [response, listing.id])
-            );
+            getListing(listing.id)
+              .then((r) => {
+                const l = r.data.listing;
+                setMyListings((curr) =>
+                  [
+                    ...curr,
+                    {
+                      id: listing.id,
+                      thumbnail: l.thumbnail,
+                      title: l.title,
+                      avgRating: (l.reviews.length === 0
+                        ? 0
+                        : l.reviews.reduce((a, b) => a + b.rating, 0) /
+                          l.reviews.length
+                      ).toFixed(1),
+                      propertyType: l.metadata.propertyType,
+                      pricePerNight: l.price,
+                      numBeds: l.metadata.bedrooms.reduce((a, b) => a + b, 0),
+                      numBathrooms: l.metadata.numBathrooms,
+                      numReviews: l.reviews.length,
+                      reviews: l.reviews,
+                      lastUpdatedAt: l.metadata.lastUpdatedAt,
+                      published: l.published,
+                    },
+                  ].sort((a, b) => {
+                    const dateA = new Date(a.lastUpdatedAt);
+                    const dateB = new Date(b.lastUpdatedAt);
+                    if (dateA > dateB) return -1;
+                    if (dateA < dateB) return 1;
+                    return 0;
+                  })
+                );
+
+                setNumListingsLoading((curr) => curr - 1); // hide placeholders
+              })
+              .catch((error) => console.error(error));
           }
         });
-
-        Promise.all(promises)
-          .then((responses) => {
-            const listings = [];
-            responses.forEach(([response, id]) => {
-              // add listing then sort listings by last updated
-              const listing = response.data.listing;
-              listings.push({
-                id,
-                thumbnail: listing.thumbnail,
-                title: listing.title,
-                avgRating: (listing.reviews.length === 0
-                  ? 0
-                  : listing.reviews.reduce((a, b) => a + b.rating, 0) /
-                    listing.reviews.length
-                ).toFixed(1),
-                propertyType: listing.metadata.propertyType,
-                pricePerNight: listing.price,
-                numBeds: listing.metadata.bedrooms.reduce((a, b) => a + b, 0),
-                numBathrooms: listing.metadata.numBathrooms,
-                numReviews: listing.reviews.length,
-                reviews: listing.reviews,
-                lastUpdatedAt: listing.metadata.lastUpdatedAt,
-                published: listing.published,
-              });
-            });
-
-            listings.sort((a, b) => {
-              const dateA = new Date(a.lastUpdatedAt);
-              const dateB = new Date(b.lastUpdatedAt);
-              if (dateA > dateB) return -1;
-              if (dateA < dateB) return 1;
-              return 0;
-            });
-
-            setIsListingsLoading(false); // hide placeholders
-            setMyListings(listings);
-          })
-          .catch((error) => console.error(error));
       })
       .catch((error) => console.error(error));
   }, []);
@@ -226,9 +225,30 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
             </Card>
           </Col> */}
 
+          {/* My listings */}
+          {myListings.map((listing, idx) => (
+            <Col key={idx}>
+              <MyListingCard
+                listingId={listing.id}
+                thumbnail={listing.thumbnail}
+                title={listing.title}
+                avgRating={listing.avgRating}
+                propertyType={listing.propertyType}
+                pricePerNight={listing.pricePerNight}
+                numBeds={listing.numBeds}
+                numBathrooms={listing.numBathrooms}
+                numReviews={listing.numReviews}
+                reviews={listing.reviews}
+                lastUpdatedAt={listing.lastUpdatedAt}
+                published={listing.published}
+                setMyListings={setMyListings}
+              />
+            </Col>
+          ))}
+
           {/* Placeholders when loading */}
-          {isListingsLoading &&
-            [...Array(4)].map((_, idx) => (
+          {numListingsLoading !== 0 &&
+            [...Array(numListingsLoading)].map((_, idx) => (
               <Col key={idx}>
                 <Card>
                   <Card.Img
@@ -255,32 +275,11 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
             ))}
 
           {/* If no listings */}
-          {!isListingsLoading && myListings.length === 0 && (
+          {numListingsLoading === 0 && myListings.length === 0 && (
             <h5 className="text-muted w-100 fw-normal">
               You have not created any listings yet!
             </h5>
           )}
-
-          {/* My listings */}
-          {myListings.map((listing, idx) => (
-            <Col key={idx}>
-              <MyListingCard
-                listingId={listing.id}
-                thumbnail={listing.thumbnail}
-                title={listing.title}
-                avgRating={listing.avgRating}
-                propertyType={listing.propertyType}
-                pricePerNight={listing.pricePerNight}
-                numBeds={listing.numBeds}
-                numBathrooms={listing.numBathrooms}
-                numReviews={listing.numReviews}
-                reviews={listing.reviews}
-                lastUpdatedAt={listing.lastUpdatedAt}
-                published={listing.published}
-                setMyListings={setMyListings}
-              />
-            </Col>
-          ))}
         </Row>
 
         {/* Last month profits */}

@@ -23,27 +23,30 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
   };
 
   const [listings, setListings] = React.useState([]);
-  const [isListingsLoading, setIsListingsLoading] = React.useState(true);
-  const [show, setShow] = React.useState(false);
+  const [numListingsLoading, setNumListingsLoading] = React.useState(4);
+  const [showSearchForm, setShowSearchForm] = React.useState(false);
   const [searchParams, setSearchParams] = useSearchParams({});
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => setShowSearchForm(false);
+  const handleShow = () => setShowSearchForm(true);
 
   const render = async () => {
-    // get date search params
-    const searchGetDate = searchParams.get('date');
-    let stayMultiplier = 1;
+    // get search params
+    const searchTitleCity = searchParams.get('titleCity');
+    const searchRatings = searchParams.get('ratings');
+    const searchBedrooms = searchParams.get('bedrooms');
+    const searchMinPrice = searchParams.get('minPrice');
+    const searchMaxPrice = searchParams.get('maxPrice');
+    const searchStartDate = searchParams.get('startDate');
+    const searchEndDate = searchParams.get('endDate');
 
     // if date params exist, set multiplier
-    searchGetDate &&
-      (searchGetDate.split('to')[0] === '' ||
-      searchGetDate.split('to')[1] === ''
-        ? (stayMultiplier = 1)
-        : (stayMultiplier =
-            (new Date(searchGetDate.split('to')[1]) -
-              new Date(searchGetDate.split('to')[0])) /
-            (1000 * 60 * 60 * 24)));
+    let stayMultiplier = 1;
+    searchStartDate &&
+      searchEndDate &&
+      (stayMultiplier =
+        (new Date(searchEndDate) - new Date(searchStartDate)) /
+        (1000 * 60 * 60 * 24));
 
     // get bookings if logged in
     let bookings = [];
@@ -55,199 +58,220 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
 
     getListings()
       .then((response) => {
-        const promises = [];
+        setNumListingsLoading(response.data.listings.length);
+        setListings([]);
+
         response.data.listings.forEach((listing) => {
-          // check if logged in user owns this listing
-          promises.push(
-            getListing(listing.id).then((response) => [response, listing.id])
-          );
+          getListing(listing.id)
+            .then((r) => {
+              const l = r.data.listing;
+              if (l.published) {
+                // if search params then check them
+                let shouldStay = true;
+
+                // search title/city
+                if (searchTitleCity) {
+                  const titleCityList = searchTitleCity
+                    .split(/[ ,;+]/g)
+                    .map((titleCity) => titleCity.trim().toLowerCase());
+
+                  if (
+                    ![
+                      ...l.title.toLowerCase().split(/[ ,;+]/g),
+                      ...l.address.city.toLowerCase().split(/[ ,;+]/g),
+                    ].some((titleCity) => titleCityList.includes(titleCity))
+                  ) {
+                    shouldStay = false;
+                  }
+                }
+
+                // filter bedrooms
+                if (searchBedrooms) {
+                  const requiredBedrooms = parseInt(searchBedrooms, 10);
+                  const numBedrooms = l.metadata.bedrooms.length;
+                  if (requiredBedrooms !== 0) {
+                    if (requiredBedrooms === 8 && numBedrooms < 8) {
+                      shouldStay = false;
+                    } else if (
+                      requiredBedrooms !== 8 &&
+                      numBedrooms !== requiredBedrooms
+                    ) {
+                      shouldStay = false;
+                    }
+                  }
+                }
+
+                // filter min price
+                if (searchMinPrice) {
+                  const requiredMinPrice = parseInt(searchMinPrice, 10);
+                  if (l.price < requiredMinPrice) {
+                    shouldStay = false;
+                  }
+                }
+
+                // filter max price
+                if (searchMaxPrice) {
+                  const requiredMaxPrice = parseInt(searchMaxPrice, 10);
+                  if (l.price > requiredMaxPrice) {
+                    shouldStay = false;
+                  }
+                }
+
+                // filter dates
+                if (searchStartDate && searchEndDate) {
+                  const startDate = new Date(searchStartDate);
+                  const endDate = new Date(searchEndDate);
+                  if (
+                    !l.availability.some((avail) => {
+                      const availStart = new Date(avail.start);
+                      const availEnd = new Date(avail.end);
+                      return availStart <= startDate && endDate <= availEnd;
+                    })
+                  ) {
+                    shouldStay = false;
+                  }
+                } else if (searchStartDate) {
+                  const date = new Date(searchStartDate);
+                  if (
+                    !l.availability.some((avail) => {
+                      const availStart = new Date(avail.start);
+                      const availEnd = new Date(avail.end);
+                      return availStart <= date && date < availEnd;
+                    })
+                  ) {
+                    shouldStay = false;
+                  }
+                } else if (searchEndDate) {
+                  const date = new Date(searchEndDate);
+                  if (
+                    !l.availability.some((avail) => {
+                      const availStart = new Date(avail.start);
+                      const availEnd = new Date(avail.end);
+                      return availStart < date && date <= availEnd;
+                    })
+                  ) {
+                    shouldStay = false;
+                  }
+                }
+
+                // add to listings if all filters satisfied
+                if (shouldStay) {
+                  setListings((curr) =>
+                    [
+                      ...curr,
+                      <Col key={listing.id}>
+                        <ListingCard
+                          listingId={listing.id}
+                          title={l.title}
+                          street={l.address.street}
+                          city={l.address.city}
+                          state={l.address.state}
+                          country={l.address.country}
+                          pricePerNight={l.price}
+                          pricePerStay={l.price * stayMultiplier}
+                          stayDays={stayMultiplier}
+                          searchByDate={stayMultiplier > 1}
+                          reviews={l.reviews}
+                          numReviews={l.reviews.length}
+                          avgRating={(l.reviews.length === 0
+                            ? 0
+                            : l.reviews.reduce((a, b) => a + b.rating, 0) /
+                              l.reviews.length
+                          ).toFixed(1)}
+                          thumbnail={l.thumbnail}
+                          numBedrooms={l.metadata.bedrooms.length}
+                          numBeds={l.metadata.bedrooms.reduce(
+                            (a, b) => a + b,
+                            0
+                          )}
+                          numBathrooms={l.metadata.numBathrooms}
+                          bookings={bookings.filter(
+                            (booking) =>
+                              booking.owner === email &&
+                              booking.listingId === listing.id.toString()
+                          )}
+                          availability={l.availability}
+                          owner={l.owner}
+                          email={email}
+                        />
+                      </Col>,
+                    ].sort((a, b) => {
+                      const numAcceptedA =
+                        a.props.children.props.bookings.filter(
+                          (booking) => booking.status === 'accepted'
+                        ).length;
+                      const numAcceptedB =
+                        b.props.children.props.bookings.filter(
+                          (booking) => booking.status === 'accepted'
+                        ).length;
+                      const numPendingA =
+                        a.props.children.props.bookings.filter(
+                          (booking) => booking.status === 'pending'
+                        ).length;
+                      const numPendingB =
+                        b.props.children.props.bookings.filter(
+                          (booking) => booking.status === 'pending'
+                        ).length;
+
+                      // sort by number of accepted bookings then number of pending bookings
+                      if (numAcceptedA > numAcceptedB) return -1;
+                      if (numAcceptedA < numAcceptedB) return 1;
+                      if (numPendingA > numPendingB) return -1;
+                      if (numPendingA < numPendingB) return 1;
+
+                      // sort by ratings highest/lowest
+                      if (searchRatings) {
+                        if (searchRatings === 'lowest') {
+                          if (
+                            a.props.children.props.avgRating <
+                            b.props.children.props.avgRating
+                          ) {
+                            return -1;
+                          }
+                          if (
+                            a.props.children.props.avgRating >
+                            b.props.children.props.avgRating
+                          ) {
+                            return 1;
+                          }
+                        } else {
+                          if (
+                            a.props.children.props.avgRating <
+                            b.props.children.props.avgRating
+                          ) {
+                            return 1;
+                          }
+                          if (
+                            a.props.children.props.avgRating >
+                            b.props.children.props.avgRating
+                          ) {
+                            return -1;
+                          }
+                        }
+                      }
+
+                      // note: had to lowercase it, if not it will sort the capitalised letter first (i.e., A, B, a, b)
+                      return a.props.children.props.title.trim().toLowerCase() >
+                        b.props.children.props.title.trim().toLowerCase()
+                        ? 1
+                        : -1;
+                    })
+                  );
+                }
+              }
+
+              setNumListingsLoading((curr) => curr - 1); // hide placeholders
+            })
+            .catch((error) => console.error(error));
         });
-
-        // temporary list
-        let newListings = [];
-
-        Promise.all(promises)
-          .then((responses) => {
-            responses.forEach(([response, id]) => {
-              // prepend to list if listing is published
-              const listing = response.data.listing;
-              // console.log('raw listings', listing);
-              if (listing.published) {
-                newListings = [
-                  <Col key={id}>
-                    <ListingCard
-                      listingId={id}
-                      title={listing.title}
-                      street={listing.address.street}
-                      city={listing.address.city}
-                      state={listing.address.state}
-                      country={listing.address.country}
-                      pricePerNight={listing.price}
-                      pricePerStay={listing.price * stayMultiplier}
-                      stayDays={stayMultiplier}
-                      searchByDate={stayMultiplier > 1}
-                      reviews={listing.reviews}
-                      numReviews={listing.reviews.length}
-                      avgRating={(listing.reviews.length === 0
-                        ? 0
-                        : listing.reviews.reduce((a, b) => a + b.rating, 0) /
-                          listing.reviews.length
-                      ).toFixed(1)}
-                      thumbnail={listing.thumbnail}
-                      numBedrooms={listing.metadata.bedrooms.length}
-                      numBeds={listing.metadata.bedrooms.reduce(
-                        (a, b) => a + b,
-                        0
-                      )}
-                      numBathrooms={listing.metadata.numBathrooms}
-                      bookings={bookings.filter(
-                        (booking) =>
-                          booking.owner === email &&
-                          booking.listingId === id.toString()
-                      )}
-                      availability={listing.availability}
-                      owner={listing.owner}
-                      email={email}
-                    />
-                  </Col>,
-                  ...newListings,
-                ];
-              }
-            });
-
-            // sort by num accepted bookings, then num pending bookings, then alphabetically (note: titles cannot be =)
-            newListings = newListings.sort((a, b) => {
-              const numAcceptedA = a.props.children.props.bookings.filter(
-                (booking) => booking.status === 'accepted'
-              ).length;
-              const numAcceptedB = b.props.children.props.bookings.filter(
-                (booking) => booking.status === 'accepted'
-              ).length;
-              const numPendingA = a.props.children.props.bookings.filter(
-                (booking) => booking.status === 'pending'
-              ).length;
-              const numPendingB = b.props.children.props.bookings.filter(
-                (booking) => booking.status === 'pending'
-              ).length;
-
-              if (numAcceptedA > numAcceptedB) return -1;
-              if (numAcceptedA < numAcceptedB) return 1;
-              if (numPendingA > numPendingB) return -1;
-              if (numPendingA < numPendingB) return 1;
-
-              // note: had to lowercase it, if not it will sort the capitalised letter first (i.e., A, B, a, b)
-              return a.props.children.props.title.toLowerCase() >
-                b.props.children.props.title.toLowerCase()
-                ? 1
-                : -1;
-            });
-
-            if ([...searchParams].length) {
-              // filter by search
-              const searchTitleCity = searchParams.get('title_city');
-              const searchGetBedrooms = parseInt(searchParams.get('bedrooms'));
-              const searchGetPrice = searchParams.get('price');
-              const searchGetRatings = searchParams.get('ratings');
-
-              // search title/city
-              if (searchTitleCity) {
-                const titleCityList = searchTitleCity
-                  .split(/[ ,;+]/g)
-                  .map((titleCity) => titleCity.trim().toLowerCase());
-
-                newListings = newListings.filter((x) =>
-                  [
-                    ...x.props.children.props.title
-                      .toLowerCase()
-                      .split(/[ ,;+]/g),
-                    ...x.props.children.props.city
-                      .toLowerCase()
-                      .split(/[ ,;+]/g),
-                  ].some((titleCity) => titleCityList.includes(titleCity))
-                );
-              }
-
-              // filter bedrooms
-              searchGetBedrooms &&
-                (searchGetBedrooms === 8
-                  ? (newListings = newListings.filter(
-                      (x) =>
-                        x.props.children.props.numBedrooms >= searchGetBedrooms
-                    ))
-                  : (newListings = newListings.filter(
-                      (x) =>
-                        x.props.children.props.numBedrooms === searchGetBedrooms
-                    )));
-
-              // filter price range min/max
-              if (searchGetPrice) {
-                // filter price range min
-                searchGetPrice.split('to')[0] !== '0' &&
-                  (newListings = newListings.filter(
-                    (x) =>
-                      x.props.children.props.pricePerNight >=
-                      searchGetPrice.split('to')[0]
-                  ));
-
-                // filter price range max
-                searchGetPrice.split('to')[1] !== '0' &&
-                  (newListings = newListings.filter(
-                    (x) =>
-                      x.props.children.props.pricePerNight <=
-                      searchGetPrice.split('to')[1]
-                  ));
-              }
-
-              // filter date range min/max
-              if (searchGetDate) {
-                // filter date range min
-                searchGetDate.split('to')[0] !== '' &&
-                  (newListings = newListings.filter((x) =>
-                    x.props.children.props.availability.every(
-                      (y) => y.start >= searchGetDate.split('to')[0]
-                    )
-                  ));
-
-                // filter date range max
-                searchGetDate.split('to')[1] !== '' &&
-                  (newListings = newListings.filter((x) =>
-                    x.props.children.props.availability.every(
-                      (y) => y.end <= searchGetDate.split('to')[1]
-                    )
-                  ));
-              }
-
-              // sort by ratings highest/lowest
-              searchGetRatings && searchGetRatings === 'lowest'
-                ? (newListings = newListings.sort(
-                    (a, b) =>
-                      a.props.children.props.avgRating -
-                      b.props.children.props.avgRating
-                  ))
-                : (newListings = newListings.sort(
-                    (a, b) =>
-                      b.props.children.props.avgRating -
-                      a.props.children.props.avgRating
-                  ));
-            }
-
-            setIsListingsLoading(false);
-            setListings(newListings);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
-  React.useEffect(() => {
-    setIsListingsLoading(true);
-  }, []);
-  React.useEffect(render, [searchParams]);
-  React.useEffect(render, [email]);
+  // React.useEffect(render, []);
+  React.useEffect(render, [searchParams, email]);
 
   return (
     <>
@@ -270,8 +294,10 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
       <Container className="my-5">
         <h1 className="mb-4">All listings</h1>
         <Row xs={1} md={2} lg={3} xxl={4} className="g-4 h-100">
+          {listings}
+
           {/* Placeholders when loading */}
-          {isListingsLoading &&
+          {numListingsLoading !== 0 &&
             [...Array(4)].map((_, idx) => (
               <Col key={idx}>
                 <Card>
@@ -299,22 +325,19 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
             ))}
 
           {/* If no listings */}
-          {!isListingsLoading && listings.length === 0 && (
+          {numListingsLoading === 0 && listings.length === 0 && (
             <h5 className="text-muted w-100 fw-normal">
               {/* There are no bookable listings yet! */}
               No listings found!
             </h5>
           )}
-
-          {!isListingsLoading && listings}
         </Row>
       </Container>
 
       <SearchForm
-        show={show}
+        show={showSearchForm}
         closeAction={handleClose}
         setSearchParams={setSearchParams}
-        setIsLoading={setIsListingsLoading}
       />
       <Outlet />
     </>
