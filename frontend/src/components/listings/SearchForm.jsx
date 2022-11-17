@@ -6,7 +6,6 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Collapse from 'react-bootstrap/Collapse';
 import { BsSliders } from 'react-icons/bs';
-// import FormRange from 'react-bootstrap/esm/FormRange';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -88,7 +87,6 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
 
     titleCity.trim() !== '' && (temp.titleCity = titleCity);
     filterActive[0] && (temp.ratings = ratingsToggle);
-    // filterActive[1] && (temp.bedrooms = bedrooms);
     filterActive[1] && (temp.minBedrooms = minBedrooms);
     filterActive[2] && (temp.maxBedrooms = maxBedrooms);
     filterActive[3] && (temp.minPrice = minPrice);
@@ -155,19 +153,6 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
 
                 {/* Number of bedrooms */}
                 <h5 className="text-secondary">Number of bedrooms</h5>
-                {/* <Container className="d-flex p-0 gap-3">
-                  {bedrooms === 8 ? '8+' : bedrooms === 0 ? 'Any' : bedrooms}
-                  <FormRange
-                    variant="dark"
-                    value={bedrooms}
-                    min={0}
-                    max={8}
-                    onChange={(event) => {
-                      setBedrooms(event.target.valueAsNumber);
-                    }}
-                    className="mb-3"
-                  />
-                </Container> */}
                 <Row xs={1} sm={2} className="g-3 h-100 mb-3">
                   {/* Minimum bedrooms field */}
                   <Col>

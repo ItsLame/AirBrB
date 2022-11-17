@@ -87,22 +87,6 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                   }
                 }
 
-                // filter bedrooms
-                // if (searchBedrooms) {
-                //   const requiredBedrooms = parseInt(searchBedrooms, 10);
-                //   const numBedrooms = l.metadata.bedrooms.length;
-                //   if (requiredBedrooms !== 0) {
-                //     if (requiredBedrooms === 8 && numBedrooms < 8) {
-                //       shouldStay = false;
-                //     } else if (
-                //       requiredBedrooms !== 8 &&
-                //       numBedrooms !== requiredBedrooms
-                //     ) {
-                //       shouldStay = false;
-                //     }
-                //   }
-                // }
-
                 // filter min bedrooms
                 if (searchMinBedrooms) {
                   const requiredBedrooms = parseInt(searchMinBedrooms, 10);
