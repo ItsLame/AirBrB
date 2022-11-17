@@ -44,4 +44,8 @@ export const StyledSearchToggle = styled(Button)`
     background: #1c1c1c;
     transform: scale(0.98);
   }
+
+  &:focus {
+    background: #1c1c1c;
+  }
 `;
