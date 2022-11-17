@@ -145,18 +145,25 @@ const UploadJSONForm = ({ setMyListings }) => {
   const handleValidate = (json) => {
     const valid = jsonSchemaValidator(json);
     if (valid) {
-      const img = new Image();
-      img.src = json.thumbnail;
+      if (
+        !/^(https:\/\/)?www\.youtube\.com\/watch\?v=[A-Za-z0-9_-]{11}$/.test(
+          json.thumbnail
+        )
+      ) {
+        const img = new Image();
+        img.src = json.thumbnail;
 
-      // check thumbnail
-      if (!img.complete || !img.naturalWidth) {
-        toast.error('Thumbnail is not a valid image');
-        setJsonData({});
-        setFileInput('');
-      } else {
-        toast.success('JSON schema is valid! Ready to upload');
-        setJsonData(json);
+        // check thumbnail is an image if it is not a youtube url
+        if (!img.complete || !img.naturalWidth) {
+          toast.error('Thumbnail is not a valid image or YouTube url');
+          setJsonData({});
+          setFileInput('');
+          return;
+        }
       }
+
+      toast.success('JSON schema is valid! Ready to upload');
+      setJsonData(json);
     } else {
       toast.error(ajv.errorsText(jsonSchemaValidator.errors));
       setJsonData({});
