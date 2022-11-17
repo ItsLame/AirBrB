@@ -29,6 +29,7 @@ export const fileToDataUrl = (file) => {
   return dataUrlPromise;
 };
 
+// read file convert to text
 export const fileToText = (file) => {
   const validFileTypes = ['application/json'];
   const valid = validFileTypes.find((type) => type === file.type);
