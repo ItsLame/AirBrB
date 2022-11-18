@@ -159,6 +159,7 @@ const MakeBookingForm = ({
                         label="Start date"
                       >
                         <Form.Control
+                          id={`booking-start-${idx}-date-field`}
                           type="date"
                           placeholder="Start date"
                           min={dateRange.start}
@@ -179,6 +180,7 @@ const MakeBookingForm = ({
                         label="End date"
                       >
                         <Form.Control
+                          id={`booking-start-${idx}-date-field`}
                           type="date"
                           placeholder="End date"
                           min={formatDate(

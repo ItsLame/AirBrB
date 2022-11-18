@@ -26,16 +26,5 @@ describe('publish listing happy path', () => {
 
     cy.get('button[name="mylisting-publish-submit"]').click();
     cy.url().should('not.include', '/my_listings/publish');
-
-    // const title = 'Jungle Hotel';
-    // const youtubeLink = 'GySYuc1koLI';
-
-    // cy.get('input[name="listing-title-input"]').focus().clear().type(title);
-
-    // cy.get('button[name="listing-thumbnail-youtube-toggle"]').click();
-    // cy.get('input[name="listing-youtube-url-field"]').focus().type(youtubeLink);
-
-    // cy.get('button[name="edit-listing-submit"]').click();
-    // cy.url().should('not.include', '/my_listings/edit');
   });
 });

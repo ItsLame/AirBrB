@@ -295,6 +295,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
               ? (
                   owner !== email && (
                 <Button
+                  id="listing-book-button"
                   aria-haspopup="dialog"
                   variant="dark"
                   className="d-flex gap-2 align-items-center"

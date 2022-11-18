@@ -13,6 +13,7 @@ import { currencyFormatter } from '../../helpers';
 
 const ListingCard = ({
   listingId,
+  id,
   title,
   street,
   city,
@@ -34,6 +35,7 @@ const ListingCard = ({
 }) => {
   ListingCard.propTypes = {
     listingId: PropTypes.number,
+    id: PropTypes.string,
     title: PropTypes.string,
     street: PropTypes.string,
     city: PropTypes.string,
@@ -86,6 +88,7 @@ const ListingCard = ({
     <Card
       tabIndex={0}
       border="dark"
+      id={`listing-card-${id}`}
       aria-label={`Listing with title: ${title}`}
       className="h-100 overflow-auto position-relative"
       onClick={handleClick}

@@ -63,7 +63,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
         setNumListingsLoading(response.data.listings.length);
         setListings([]);
 
-        response.data.listings.forEach((listing) => {
+        response.data.listings.forEach((listing, idx) => {
           getListing(listing.id)
             .then((r) => {
               const l = r.data.listing;
@@ -168,6 +168,7 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
                       <Col key={listing.id}>
                         <ListingCard
                           listingId={listing.id}
+                          id={`${idx}`}
                           title={l.title}
                           street={l.address.street}
                           city={l.address.city}
