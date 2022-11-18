@@ -75,6 +75,7 @@ const LeaveReviewForm = ({
             <StyledStar
               size={40}
               tabIndex={0}
+              id="review-rating-1"
               onKeyPress={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   setRating(1);
@@ -88,6 +89,7 @@ const LeaveReviewForm = ({
             <StyledStar
               size={40}
               tabIndex={0}
+              id="review-rating-2"
               onKeyPress={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   setRating(2);
@@ -101,6 +103,7 @@ const LeaveReviewForm = ({
             <StyledStar
               size={40}
               tabIndex={0}
+              id="review-rating-3"
               onKeyPress={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   setRating(3);
@@ -114,6 +117,7 @@ const LeaveReviewForm = ({
             <StyledStar
               size={40}
               tabIndex={0}
+              id="review-rating-4"
               onKeyPress={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   setRating(4);
@@ -127,6 +131,7 @@ const LeaveReviewForm = ({
             <StyledStar
               size={40}
               tabIndex={0}
+              id="review-rating-5"
               onKeyPress={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   setRating(5);
@@ -147,6 +152,7 @@ const LeaveReviewForm = ({
           >
             <Form.Control
               type="text"
+              name="review-comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Leave a comment (optional)"
