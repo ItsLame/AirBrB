@@ -1,7 +1,11 @@
+import 'cypress-localstorage-commands';
+
 describe('create new listing happy path', () => {
   it('should navigate to landing screen successfully', () => {
     cy.visit('localhost:3000/');
     cy.url().should('include', 'localhost:3000');
+    cy.getLocalStorage('airbrbAccessToken').should('equal', '');
+    cy.getLocalStorage('airbrbEmail').should('equal', '');
   });
 
   it('should open up login form successfully', () => {
@@ -21,6 +25,9 @@ describe('create new listing happy path', () => {
     cy.get('#mylisting-nav-link').then((navlink) => {
       expect(navlink.text()).to.contain('My listings');
     });
+
+    cy.getLocalStorage('airbrbAccessToken').should('not.equal', '');
+    cy.getLocalStorage('airbrbEmail').should('not.equal', '');
   });
 
   it('should navigate to my listing page successfully', () => {
@@ -54,46 +61,48 @@ describe('create new listing happy path', () => {
     const amenitiesLocation = ['Beachfront'];
     const amenitiesSafety = ['Smoke-alarm', 'Carbon-monoxide-alarm'];
 
-    // cy.get('input[name="listing-title-input"]').focus().type(title);
+    cy.get('input[name="listing-title-input"]').focus().type(title);
 
     cy.get('button[name="listings-thumbnail-youtube-toggle"]').click();
     cy.get('input[name="listings-youtube-url-field"]')
       .focus()
       .type(youtubeLink);
 
-    // cy.get('input[name="listing-street-input"]').focus().type(street);
-    // cy.get('input[name="listing-city-input"]').focus().type(city);
-    // cy.get('input[name="listing-state-input"]').focus().type(state);
-    // cy.get('input[name="listing-postcode-input"]').focus().type(postcode);
-    // cy.get('input[name="listing-country-input"]').focus().type(country);
-    // cy.get('input[name="listing-price-input"]').focus().clear().type(price);
-    // cy.get('button[name="listing-property-hotel-button"]').click();
+    cy.get('input[name="listing-street-input"]').focus().type(street);
+    cy.get('input[name="listing-city-input"]').focus().type(city);
+    cy.get('input[name="listing-state-input"]').focus().type(state);
+    cy.get('input[name="listing-postcode-input"]').focus().type(postcode);
+    cy.get('input[name="listing-country-input"]').focus().type(country);
+    cy.get('input[name="listing-price-input"]').focus().clear().type(price);
+    cy.get('button[name="listing-property-hotel-button"]').click();
 
-    // for (let i = 0; i <= bathrooms; i++) {
-    //   cy.get('button[name="listing-bathrooms-plus-button"]').click();
-    // }
+    for (let i = 0; i <= bathrooms; i++) {
+      cy.get('button[name="listing-bathrooms-plus-button"]').click();
+    }
 
-    // for (let i = 0; i < bedrooms.length - 1; i++) {
-    //   cy.get('button[name="listing-bedrooms-add-button"]').click();
-    // }
+    for (let i = 0; i < bedrooms.length - 1; i++) {
+      cy.get('button[name="listing-bedrooms-add-button"]').click();
+    }
 
-    // bedrooms.forEach((item, idx) => {
-    //   for (let i = 0; i < item - 1; i++) {
-    //     cy.get(`button[name="listing-bedrooms-${idx}-plus-button"]`).click();
-    //   }
-    // });
+    bedrooms.forEach((item, idx) => {
+      for (let i = 0; i < item - 1; i++) {
+        cy.get(`button[name="listing-bedrooms-${idx}-plus-button"]`).click();
+      }
+    });
 
-    // amenitiesEssential.forEach((item) => {
-    //   cy.get(`#amenities-${item}`).click();
-    // });
+    amenitiesEssential.forEach((item) => {
+      cy.get(`#amenities-${item}`).click();
+    });
 
-    // cy.get('button[name="listings-amenities-more-button"]').click();
+    cy.get('button[name="listings-amenities-more-button"]').click();
 
-    // [...amenitiesFeatures, ...amenitiesLocation, ...amenitiesSafety].forEach(
-    //   (item) => {
-    //     cy.get(`#amenities-${item}`).click();
-    //   }
-    // );
+    [...amenitiesFeatures, ...amenitiesLocation, ...amenitiesSafety].forEach(
+      (item) => {
+        cy.get(`#amenities-${item}`).click();
+      }
+    );
+
+    cy.get('button[name="create-listing-submit"]').click();
   });
 
   // it('should open up register form successfully through become a host', () => {

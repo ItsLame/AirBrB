@@ -4017,6 +4017,11 @@ csstype@^3.0.2:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.1.tgz#841b532c45c758ee546a11d5bd7b7b473c8c30b9"
   integrity sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==
 
+cypress-localstorage-commands@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/cypress-localstorage-commands/-/cypress-localstorage-commands-2.2.1.tgz#9895d75a3e8059e78d61231c5794dc46e0fc5fdd"
+  integrity sha512-m7IwoM+BMOJj7FzzN4It268c/i/Ur72CQX8JwLICkQ6ZgF1XNJOIKlQ7Rszg45ATLTjVTL1QElKCZECoU8cthQ==
+
 cypress@^11.1.0:
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/cypress/-/cypress-11.1.0.tgz#b8f16495a8a5d8f9a7dd3374ae7b2cef45e9c779"

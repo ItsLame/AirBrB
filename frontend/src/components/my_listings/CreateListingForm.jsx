@@ -144,7 +144,7 @@ const CreateListingForm = ({ setMyListings }) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button name="create-listings-submit" variant="primary" type="submit">
+          <Button name="create-listing-submit" variant="primary" type="submit">
             Create
           </Button>
         </Modal.Footer>

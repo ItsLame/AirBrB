@@ -51,6 +51,7 @@
   "devDependencies": {
     "@testing-library/react": "^12.1.5",
     "cypress": "^11.1.0",
+    "cypress-localstorage-commands": "^2.2.1",
     "eslint": "^8.26.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-jest": "^27.1.3",
