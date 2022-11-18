@@ -144,10 +144,10 @@ const RegisterForm = ({ setToken, setAppEmail }) => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button name="login-button" variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button name="register-button" variant="primary" type="submit">
+          <Button name="register-submit" variant="primary" type="submit">
             Register
           </Button>
         </Modal.Footer>

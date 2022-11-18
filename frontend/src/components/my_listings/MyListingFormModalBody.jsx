@@ -174,6 +174,7 @@ const MyListingFormModalBody = ({
       {/* Title field */}
       <FloatingLabel className="mb-2" controlId="title" label="Title">
         <Form.Control
+          name="listing-title-input"
           type="text"
           placeholder="Title"
           value={title}
@@ -260,6 +261,7 @@ const MyListingFormModalBody = ({
       {/* Street field */}
       <FloatingLabel className="mb-2" controlId="street" label="Street address">
         <Form.Control
+          name="listing-street-input"
           type="text"
           placeholder="Street address"
           value={street}
@@ -275,6 +277,7 @@ const MyListingFormModalBody = ({
         <Col md>
           <FloatingLabel controlId="city" label="City">
             <Form.Control
+              name="listing-city-input"
               type="text"
               placeholder="City"
               value={city}
@@ -290,6 +293,7 @@ const MyListingFormModalBody = ({
         <Col md>
           <FloatingLabel controlId="state" label="State">
             <Form.Control
+              name="listing-state-input"
               type="text"
               placeholder="State"
               value={state}
@@ -307,6 +311,7 @@ const MyListingFormModalBody = ({
         <Col md>
           <FloatingLabel controlId="postcode" label="Postcode">
             <Form.Control
+              name="listing-postcode-input"
               type="number"
               step="1"
               min="0"
@@ -325,6 +330,7 @@ const MyListingFormModalBody = ({
         <Col md>
           <FloatingLabel controlId="country" label="Country">
             <Form.Control
+              name="listing-country-input"
               type="text"
               placeholder="Country"
               value={country}
@@ -344,6 +350,7 @@ const MyListingFormModalBody = ({
         <InputGroup.Text>$</InputGroup.Text>
         <FloatingLabel controlId="pricePerNight" label="Price per night">
           <Form.Control
+            name="listing-price-input"
             type="number"
             min="0"
             step="0.01"
@@ -359,10 +366,10 @@ const MyListingFormModalBody = ({
 
       {/* Property type buttons */}
       <h5>Property type</h5>
-      {/* <div className="d-flex gap-3 mb-3"> */}
       <Row xs={2} sm={2} md={2} lg={4} className="g-3 h-100 mb-3">
         <Col>
           <Button
+            name="listing-property-house-button"
             variant="outline-dark"
             className="d-flex flex-column fw-bold w-100"
             active={activePropertyTypeBtn === 'House'}
@@ -374,6 +381,7 @@ const MyListingFormModalBody = ({
         </Col>
         <Col>
           <Button
+            name="listing-property-apartment-button"
             variant="outline-dark"
             className="d-flex flex-column fw-bold w-100"
             active={activePropertyTypeBtn === 'Apartment'}
@@ -385,6 +393,7 @@ const MyListingFormModalBody = ({
         </Col>
         <Col>
           <Button
+            name="listing-property-guesthouse-button"
             variant="outline-dark"
             className="d-flex flex-column fw-bold w-100"
             active={activePropertyTypeBtn === 'Guesthouse'}
@@ -396,6 +405,7 @@ const MyListingFormModalBody = ({
         </Col>
         <Col>
           <Button
+            name="listing-property-hotel-button"
             variant="outline-dark"
             className="d-flex flex-column fw-bold w-100"
             active={activePropertyTypeBtn === 'Hotel'}
@@ -406,11 +416,11 @@ const MyListingFormModalBody = ({
           </Button>
         </Col>
       </Row>
-      {/* </div> */}
 
       {/* Number of bathrooms field */}
       <h5>Number of bathrooms</h5>
       <PlusMinusField
+        name="listing-bathrooms"
         onMinus={(_) => setNumBathrooms(Math.max(1, numBathrooms - 1))}
         num={numBathrooms}
         onPlus={(_) => setNumBathrooms(numBathrooms + 1)}
@@ -431,6 +441,7 @@ const MyListingFormModalBody = ({
 
               {/* Setting the number of beds for this bedroom */}
               <PlusMinusField
+                name={`listing-bedrooms-${idx}`}
                 onMinus={() =>
                   setBedrooms((curr) =>
                     curr.map((b, i) => {
@@ -454,6 +465,7 @@ const MyListingFormModalBody = ({
 
               {/* Remove bedroom button */}
               <Button
+                name="listing-bedrooms-remove-button"
                 disabled={idx === 0}
                 variant="outline-dark"
                 onClick={() =>
@@ -468,6 +480,7 @@ const MyListingFormModalBody = ({
 
         {/* Add bedroom button */}
         <Button
+          name="listing-bedrooms-add-button"
           variant="dark"
           onClick={() => setBedrooms((curr) => [...curr, 1])}
         >

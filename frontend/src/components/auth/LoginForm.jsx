@@ -56,6 +56,7 @@ const LoginForm = ({ setToken, setAppEmail }) => {
             label="Email address"
           >
             <Form.Control
+              name="login-email"
               type="email"
               placeholder="name@example.com"
               value={email}
@@ -72,6 +73,7 @@ const LoginForm = ({ setToken, setAppEmail }) => {
           {/* Password field */}
           <FloatingLabel className="mb-3" controlId="password" label="Password">
             <Form.Control
+              name="login-password"
               type="password"
               placeholder="Password"
               value={password}
@@ -101,7 +103,7 @@ const LoginForm = ({ setToken, setAppEmail }) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" name="login-submit" type="submit">
             Log in
           </Button>
         </Modal.Footer>

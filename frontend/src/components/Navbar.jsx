@@ -58,7 +58,7 @@ const Navbar = ({ token, setToken, middleElement, email, setAppEmail }) => {
             {token
               ? (
               <Nav.Link
-                name="mylisting-nav-link"
+                id="mylisting-nav-link"
                 style={{ paddingTop: '11px' }}
                 onClick={() => navigate('/my_listings')}
               >
@@ -67,7 +67,7 @@ const Navbar = ({ token, setToken, middleElement, email, setAppEmail }) => {
                 )
               : (
               <Nav.Link
-                name="register-nav-link"
+                id="register-nav-link"
                 style={{ paddingTop: '11px' }}
                 onClick={() => navigate('register')}
               >
@@ -79,7 +79,7 @@ const Navbar = ({ token, setToken, middleElement, email, setAppEmail }) => {
             {/* If logged
                 in, show log out button, otherwise show log in + register buttons */}
             <NavDropdown
-              name="navbar-toggle"
+              id="navbar-toggle"
               title={<HiUserCircle size={30} />}
               align="end"
             >
@@ -109,13 +109,13 @@ const Navbar = ({ token, setToken, middleElement, email, setAppEmail }) => {
                 : (
                 <>
                   <NavDropdown.Item
-                    name="login-dropdown-item"
+                    id="login-dropdown-item"
                     onClick={() => navigate('login')}
                   >
                     Log in
                   </NavDropdown.Item>
                   <NavDropdown.Item
-                    name="register-dropdown-item"
+                    id="register-dropdown-item"
                     onClick={() => navigate('register')}
                   >
                     Register
