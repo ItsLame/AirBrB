@@ -247,7 +247,7 @@ const MyListingFormModalBody = ({
               youtube.com/watch?v=
             </InputGroup.Text>
             <Form.Control
-              name="listings-youtube-url-field"
+              name="listing-youtube-url-field"
               aria-describedby="youtube-url-text"
               value={thumbnail.split('=')[1]}
               onChange={(event) =>
@@ -575,7 +575,7 @@ const MyListingFormModalBody = ({
       )}
 
       <Button
-        name="listings-amenities-more-button"
+        name="listing-amenities-more-button"
         variant="outline-dark"
         className="py-1 px-2"
         onClick={() => setShowMoreAmenitiesActive(!showMoreAmenitiesActive)}
