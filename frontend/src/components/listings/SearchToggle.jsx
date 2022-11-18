@@ -11,6 +11,7 @@ const SearchToggle = ({ onClickHandler }) => {
   return (
     <StyledSearchToggle
       className="rounded-5 border-0 px-5 py-2 my-2"
+      aria-haspopup="dialog"
       onClick={(event) => {
         onClickHandler();
       }}

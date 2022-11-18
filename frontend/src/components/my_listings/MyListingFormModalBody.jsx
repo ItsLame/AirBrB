@@ -194,6 +194,8 @@ const MyListingFormModalBody = ({
             name="listings-thumbnail-image-toggle"
             variant="outline-dark"
             className="d-flex align-items-center"
+            aria-pressed={thumbnailToggle[0] === 'thumbnailImage'}
+            aria-controls="my-listing-form-thumbnail-field my-listing-form-youtube-field"
             active={thumbnailToggle[0] === 'thumbnailImage'}
             onClick={() => {
               setThumbnail('');
@@ -208,6 +210,8 @@ const MyListingFormModalBody = ({
             name="listings-thumbnail-youtube-toggle"
             variant="outline-dark"
             className="d-flex align-items-center"
+            aria-pressed={thumbnailToggle[0] === 'thumbnailYouTube'}
+            aria-controls="my-listing-form-thumbnail-field my-listing-form-youtube-field"
             active={thumbnailToggle[0] === 'thumbnailYouTube'}
             onClick={() => {
               setThumbnail('');
@@ -222,6 +226,7 @@ const MyListingFormModalBody = ({
         {thumbnailToggle[0] === 'thumbnailImage'
           ? (
           <Form.Control
+            id="my-listing-form-thumbnail-field"
             type="file"
             accept="image/jpeg, image/jpg, image/png"
             onChange={(e) => {
@@ -242,6 +247,7 @@ const MyListingFormModalBody = ({
               youtube.com/watch?v=
             </InputGroup.Text>
             <Form.Control
+              id="my-listing-form-youtube-field"
               name="listings-youtube-url-field"
               aria-describedby="youtube-url-text"
               value={thumbnail.split('=')[1]}
@@ -374,10 +380,11 @@ const MyListingFormModalBody = ({
             name="listing-property-house-button"
             variant="outline-dark"
             className="d-flex flex-column fw-bold w-100"
+            aria-pressed={activePropertyTypeBtn === 'House'}
             active={activePropertyTypeBtn === 'House'}
             onClick={(_) => setActivePropertyTypeBtn('House')}
           >
-            <HiOutlineHome size={30} className="mb-3" />
+            <HiOutlineHome aria-hidden="true" size={30} className="mb-3" />
             House
           </Button>
         </Col>
@@ -386,10 +393,11 @@ const MyListingFormModalBody = ({
             name="listing-property-apartment-button"
             variant="outline-dark"
             className="d-flex flex-column fw-bold w-100"
+            aria-pressed={activePropertyTypeBtn === 'Apartment'}
             active={activePropertyTypeBtn === 'Apartment'}
             onClick={(_) => setActivePropertyTypeBtn('Apartment')}
           >
-            <BsBuilding size={30} className="mb-3" />
+            <BsBuilding aria-hidden="true" size={30} className="mb-3" />
             Apartment
           </Button>
         </Col>
@@ -398,10 +406,11 @@ const MyListingFormModalBody = ({
             name="listing-property-guesthouse-button"
             variant="outline-dark"
             className="d-flex flex-column fw-bold w-100"
+            aria-pressed={activePropertyTypeBtn === 'Guesthouse'}
             active={activePropertyTypeBtn === 'Guesthouse'}
             onClick={(_) => setActivePropertyTypeBtn('Guesthouse')}
           >
-            <FaHouseUser size={30} className="mb-3" />
+            <FaHouseUser aria-hidden="true" size={30} className="mb-3" />
             Guesthouse
           </Button>
         </Col>
@@ -410,10 +419,15 @@ const MyListingFormModalBody = ({
             name="listing-property-hotel-button"
             variant="outline-dark"
             className="d-flex flex-column fw-bold w-100"
+            aria-pressed={activePropertyTypeBtn === 'Hotel'}
             active={activePropertyTypeBtn === 'Hotel'}
             onClick={(_) => setActivePropertyTypeBtn('Hotel')}
           >
-            <HiOutlineOfficeBuilding size={30} className="mb-3" />
+            <HiOutlineOfficeBuilding
+              aria-hidden="true"
+              size={30}
+              className="mb-3"
+            />
             Hotel
           </Button>
         </Col>
@@ -469,6 +483,8 @@ const MyListingFormModalBody = ({
               <Button
                 name="listing-bedrooms-remove-button"
                 disabled={idx === 0}
+                aria-disabled={idx === 0}
+                aria-description={`Remove bedroom ${idx + 1}`}
                 variant="outline-dark"
                 onClick={() =>
                   setBedrooms((curr) => curr.filter((_, i) => i !== idx))
@@ -512,7 +528,7 @@ const MyListingFormModalBody = ({
       </Row>
 
       {showMoreAmenitiesActive && (
-        <>
+        <div id="my-listing-form-show-amenities">
           {/* Features amenities */}
           <h6 className="text-secondary">Features</h6>
           <Row className="mb-3">
@@ -556,11 +572,12 @@ const MyListingFormModalBody = ({
               <AmenityCheck type="safety" amenity="Carbon monoxide alarm" />
             </Col>
           </Row>
-        </>
+        </div>
       )}
 
       <Button
         name="listings-amenities-more-button"
+        aria-controls="my-listing-form-show-amenities"
         variant="outline-dark"
         className="py-1 px-2"
         onClick={() => setShowMoreAmenitiesActive(!showMoreAmenitiesActive)}
@@ -612,6 +629,7 @@ const MyListingFormModalBody = ({
 
                 <Button
                   variant="outline-dark"
+                  aria-label={`Remove property image ${idx + 1}`}
                   className="rounded-circle d-flex align-items-center justify-content-center p-1"
                   style={{ width: '30px', height: '30px' }}
                   onClick={() => {

@@ -138,6 +138,9 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
                 variant="outline-dark"
                 className="d-flex align-items-center"
                 active={filterToggle}
+                aria-pressed={filterToggle}
+                aria-controls="search-form-filters"
+                aria-label="Toggle search filters"
                 onClick={() => setFilterToggle(!filterToggle)}
               >
                 <BsSliders size={20} />
@@ -145,7 +148,11 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
             </div>
 
             {/* Filter active collapsible contents */}
-            <Collapse className="mt-3" in={filterToggle}>
+            <Collapse
+              className="mt-3"
+              in={filterToggle}
+              id="search-form-filters"
+            >
               <Container className="p-0">
                 <h4>Filters</h4>
 
@@ -294,6 +301,8 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
                   {/* Highest rating button */}
                   <Button
                     variant="outline-dark"
+                    aria-description="Sort ratings from highest to lowest"
+                    aria-pressed={ratingsToggle === 'highest'}
                     active={ratingsToggle === 'highest'}
                     onClick={() => {
                       ratingsToggle === 'highest'
@@ -306,6 +315,8 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
                   {/* Lowest rating button */}
                   <Button
                     variant="outline-dark"
+                    aria-description="Sort ratings from lowest to highest"
+                    aria-pressed={ratingsToggle === 'lowest'}
                     active={ratingsToggle === 'lowest'}
                     onClick={() => {
                       ratingsToggle === 'lowest'

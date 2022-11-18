@@ -319,7 +319,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
             locationAmenities !== null &&
             safetyAmenities !== null
               ? (
-              <>
+              <div id="my-listing-page-show-amenities">
                 <h5>Amenities</h5>
 
                 {/* If no amenities show a message */}
@@ -371,6 +371,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                   !!locationAmenities?.length ||
                   !!safetyAmenities?.length) && (
                   <Button
+                    aria-controls="my-listing-page-show-amenities"
                     variant="outline-dark px-2 py-1 mb-2"
                     onClick={() =>
                       setShowAllAmenitiesActive(!showAllAmenitiesActive)
@@ -386,7 +387,7 @@ const MyListing = ({ token, setToken, email, setAppEmail }) => {
                         } more`}
                   </Button>
                 )}
-              </>
+              </div>
                 )
               : (
               <>

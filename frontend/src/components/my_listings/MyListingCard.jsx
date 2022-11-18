@@ -130,18 +130,21 @@ const MyListingCard = ({
     e.currentTarget.classList.add('bg-dark');
     e.currentTarget.classList.add('text-light');
     e.currentTarget.classList.remove('border-dark');
+    e.currentTarget.setAttribute('aria-current', true);
   };
 
   const handleBlur = (e) => {
     e.currentTarget.classList.remove('bg-dark');
     e.currentTarget.classList.remove('text-light');
     e.currentTarget.classList.add('border-dark');
+    e.currentTarget.setAttribute('aria-current', false);
   };
 
   return (
     <Card
       tabIndex={0}
       border="dark"
+      aria-label={`Listing with title: ${title}`}
       className="h-100 overflow-auto position-relative"
       onClick={handleClick}
       onMouseOver={handleFocus}
@@ -249,6 +252,7 @@ const MyListingCard = ({
         <span className="flex-grow-1"></span>
         <Button
           className="py-0 px-2"
+          aria-haspopup="dialog"
           style={{ fontSize: '11pt' }}
           variant="outline-primary"
           onClick={(e) => {
@@ -264,6 +268,7 @@ const MyListingCard = ({
           <Button
             className="py-0 px-2"
             style={{ fontSize: '11pt' }}
+            aria-haspopup="dialog"
             variant="outline-success"
             onClick={(e) => {
               e.stopPropagation();

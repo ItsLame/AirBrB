@@ -193,21 +193,23 @@ const MyListings = ({ token, setToken, email, setAppEmail }) => {
           <Button
             id="add-listing"
             variant="dark"
+            aria-haspopup="dialog"
             className="d-flex gap-2 align-items-center"
             onClick={() => navigate('create')}
           >
             <Card.Title>Add a listing</Card.Title>
-            <HiPlusCircle size={30} />
+            <HiPlusCircle aria-hidden="true" size={30} />
           </Button>
 
           {/* Add a listing (JSON) */}
           <Button
             variant="outline-dark"
+            aria-haspopup="dialog"
             className="d-flex gap-2 align-items-center"
             onClick={() => navigate('upload')}
           >
             <Card.Title>Upload a listing</Card.Title>
-            <VscJson size={30} />
+            <VscJson aria-hidden="true" size={30} />
           </Button>
         </div>
 

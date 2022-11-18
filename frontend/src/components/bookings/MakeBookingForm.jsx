@@ -120,6 +120,7 @@ const MakeBookingForm = ({
                 <Form.Check
                   key={idx}
                   type="radio"
+                  aria-controls={`make-booking-availability-${idx}`}
                   required
                   label={`${new Date(dateRange.start).toLocaleDateString(
                     'default',
@@ -148,7 +149,10 @@ const MakeBookingForm = ({
 
                 {/* If this radio is selected, and the availability is a date range, then render date inputs */}
                 {selectedAvailability === idx && (
-                  <Row className="g-2 mt-1 mb-3 mx-1 d-flex align-items-center justify-content-center">
+                  <Row
+                    id={`make-booking-availability-${idx}`}
+                    className="g-2 mt-1 mb-3 mx-1 d-flex align-items-center justify-content-center"
+                  >
                     <Col md>
                       <FloatingLabel
                         controlId={`booking-start-${idx}`}

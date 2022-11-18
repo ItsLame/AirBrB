@@ -74,6 +74,8 @@ const StarRating = ({ reviews, avgRating, numReviews }) => {
 
                 <div
                   className="d-flex gap-1 align-items-center"
+                  aria-haspopup="dialog"
+                  aria-label="View all 1 star ratings"
                   onClick={(e) => showModal(1, e)}
                   style={{ cursor: 'pointer' }}
                   tabIndex={0}
@@ -102,6 +104,8 @@ const StarRating = ({ reviews, avgRating, numReviews }) => {
                 </div>
                 <div
                   className="d-flex gap-1 align-items-center"
+                  aria-haspopup="dialog"
+                  aria-label="View all 2 star ratings"
                   onClick={(e) => showModal(2, e)}
                   style={{ cursor: 'pointer' }}
                   tabIndex={0}
@@ -130,6 +134,8 @@ const StarRating = ({ reviews, avgRating, numReviews }) => {
                 </div>
                 <div
                   className="d-flex gap-1 align-items-center"
+                  aria-haspopup="dialog"
+                  aria-label="View all 3 star ratings"
                   onClick={(e) => showModal(3, e)}
                   style={{ cursor: 'pointer' }}
                   tabIndex={0}
@@ -158,6 +164,8 @@ const StarRating = ({ reviews, avgRating, numReviews }) => {
                 </div>
                 <div
                   className="d-flex gap-1 align-items-center"
+                  aria-haspopup="dialog"
+                  aria-label="View all 4 star ratings"
                   onClick={(e) => showModal(4, e)}
                   style={{ cursor: 'pointer' }}
                   tabIndex={0}
@@ -186,6 +194,8 @@ const StarRating = ({ reviews, avgRating, numReviews }) => {
                 </div>
                 <div
                   className="d-flex gap-1 align-items-center"
+                  aria-haspopup="dialog"
+                  aria-label="View all 5 star ratings"
                   onClick={(e) => showModal(5, e)}
                   style={{ cursor: 'pointer' }}
                   tabIndex={0}

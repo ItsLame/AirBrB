@@ -135,6 +135,7 @@ const RegisterForm = ({ setToken, setAppEmail }) => {
             Already have an account?
             <Button
               variant="dark"
+              aria-haspopup="dialog"
               className="ms-1"
               onClick={() => navigate('../login')}
             >
