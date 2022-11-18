@@ -125,6 +125,7 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
               >
                 <Form.Control
                   type="text"
+                  name="search-field"
                   value={titleCity}
                   placeholder="Title / City"
                   onInput={(event) => {
@@ -137,6 +138,7 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
               <Button
                 variant="outline-dark"
                 className="d-flex align-items-center"
+                id="search-filter-toggle"
                 active={filterToggle}
                 aria-pressed={filterToggle}
                 aria-controls="search-form-filters"
@@ -154,7 +156,7 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
               id="search-form-filters"
             >
               <Container className="p-0">
-                <h4>Filters</h4>
+                <h4 id="search-filter-header">Filters</h4>
 
                 {/* Number of bedrooms */}
                 <h5 className="text-secondary">Number of bedrooms</h5>
@@ -168,6 +170,7 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
                       >
                         <Form.Control
                           type="number"
+                          name="min-bedrooms-field"
                           placeholder="Minimum bedrooms"
                           min="0"
                           step="1"
@@ -192,6 +195,7 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
                       >
                         <Form.Control
                           type="number"
+                          name="max-bedrooms-field"
                           placeholder="Maximum bedrooms"
                           min={minBedrooms || '0'}
                           step="1"
@@ -255,6 +259,7 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
                       <FloatingLabel controlId="number" label="Minimum price">
                         <Form.Control
                           type="number"
+                          name="min-price-field"
                           placeholder="Minimum price"
                           min="0"
                           step="1"
@@ -277,7 +282,8 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
                       <FloatingLabel controlId="number" label="Maximum price">
                         <Form.Control
                           type="number"
-                          placeholder="01/01/2022"
+                          name="max-price-field"
+                          placeholder="Maximum price"
                           min={minPrice || '0'}
                           step="1"
                           value={maxPrice}
@@ -301,6 +307,7 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
                   {/* Highest rating button */}
                   <Button
                     variant="outline-dark"
+                    name="high-rating-toggle"
                     aria-description="Sort ratings from highest to lowest"
                     aria-pressed={ratingsToggle === 'highest'}
                     active={ratingsToggle === 'highest'}
@@ -315,6 +322,7 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
                   {/* Lowest rating button */}
                   <Button
                     variant="outline-dark"
+                    name="low-rating-toggle"
                     aria-description="Sort ratings from lowest to highest"
                     aria-pressed={ratingsToggle === 'lowest'}
                     active={ratingsToggle === 'lowest'}
@@ -345,12 +353,12 @@ const SearchForm = ({ show, closeAction, setSearchParams }) => {
           {/* Search / search with filter button */}
           {filterCount > 0
             ? (
-            <Button variant="primary" type="submit">
+            <Button variant="primary" name="search-filter-submit" type="submit">
               Search with {filterCount} filter{filterCount > 1 && 's'}
             </Button>
               )
             : (
-            <Button variant="primary" type="submit">
+            <Button variant="primary" name="search-submit" type="submit">
               Search
             </Button>
               )}
