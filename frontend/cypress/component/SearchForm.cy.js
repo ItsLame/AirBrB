@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 describe('Search Form Component', () => {
-  it('Test', () => {
+  it('test search form fields and buttons', () => {
     cy.mount(<SearchForm show={true} />);
 
     // check search button
