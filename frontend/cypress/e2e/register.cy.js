@@ -37,5 +37,6 @@ describe('register happy path', () => {
     cy.get('[name="mylisting-nav-link"]').then((navlink) => {
       expect(navlink.text()).to.contain('My listings');
     });
+    cy.url().should('include', 'localhost:3000/');
   });
 });
