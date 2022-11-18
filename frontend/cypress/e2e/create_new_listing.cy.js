@@ -6,7 +6,7 @@ describe('create new listing happy path', () => {
     cy.get('#navbar-toggle').click();
 
     cy.get('#login-dropdown-item').click();
-    cy.url().should('include', 'localhost:3000/login');
+    cy.url().should('include', '/login');
 
     const email = 'Bob@email.address.com';
     const password = 'bpassword';
@@ -20,10 +20,10 @@ describe('create new listing happy path', () => {
     });
 
     cy.get('#mylisting-nav-link').click();
-    cy.url().should('include', 'localhost:3000/my_listing');
+    cy.url().should('include', '/my_listing');
 
     cy.get('#add-listing').click();
-    cy.url().should('include', 'localhost:3000/my_listings/create');
+    cy.url().should('include', '/my_listings/create');
 
     const title = 'Cart Hotel';
     const youtubeLink = 'Now89X4xOv4';
@@ -46,10 +46,8 @@ describe('create new listing happy path', () => {
 
     cy.get('input[name="listing-title-input"]').focus().type(title);
 
-    cy.get('button[name="listings-thumbnail-youtube-toggle"]').click();
-    cy.get('input[name="listings-youtube-url-field"]')
-      .focus()
-      .type(youtubeLink);
+    cy.get('button[name="listing-thumbnail-youtube-toggle"]').click();
+    cy.get('input[name="listing-youtube-url-field"]').focus().type(youtubeLink);
 
     cy.get('input[name="listing-street-input"]').focus().type(street);
     cy.get('input[name="listing-city-input"]').focus().type(city);
@@ -77,7 +75,7 @@ describe('create new listing happy path', () => {
       cy.get(`#amenities-${item}`).click();
     });
 
-    cy.get('button[name="listings-amenities-more-button"]').click();
+    cy.get('button[name="listing-amenities-more-button"]').click();
 
     [...amenitiesFeatures, ...amenitiesLocation, ...amenitiesSafety].forEach(
       (item) => {
@@ -86,7 +84,7 @@ describe('create new listing happy path', () => {
     );
 
     cy.get('button[name="create-listing-submit"]').click();
-    cy.url().should('not.include', '/create');
+    cy.url().should('not.include', '/my_listings/create');
   });
 });
 
@@ -155,8 +153,8 @@ describe('create new listing happy path', () => {
 
 //     cy.get('input[name="listing-title-input"]').focus().type(title);
 
-//     cy.get('button[name="listings-thumbnail-youtube-toggle"]').click();
-//     cy.get('input[name="listings-youtube-url-field"]')
+//     cy.get('button[name="listing-thumbnail-youtube-toggle"]').click();
+//     cy.get('input[name="listing-youtube-url-field"]')
 //       .focus()
 //       .type(youtubeLink);
 
@@ -186,7 +184,7 @@ describe('create new listing happy path', () => {
 //       cy.get(`#amenities-${item}`).click();
 //     });
 
-//     cy.get('button[name="listings-amenities-more-button"]').click();
+//     cy.get('button[name="listing-amenities-more-button"]').click();
 
 //     [...amenitiesFeatures, ...amenitiesLocation, ...amenitiesSafety].forEach(
 //       (item) => {
