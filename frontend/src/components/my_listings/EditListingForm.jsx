@@ -211,7 +211,7 @@ const EditListingForm = ({ email, setMyListings }) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit">
+          <Button name="edit-listing-submit" variant="primary" type="submit">
             Save changes
           </Button>
         </Modal.Footer>

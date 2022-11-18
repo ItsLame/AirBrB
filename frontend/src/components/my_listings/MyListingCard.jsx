@@ -251,6 +251,7 @@ const MyListingCard = ({
         {/* Edit button */}
         <span className="flex-grow-1"></span>
         <Button
+          id="listing-edit-button"
           className="py-0 px-2"
           aria-haspopup="dialog"
           style={{ fontSize: '11pt' }}

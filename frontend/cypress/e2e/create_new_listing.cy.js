@@ -1,5 +1,4 @@
-import 'cypress-localstorage-commands';
-
+// import 'cypress-localstorage-commands';
 describe('create new listing happy path', () => {
   it('should create a new listing successfully', () => {
     cy.visit('localhost:3000/');
@@ -87,7 +86,7 @@ describe('create new listing happy path', () => {
     );
 
     cy.get('button[name="create-listing-submit"]').click();
-    cy.url().should('include', 'localhost:3000/my_listing');
+    cy.url().should('not.include', '/create');
   });
 });
 
