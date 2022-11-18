@@ -6,6 +6,8 @@
 - When listing cards are being loaded, placeholders with glowing animations are shown to indicate the loading status. Each loading placeholder is replaced by a loaded card as listings get progressively loaded.
 - Extensive JSON schema validation is performed when attempting to upload a JSON file as a listing. The `ajv` library was used and a JSON schema was designed to validate all keys and values at all levels of listings to a high degree. For example, when specifying amenities the JSON file can only include amenities that exists as variants in the enum schema, otherwise it will not be valid.
 - Extensive date validation was done client-side when entering date ranges for bookings/availabilities. For example, start dates cannot be after end dates, start dates cannot be in the past, etc.
+- Custom 404 page was made
+- URL validation was added. For example, if the user manually navigates to /listing/1 it will show the 404 page
 - Login and register were made modals instead of pages. This means that the user can log in from any page. For example, they can visit http://localhost:3000/listing/235477925/login while viewing listing 235477925, then on successful login will be returned to the listing page and immediately see their booking requests/etc
 - Booking requests are sorted by date so that the owner of a listing is less prone to human error (double bookings, etc) when accepting/denying requests.
 - Although not a spec requirement, the user can search by as many search fields/filters as they like.
