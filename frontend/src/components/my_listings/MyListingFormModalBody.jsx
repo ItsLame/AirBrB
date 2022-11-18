@@ -191,7 +191,7 @@ const MyListingFormModalBody = ({
         <ButtonGroup className="mb-2">
           {/* Thumbnail: image toggle button */}
           <Button
-            name="listings-thumbnail-image-toggle"
+            name="listing-thumbnail-image-toggle"
             variant="outline-dark"
             className="d-flex align-items-center"
             aria-pressed={thumbnailToggle[0] === 'thumbnailImage'}
@@ -207,7 +207,7 @@ const MyListingFormModalBody = ({
 
           {/* Thumbnail: youtube toggle button */}
           <Button
-            name="listings-thumbnail-youtube-toggle"
+            name="listing-thumbnail-youtube-toggle"
             variant="outline-dark"
             className="d-flex align-items-center"
             aria-pressed={thumbnailToggle[0] === 'thumbnailYouTube'}
@@ -247,8 +247,12 @@ const MyListingFormModalBody = ({
               youtube.com/watch?v=
             </InputGroup.Text>
             <Form.Control
+<<<<<<< HEAD
               id="my-listing-form-youtube-field"
               name="listings-youtube-url-field"
+=======
+              name="listing-youtube-url-field"
+>>>>>>> 3b9fb9b (ui testing: publish listing pt.1)
               aria-describedby="youtube-url-text"
               value={thumbnail.split('=')[1]}
               onChange={(event) =>
@@ -576,8 +580,12 @@ const MyListingFormModalBody = ({
       )}
 
       <Button
+<<<<<<< HEAD
         name="listings-amenities-more-button"
         aria-controls="my-listing-form-show-amenities"
+=======
+        name="listing-amenities-more-button"
+>>>>>>> 3b9fb9b (ui testing: publish listing pt.1)
         variant="outline-dark"
         className="py-1 px-2"
         onClick={() => setShowMoreAmenitiesActive(!showMoreAmenitiesActive)}

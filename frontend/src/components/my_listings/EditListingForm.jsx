@@ -188,23 +188,6 @@ const EditListingForm = ({ email, setMyListings }) => {
             propertyImages={propertyImages}
             setPropertyImages={setPropertyImages}
           />
-
-          {/* <Form.Group controlId="thumbnail">
-            <Form.Label>Thumbnail</Form.Label>
-            <Form.Control
-              type="file"
-              //   onChange={(e) => {
-              //     fileToDataUrl(e.target.files[0])
-              //       .then((result) => setThumbnail(result))
-              //       .catch((error) => {
-              //         e.target.value = null;
-              //         setThumbnail('');
-              //         toast.error(error.message);
-              //       });
-              //   }}
-              //   required={thumbnailRequired}
-            />
-          </Form.Group> */}
         </Modal.Body>
 
         <Modal.Footer>

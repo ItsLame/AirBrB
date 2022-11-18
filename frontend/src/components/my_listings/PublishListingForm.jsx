@@ -184,7 +184,11 @@ const PublishListingForm = ({ email, setMyListings }) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="success" type="submit">
+          <Button
+            name="mylisting-publish-submit"
+            variant="success"
+            type="submit"
+          >
             Publish
           </Button>
         </Modal.Footer>

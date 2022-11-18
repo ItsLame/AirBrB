@@ -251,7 +251,7 @@ const MyListingCard = ({
         {/* Edit button */}
         <span className="flex-grow-1"></span>
         <Button
-          id="listing-edit-button"
+          id="mylisting-edit-button"
           className="py-0 px-2"
           aria-haspopup="dialog"
           style={{ fontSize: '11pt' }}
@@ -267,6 +267,7 @@ const MyListingCard = ({
         {/* Publish button */}
         {!published && (
           <Button
+            id="mylisting-publish-button"
             className="py-0 px-2"
             style={{ fontSize: '11pt' }}
             aria-haspopup="dialog"

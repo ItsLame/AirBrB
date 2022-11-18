@@ -12,7 +12,7 @@ describe('register happy path', () => {
 
   it('should open up register form successfully through become a host', () => {
     cy.get('#register-nav-link').click();
-    cy.url().should('include', 'localhost:3000/register');
+    cy.url().should('include', '/register');
   });
 
   // it('should open up register form successfully through drop down', () => {
@@ -37,6 +37,6 @@ describe('register happy path', () => {
     cy.get('[name="mylisting-nav-link"]').then((navlink) => {
       expect(navlink.text()).to.contain('My listings');
     });
-    cy.url().should('include', 'localhost:3000/');
+    cy.url().should('not.include', '/register');
   });
 });
