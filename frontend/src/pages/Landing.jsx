@@ -73,15 +73,20 @@ const Landing = ({ token, setToken, email, setAppEmail }) => {
 
                 // search title/city
                 if (searchTitleCity) {
-                  const titleCityList = searchTitleCity
+                  // eg 'syd per Beach' -> ['syd', 'per', 'beach']
+                  const needleList = searchTitleCity
                     .split(/[ ,;+]/g)
-                    .map((titleCity) => titleCity.trim().toLowerCase());
+                    .map((needle) => needle.trim().toLowerCase());
 
+                  // ['sydney', 'beach house']
+                  // ['syd', 'per', 'beach'].some(needle => 'sydney'.includes(needle))
                   if (
                     ![
                       ...l.title.toLowerCase().split(/[ ,;+]/g),
                       ...l.address.city.toLowerCase().split(/[ ,;+]/g),
-                    ].some((titleCity) => titleCityList.includes(titleCity))
+                    ].some((haystack) =>
+                      needleList.some((needle) => haystack.includes(needle))
+                    )
                   ) {
                     shouldStay = false;
                   }
