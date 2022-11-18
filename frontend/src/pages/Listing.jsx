@@ -116,7 +116,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
         setPropertyImages(listing.metadata.propertyImages);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [email]);
 
   React.useEffect(() => {
     if (reviews) {
