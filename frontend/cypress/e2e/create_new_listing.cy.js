@@ -35,6 +35,8 @@ describe('create new listing happy path', () => {
 
   it('should create a new listing successfully', () => {
     const title = 'Cart Hotel';
+    const youtubeLink = 'Now89X4xOv4';
+
     const street = 'Cowper Street';
     const city = 'Newcastle';
     const state = 'New South Wales';
@@ -43,36 +45,55 @@ describe('create new listing happy path', () => {
     const price = 5;
     const bathrooms = 3;
     const bedrooms = [[4], [3], [1]];
+    const amenitiesEssential = ['Wi-Fi', 'Hair-dryer'];
+    const amenitiesFeatures = [
+      'Indoor-fireplace',
+      'Breakfast',
+      'Free-parking-on-premises',
+    ];
+    const amenitiesLocation = ['Beachfront'];
+    const amenitiesSafety = ['Smoke-alarm', 'Carbon-monoxide-alarm'];
 
-    cy.get('input[name="listing-title-input"]').focus().type(title);
-    cy.get('input[name="listing-street-input"]').focus().type(street);
-    cy.get('input[name="listing-city-input"]').focus().type(city);
-    cy.get('input[name="listing-state-input"]').focus().type(state);
-    cy.get('input[name="listing-postcode-input"]').focus().type(postcode);
-    cy.get('input[name="listing-country-input"]').focus().type(country);
-    cy.get('input[name="listing-price-input"]').focus().clear().type(price);
-    cy.get('button[name="listing-property-hotel-button"]').click();
+    // cy.get('input[name="listing-title-input"]').focus().type(title);
 
-    for (let i = 0; i <= bathrooms; i++) {
-      cy.get('button[name="listing-bathrooms-plus-button"]').click();
-    }
+    cy.get('button[name="listings-thumbnail-youtube-toggle"]').click();
+    cy.get('input[name="listings-youtube-url-field"]')
+      .focus()
+      .type(youtubeLink);
 
-    for (let i = 0; i < bedrooms.length - 1; i++) {
-      cy.get('button[name="listing-bedrooms-add-button"]').click();
-    }
+    // cy.get('input[name="listing-street-input"]').focus().type(street);
+    // cy.get('input[name="listing-city-input"]').focus().type(city);
+    // cy.get('input[name="listing-state-input"]').focus().type(state);
+    // cy.get('input[name="listing-postcode-input"]').focus().type(postcode);
+    // cy.get('input[name="listing-country-input"]').focus().type(country);
+    // cy.get('input[name="listing-price-input"]').focus().clear().type(price);
+    // cy.get('button[name="listing-property-hotel-button"]').click();
 
-    bedrooms.forEach((item, idx) => {
-      for (let i = 0; i < item - 1; i++) {
-        cy.get(`button[name="listing-bedrooms-${idx}-plus-button"]`).click();
-      }
-    });
-
-    // for (let k = 0; k < bedrooms[k]; k++) {
-    // bedrooms.forEach((i) => {
-    //   cy.get('button[name="listing-bedrooms-add-button"]').click();
-    //   // cy.get(`button[name="listing-bedrooms-${i}-plus-button"]`).click();
-    // });
+    // for (let i = 0; i <= bathrooms; i++) {
+    //   cy.get('button[name="listing-bathrooms-plus-button"]').click();
     // }
+
+    // for (let i = 0; i < bedrooms.length - 1; i++) {
+    //   cy.get('button[name="listing-bedrooms-add-button"]').click();
+    // }
+
+    // bedrooms.forEach((item, idx) => {
+    //   for (let i = 0; i < item - 1; i++) {
+    //     cy.get(`button[name="listing-bedrooms-${idx}-plus-button"]`).click();
+    //   }
+    // });
+
+    // amenitiesEssential.forEach((item) => {
+    //   cy.get(`#amenities-${item}`).click();
+    // });
+
+    // cy.get('button[name="listings-amenities-more-button"]').click();
+
+    // [...amenitiesFeatures, ...amenitiesLocation, ...amenitiesSafety].forEach(
+    //   (item) => {
+    //     cy.get(`#amenities-${item}`).click();
+    //   }
+    // );
   });
 
   // it('should open up register form successfully through become a host', () => {

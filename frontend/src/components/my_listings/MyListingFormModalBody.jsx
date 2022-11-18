@@ -103,7 +103,7 @@ const MyListingFormModalBody = ({
     return (
       <Form.Check
         type="checkbox"
-        id={`amenities-${amenity}`}
+        id={`amenities-${amenity.replaceAll(' ', '-')}`}
         label={amenity}
         onChange={() => handleAmenitiesChange(type, amenity)}
         checked={isAmenityChecked(type, amenity)}
@@ -191,6 +191,7 @@ const MyListingFormModalBody = ({
         <ButtonGroup className="mb-2">
           {/* Thumbnail: image toggle button */}
           <Button
+            name="listings-thumbnail-image-toggle"
             variant="outline-dark"
             className="d-flex align-items-center"
             active={thumbnailToggle[0] === 'thumbnailImage'}
@@ -204,6 +205,7 @@ const MyListingFormModalBody = ({
 
           {/* Thumbnail: youtube toggle button */}
           <Button
+            name="listings-thumbnail-youtube-toggle"
             variant="outline-dark"
             className="d-flex align-items-center"
             active={thumbnailToggle[0] === 'thumbnailYouTube'}
@@ -240,7 +242,7 @@ const MyListingFormModalBody = ({
               youtube.com/watch?v=
             </InputGroup.Text>
             <Form.Control
-              id="youtube-url"
+              name="listings-youtube-url-field"
               aria-describedby="youtube-url-text"
               value={thumbnail.split('=')[1]}
               onChange={(event) =>
@@ -558,6 +560,7 @@ const MyListingFormModalBody = ({
       )}
 
       <Button
+        name="listings-amenities-more-button"
         variant="outline-dark"
         className="py-1 px-2"
         onClick={() => setShowMoreAmenitiesActive(!showMoreAmenitiesActive)}
