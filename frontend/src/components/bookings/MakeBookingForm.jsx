@@ -16,7 +16,6 @@ import {
   minusOneDay,
   currencyFormatter,
 } from '../../helpers';
-// import NotFound from '../../pages/NotFound';
 
 const MakeBookingForm = ({
   listingId,
@@ -24,6 +23,7 @@ const MakeBookingForm = ({
   availability,
   setBookings,
   email,
+  owner,
 }) => {
   MakeBookingForm.propTypes = {
     listingId: PropTypes.string,
@@ -31,6 +31,7 @@ const MakeBookingForm = ({
     availability: PropTypes.array,
     setBookings: PropTypes.func,
     email: PropTypes.string,
+    owner: PropTypes.string,
   };
 
   const navigate = useNavigate();
@@ -51,6 +52,12 @@ const MakeBookingForm = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (owner === email) {
+      handleClose();
+      toast.error("You can't book your own listing!");
+      return;
+    }
 
     if (event.currentTarget.checkValidity()) {
       createBooking(listingId, { start: startDate, end: endDate }, totalPrice)
