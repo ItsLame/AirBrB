@@ -168,6 +168,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                 pricePerNight={pricePerNight}
                 setBookings={setBookings}
                 email={email}
+                owner={owner}
               />
             }
           />
