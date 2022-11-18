@@ -26,6 +26,7 @@ const Navbar = ({ token, setToken, middleElement, email, setAppEmail }) => {
       <Container>
         {/* Logo on left, redirects to landing page */}
         <BSNavbar.Brand
+          aria-label="Landing page"
           style={{ cursor: 'pointer' }}
           onClick={() => navigate('/')}
           onKeyPress={(e) => {
@@ -68,6 +69,7 @@ const Navbar = ({ token, setToken, middleElement, email, setAppEmail }) => {
               : (
               <Nav.Link
                 id="register-nav-link"
+                aria-haspopup="dialog"
                 style={{ paddingTop: '11px' }}
                 onClick={() => navigate('register')}
               >
@@ -110,12 +112,14 @@ const Navbar = ({ token, setToken, middleElement, email, setAppEmail }) => {
                 <>
                   <NavDropdown.Item
                     id="login-dropdown-item"
+                    aria-haspopup="dialog"
                     onClick={() => navigate('login')}
                   >
                     Log in
                   </NavDropdown.Item>
                   <NavDropdown.Item
                     id="register-dropdown-item"
+                    aria-haspopup="dialog"
                     onClick={() => navigate('register')}
                   >
                     Register

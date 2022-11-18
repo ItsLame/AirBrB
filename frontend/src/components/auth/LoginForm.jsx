@@ -91,6 +91,7 @@ const LoginForm = ({ setToken, setAppEmail }) => {
             {"Don't"} have an account?
             <Button
               variant="dark"
+              aria-haspopup="dialog"
               className="ms-1"
               onClick={() => navigate('../register')}
             >

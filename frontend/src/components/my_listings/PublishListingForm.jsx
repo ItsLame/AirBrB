@@ -140,6 +140,8 @@ const PublishListingForm = ({ email, setMyListings }) => {
                 <Col xs="auto">
                   <Button
                     variant="outline-dark"
+                    aria-disabled={idx === 0}
+                    aria-label={`Remove availability ${idx + 1}`}
                     disabled={idx === 0}
                     className="rounded-circle d-flex align-items-center justify-content-center p-2"
                     onClick={() => {

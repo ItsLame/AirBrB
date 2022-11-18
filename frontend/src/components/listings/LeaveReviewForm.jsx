@@ -74,26 +74,66 @@ const LeaveReviewForm = ({
           <div className="d-flex gap-3 mb-3 w-100 justify-content-center align-items-center">
             <StyledStar
               size={40}
+              tabIndex={0}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  setRating(1);
+                }
+              }}
+              aria-label="1 star rating"
+              aria-pressed={rating === 1}
               onClick={() => setRating(1)}
               fill={rating >= 1 ? 'black' : 'darkgray'}
             />
             <StyledStar
               size={40}
+              tabIndex={0}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  setRating(2);
+                }
+              }}
+              aria-label="2 star rating"
+              aria-pressed={rating === 2}
               onClick={() => setRating(2)}
               fill={rating >= 2 ? 'black' : 'darkgray'}
             />
             <StyledStar
               size={40}
+              tabIndex={0}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  setRating(3);
+                }
+              }}
+              aria-label="3 star rating"
+              aria-pressed={rating === 3}
               onClick={() => setRating(3)}
               fill={rating >= 3 ? 'black' : 'darkgray'}
             />
             <StyledStar
               size={40}
+              tabIndex={0}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  setRating(4);
+                }
+              }}
+              aria-label="4 star rating"
+              aria-pressed={rating === 4}
               onClick={() => setRating(4)}
               fill={rating >= 4 ? 'black' : 'darkgray'}
             />
             <StyledStar
               size={40}
+              tabIndex={0}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  setRating(5);
+                }
+              }}
+              aria-label="5 star rating"
+              aria-pressed={rating === 5}
               onClick={() => setRating(5)}
               fill={rating >= 5 ? 'black' : 'darkgray'}
             />

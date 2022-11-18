@@ -295,12 +295,13 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
               ? (
                   owner !== email && (
                 <Button
+                  aria-haspopup="dialog"
                   variant="dark"
                   className="d-flex gap-2 align-items-center"
                   onClick={() => navigate('book')}
                 >
                   <Card.Title>Book now</Card.Title>
-                  <FaCalendarCheck size={20} />
+                  <FaCalendarCheck aria-hidden="true" size={20} />
                 </Button>
                   )
                 )
@@ -418,6 +419,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                     (booking) => booking.status === 'accepted'
                   ) && (
                     <Button
+                      aria-haspopup="dialog"
                       variant="outline-dark"
                       onClick={() => setReviewFormShow(true)}
                     >
@@ -457,7 +459,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
 
                 {/* More amenities that can be shown */}
                 {showAllAmenitiesActive && (
-                  <>
+                  <div id="listing-page-show-amenities">
                     {!!featuresAmenities?.length && (
                       <>
                         <h6 className="mb-0">Features</h6>
@@ -478,7 +480,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                         <AmenityList amenities={safetyAmenities} />
                       </>
                     )}
-                  </>
+                  </div>
                 )}
 
                 {/* If there are more amenities prompt to show them with a button */}
@@ -487,6 +489,7 @@ const Listing = ({ token, setToken, email, setAppEmail }) => {
                   !!safetyAmenities?.length) && (
                   <Button
                     variant="outline-dark px-2 py-1 mb-2"
+                    aria-controls="listing-page-show-amenities"
                     onClick={() =>
                       setShowAllAmenitiesActive(!showAllAmenitiesActive)
                     }
