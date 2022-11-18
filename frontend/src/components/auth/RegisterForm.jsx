@@ -48,7 +48,7 @@ const RegisterForm = ({ setToken, setAppEmail }) => {
   };
 
   return (
-    <Modal show={true} onHide={handleClose} centered>
+    <Modal id="register-modal" show={true} onHide={handleClose} centered>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Modal.Header closeButton>
           <Modal.Title>Register</Modal.Title>
@@ -62,6 +62,7 @@ const RegisterForm = ({ setToken, setAppEmail }) => {
             label="Email address"
           >
             <Form.Control
+              name="register-email"
               type="email"
               placeholder="name@example.com"
               value={email}
@@ -78,6 +79,7 @@ const RegisterForm = ({ setToken, setAppEmail }) => {
           {/* Name field */}
           <FloatingLabel className="mb-3" controlId="name" label="Name">
             <Form.Control
+              name="register-name"
               type="text"
               placeholder="Name"
               value={name}
@@ -94,6 +96,7 @@ const RegisterForm = ({ setToken, setAppEmail }) => {
           {/* Password field */}
           <FloatingLabel className="mb-3" controlId="password" label="Password">
             <Form.Control
+              name="register-password"
               type="password"
               placeholder="Password"
               value={password}
@@ -114,6 +117,7 @@ const RegisterForm = ({ setToken, setAppEmail }) => {
             label="Confirm your password"
           >
             <Form.Control
+              name="register-password-confirm"
               type="password"
               placeholder="Password"
               value={confirmPassword}
@@ -140,10 +144,10 @@ const RegisterForm = ({ setToken, setAppEmail }) => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button name="login-button" variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit">
+          <Button name="register-button" variant="primary" type="submit">
             Register
           </Button>
         </Modal.Footer>
