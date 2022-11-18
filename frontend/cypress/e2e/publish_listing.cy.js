@@ -1,5 +1,5 @@
-describe('update thumbnail and title happy path', () => {
-  it('should update listing successfully', () => {
+describe('publish listing happy path', () => {
+  it('should publish listing successfully', () => {
     cy.visit('localhost:3000/');
     cy.url().should('include', 'localhost:3000');
     cy.get('#navbar-toggle').click();

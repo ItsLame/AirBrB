@@ -107,6 +107,7 @@ const MyListingCard = ({
       <Popover.Body className="d-flex gap-2 align-items-center">
         Are you sure?
         <Button
+          name="mylisting-unpublish-submit"
           className="py-0 px-2"
           style={{ fontSize: '11pt' }}
           variant="secondary"
@@ -291,6 +292,7 @@ const MyListingCard = ({
             rootCloseEvent="click"
           >
             <Button
+              id="mylisting-unpublish-button"
               className="py-0 px-2"
               style={{ fontSize: '11pt' }}
               variant="outline-secondary"
