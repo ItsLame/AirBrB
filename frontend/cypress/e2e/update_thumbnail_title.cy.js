@@ -21,7 +21,7 @@ describe('update thumbnail and title happy path', () => {
     cy.get('#mylisting-nav-link').click();
     cy.url().should('include', '/my_listing');
 
-    cy.get('#listing-edit-button').click();
+    cy.get('#mylisting-edit-button').click();
     cy.url().should('include', '/my_listings/edit');
 
     const title = 'Jungle Hotel';

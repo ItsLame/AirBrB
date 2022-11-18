@@ -93,6 +93,7 @@ const Navbar = ({ token, setToken, middleElement, email, setAppEmail }) => {
                   </NavDropdown.ItemText>
                   <NavDropdown.Divider />
                   <NavDropdown.Item
+                    id="logout-dropdown-item"
                     onClick={() => {
                       logout()
                         .then((_) => {
