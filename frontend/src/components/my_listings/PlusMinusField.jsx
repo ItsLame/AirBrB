@@ -16,7 +16,6 @@ const PlusMinusField = ({ onMinus, num, onPlus, fs, name }) => {
     <div className="d-flex justify-content-center align-items-center gap-3">
       <Button
         name={`${name}-minus-button`}
-        // id="minus-button"
         variant="outline-dark"
         className="p-1 rounded-circle d-flex align-items-center justify-content-center"
         onClick={onMinus}

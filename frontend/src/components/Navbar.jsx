@@ -27,6 +27,7 @@ const Navbar = ({ token, setToken, middleElement, email, setAppEmail }) => {
         {/* Logo on left, redirects to landing page */}
         <BSNavbar.Brand
           aria-label="Landing page"
+          id="landing-button"
           style={{ cursor: 'pointer' }}
           onClick={() => navigate('/')}
           onKeyPress={(e) => {

@@ -12,44 +12,29 @@ describe('user flow happy path', () => {
 
   it('happy user flow', () => {
     // --- 1. REGISTER --- //
-    cy.get('#navbar-toggle').click();
-    cy.get('#login-dropdown-item').click();
-    cy.url().should('include', '/login');
-
-    const email = 'Bob@email.address.com';
-    const password = 'bpassword';
-
-    cy.get('input[name="login-email"]').focus().type(email);
-    cy.get('input[name="login-password"]').focus().type(password);
-    cy.get('button[name="login-submit"').click();
-
-    cy.get('#mylisting-nav-link').then((navlink) => {
-      expect(navlink.text()).to.contain('My listings');
+    it('should open up register form successfully through become a host', () => {
+      cy.get('#register-nav-link').click();
+      cy.url().should('include', '/register');
     });
 
-    // it('should open up register form successfully through become a host', () => {
-    //   cy.get('#register-nav-link').click();
-    //   cy.url().should('include', '/register');
-    // });
+    it('should register successfully', () => {
+      const email = 'Bob@email.address.com';
+      const name = 'Bob';
+      const password = 'bpassword';
 
-    // it('should register successfully', () => {
-    //   const email = 'Bob@email.address.com';
-    //   const name = 'Bob';
-    //   const password = 'bpassword';
+      cy.get('input[name="register-email"]').focus().type(email);
+      cy.get('input[name="register-name"]').focus().type(name);
+      cy.get('input[name="register-password"]').focus().type(password);
+      cy.get('input[name="register-password-confirm"]').focus().type(password);
+      cy.get('button[name="register-submit"').click();
+    });
 
-    //   cy.get('input[name="register-email"]').focus().type(email);
-    //   cy.get('input[name="register-name"]').focus().type(name);
-    //   cy.get('input[name="register-password"]').focus().type(password);
-    //   cy.get('input[name="register-password-confirm"]').focus().type(password);
-    //   cy.get('button[name="register-submit"').click();
-    // });
-
-    // it('should automatically be logged in', () => {
-    //   cy.get('[name="mylisting-nav-link"]').then((navlink) => {
-    //     expect(navlink.text()).to.contain('My listings');
-    //   });
-    //   cy.url().should('not.include', '/register');
-    // });
+    it('should automatically be logged in', () => {
+      cy.get('[name="mylisting-nav-link"]').then((navlink) => {
+        expect(navlink.text()).to.contain('My listings');
+      });
+      cy.url().should('not.include', '/register');
+    });
 
     // --- 2. CREATE NEW LISTING --- //
     cy.get('#mylisting-nav-link').click();
@@ -148,7 +133,7 @@ describe('user flow happy path', () => {
     cy.get('button[name="mylisting-unpublish-submit"]').click();
 
     // --- 6. MAKE A BOOKING --- //
-    // TODO: Make a booking
+    // cy.get('#landing-button').click();
 
     // --- 7. LOGOUT  --- //
     cy.get('#navbar-toggle').click();
