@@ -29,7 +29,3 @@
 8. Logs back into the application successfully
    - this is to test that user can log back in with their credentials from step 1
    - so that returning users can access their listings and booking
-
-### (Alternative) Unhappy Path
-
-1.
