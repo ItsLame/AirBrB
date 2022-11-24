@@ -2,7 +2,7 @@
 ## Description
 - A platform attempting to replicate popular property renting platfrom [Airbnb](https://www.airbnb.com.au/).
 - Detailed features and specifications can be found on [here](./SPECS.md).
-- This project's aim is to build a front-end application with the provided back-end; in order to learn the usage of front-end technlogies, communicating with the back-end, and testing out the components and UI.
+- This project's aim is to build a front-end application with the provided back-end; in order to learn the usage of front-end technlogies, communicating with the back-end, eslint rules, and testing out the components and UI.
 ## Tech Stack
 - JavaScript
 - ReactJS
