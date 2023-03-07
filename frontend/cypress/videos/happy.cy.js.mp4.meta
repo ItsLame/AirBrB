@@ -1,0 +1,16 @@
+;FFMETADATA1
+[CHAPTER]
+TIMEBASE=1/1000
+START=128
+END=2143
+title=user flow happy path should navigate to landing screen successfully
+[CHAPTER]
+TIMEBASE=1/1000
+START=4139
+END=4160
+title=user flow happy path should be logged out
+[CHAPTER]
+TIMEBASE=1/1000
+START=-450
+END=4182
+title=user flow happy path happy user flow
